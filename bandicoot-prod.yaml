@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bandicoot-prod
+  labels:
+    app: "bandicoot"
+    env: "prod"
+    ver: "2"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "bandicoot"
+  template:
+    metadata:
+      labels:
+        app: "bandicoot"
+        env: "prod"
+        ver: "2"
+    spec:
+      containers:
+      - name: "bandicoot"
+        image: "gcr.io/kuar-demo/kuard-arm64:green"
+        ports:
+        - containerPort: 80
+    
+    
+  
