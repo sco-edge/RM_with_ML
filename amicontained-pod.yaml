@@ -8,3 +8,4 @@ spec:
       name: amicontained
       command: [ "/bin/sh", "-c", "--" ] 
       args: [ "amicontained" ]
+      protocol: udp
