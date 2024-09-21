@@ -13,3 +13,4 @@ q2 : If you set the minReadySeconds parameter, it helps ensure that a Pod is fun
 ### Week 4 clear, Reading New Paper relate to load balancing 
 ### Reading New Paper relate to RPC
 
+### Week 8 start to 
