@@ -16,3 +16,4 @@ q2 : If you set the minReadySeconds parameter, it helps ensure that a Pod is fun
 ### Week 8 start to 
 ### ComeBack ###
 ### gRPC clone ###
+### delete yaml ###
