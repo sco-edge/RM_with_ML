@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "cp-k8s-#{k8s_V[0..5]}" do |cfg|
       cfg.vm.box = "bento/ubuntu-22.04"
-      cfg.vm.provider "vmware_desktop" do |vb|
+      cfg.vm.provider "virtualbox" do |vb|
         vb.gui = true 
         vb.cpus = 2
         vb.memory = 2048
@@ -41,9 +41,9 @@ Vagrant.configure("2") do |config|
   (1..N).each do |i|
     config.vm.define "w#{i}-k8s-#{k8s_V[0..5]}" do |cfg|
       cfg.vm.box = "bento/ubuntu-22.04"
-      cfg.vm.provider "vmware_desktop" do |vb|
+      cfg.vm.provider "virtualbox" do |vb|
         vb.gui = true 
-        vb.cpus = 1
+        vb.cpus = 2
         vb.memory = 1536
 #        vb.vmx ["modifyvm", :id, "--groups", "/k8s-U#{k8s_V[0..5]}-ctrd-#{ctrd_V[0..2]}(github_SysNet4Admin)"]
       end
