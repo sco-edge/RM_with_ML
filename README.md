@@ -26,7 +26,11 @@ Minikube(Control Plane with Pods): CPU 16 RAM 32GB
 
 #### Deploy
 source ksh/bin/activate
+
 pip install -r requirement.txt(버전 문제로 인해 개별적인 설치 진행)
+
 kubectl create namespace hotel-reserv(namespace를 자동으로 생성을 안해줌, readme나 issue에는 없음)
+
 python3 main.py
+
 (main.py -> testCollection.py -> full_init() -> deployer.py -> hotel-global.yaml)
