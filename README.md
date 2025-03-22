@@ -12,5 +12,11 @@ Three Slave nodes: 1 CPU cores and 1.5GB RAM
 
 Start with vagrant up with Vagrantfile
 
-ISSUE 1: MAC OS Architecture (aarch64) is not match with Docker Images in Deathstarbench 
+Issue 1: MAC OS Architecture (aarch64) is not match with Docker Images in Deathstarbench 
 => Run it with Linux systems (12CPU core, RAM 15GB)
+
+Start with minikube
+
+Issue 1: 
+yamlRepository/hotelReservation/non-test/consul_Deployment.yaml 
+image: consul:latest -> image: consul:1.8.4
