@@ -6,7 +6,7 @@ app_img: nicklin9907/erms:hotelreservation-1.0
 nodes_for_test:
 - minikube
 
-prometheus_host: http://localhost:30090
+prometheus_host: http://192.168.49.2:30090
 nodes_for_infra:
 - minikube
 pod_spec:

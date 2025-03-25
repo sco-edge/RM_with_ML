@@ -7,7 +7,7 @@ from configs import log
 from dataCollector.OfflineProfilingDataCollector import OfflineProfilingDataCollector
 from deployment.deployer import Deployer
 from workloadGenerator.staticWorkload import StaticWorkloadGenerator
-from infGenerator.busyInf import BusyInf
+# from infGenerator.busyInf import BusyInf
 
 
 
@@ -147,13 +147,13 @@ if __name__ == "__main__":
             "Search": {
                 "thread_num": 2,
                 "conn_num": 4,
-                "throughput": 8,
+                "throughput": 10,
                 "scripts": "wrk2/scripts/hotel-reservation/search.lua",
             },
             "Recommendation": {
                 "thread_num": 7,
                 "conn_num": 14,
-                "throughput": 28,
+                "throughput": 10,
                 "scripts": "wrk2/scripts/hotel-reservation/recommendation.lua",
             },
         },
@@ -220,7 +220,6 @@ if __name__ == "__main__":
     usedTime = 0
     # Test each service in the configuration
     for svc in service:
-        # Prepare workload generator
         containers = replica_configs[svc]
         currentWorkloadConfig = workload_configs[svc]
         workloadGenerator = StaticWorkloadGenerator(
@@ -232,24 +231,16 @@ if __name__ == "__main__":
             currentWorkloadConfig["scripts"],
             url,
         )
-        for repeat in range(repeats):
-            for cpuInstance in range(1, cpu + 1):
-                for memoryInstance in range(1, mem + 1):
-                    DEPLOYER.delete_app()
-                    # Clear all previous interference and generate new interference
-                    # log.info("Deploying Interference...")
-                    # cpuInterGenerator.clearAllInterference()
-                    # cpuInterGenerator.generateInterference(cpuInstance)
-                    # memoryInterGenerator.clearAllInterference()
-                    # memoryInterGenerator.generateInterference(memoryInstance, True)
-                    log.info("Deploying Application...")
-                    DEPLOYER.deploy_app(containers)
-                    dataCollector.wait_until_done()
-                    for clientNum in range(1, 21):
+        for cpuInstance in range(1, cpu + 1):
+            for memoryInstance in range(1, mem + 1):
+                for clientNum in [3, 6]:  # 3과 6 → 30, 60 throughput
+                    for repeat in range(repeats):  # epoch_0, epoch_1, epoch_2
+                        DEPLOYER.delete_app()
+                        log.info("Deploying Application...")
+                        DEPLOYER.deploy_app(containers)
+                        dataCollector.wait_until_done()
+
                         roundStartTime = time.time()
-                        # log.info(
-                        #     f"Repeat {repeat} of {svc}: {clientNum} clients, {cpuInstance} CPU interference and {memoryInstance} memory interference"
-                        # )
                         if passedRound != 0:
                             avgTime = usedTime / passedRound
                             log.info(
@@ -257,23 +248,24 @@ if __name__ == "__main__":
                                 f"Avg. round time: {timeParser(avgTime)}, "
                                 f"Left time estimation: {timeParser(avgTime * (totalRound - passedRound))}"
                             )
+
                         testName = f"[{svc}]{repeat}r{clientNum}c[{cpuInstance}u,{memoryInstance}m]"
                         log.info("Test starts")
-                        # Start generating workload
+
                         startTime = int(time.time())
                         test_data = {
-                            "repeat": repeat,
+                            "repeat": repeat,  # epoch 번호
                             "start_time": startTime,
                             "service": svc,
                             "cpu_inter": cpuInstance * 0.4,
                             "mem_inter": memoryInstance * 800,
-                            "target_throughput": clientNum
-                            * currentWorkloadConfig["throughput"],
+                            "target_throughput": clientNum * currentWorkloadConfig["throughput"],
                             "test_name": testName,
                         }
+
                         workloadGenerator.generateWorkload(testName, clientNum)
-                        # Record test result data
                         dataCollector.collect_data_async(test_data)
+
                         passedRound += 1
                         usedTime += time.time() - roundStartTime
     dataCollector.wait_until_done()

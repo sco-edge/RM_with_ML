@@ -161,43 +161,43 @@ class OfflineProfilingDataCollector:
             for line in lines:
                 counter += int(line)
             return counter
-
-    def collect_trace_data(self, limit, start_time, operation=None, no_nginx=False, no_frontend=False):
-        # Generate fetching url
+    def collect_trace_data(self, test_data, repeat_num, graph_type=None):
+        """
+        Collect trace data and output merged trace information to CSV.
+        (Existing docstring content remains unchanged or can be updated to mention the CSV output.)
+        """
+        # ... [existing code that gathers trace spans and builds merged_df] ...
+        # Assume merged_df is now created with the required columns:
+        # traceId, traceTime, startTime, endTime, parentId, childId, childOperation, parentOperation,
+        # childMS, childPod, parentMS, parentPod, parentDuration, childDuration
         request_data = {
-            "start": int(start_time * 1000000),
-            "end": int((start_time + self.duration * 1000) * 1000000),
-            "limit": limit,
-            "service": self.entryPoint,
-            "tags": '{"http.status_code":"200"}',
+        "start": int(test_data["start_time"] * 1000000),
+        "end": int((test_data["start_time"] + self.duration * 1000) * 1000000),
+        "limit": self.max_traces,
+        "service": self.entryPoint,
+        "tags": '{"http.status_code":"200"}',
         }
-        if operation is not None:
-            request_data["operation"] = operation
         req = requests.get(f"{self.jaegerHost}/api/traces", params=request_data)
-        self.write_log(f"Fetch latency data from: {req.url}")
         res = json.loads(req.content)["data"]
+
         if len(res) == 0:
-            self.write_log(f"No traces are fetched!", "error")
+            self.write_log(f"No traces fetched!", "error")
             return False, None, None
-        else:
-            self.write_log(f"Number of traces: {len(res)}")
-        # Record process id and microservice name mapping of all traces
-        # Original headers: traceID, processes.p1.serviceName, processes.p2.serviceName, ...
-        # Processed headers: traceId, p1, p2, ...
+
+        # 2. span -> merged_df 구성
         service_id_mapping = (
             pd.json_normalize(res)
             .filter(regex="serviceName|traceID|tags")
             .rename(
                 columns=lambda x: re.sub(
                     r"processes\.(.*)\.serviceName|processes\.(.*)\.tags",
-                    lambda match_obj: match_obj.group(1)
-                    if match_obj.group(1)
-                    else f"{match_obj.group(2)}Pod",
-                    x,
+                    lambda match: match.group(1) if match.group(1) else f"{match.group(2)}Pod",
+                    x
                 )
             )
             .rename(columns={"traceID": "traceId"})
         )
+
         service_id_mapping = (
             service_id_mapping.filter(regex=".*Pod")
             .applymap(
@@ -207,115 +207,248 @@ class OfflineProfilingDataCollector:
             )
             .combine_first(service_id_mapping)
         )
+
         spans_data = pd.json_normalize(res, record_path="spans")[
             [
-                "traceID",
-                "spanID",
-                "operationName",
-                "duration",
-                "processID",
-                "references",
-                "startTime",
+                "traceID", "spanID", "operationName", "duration",
+                "processID", "references", "startTime"
             ]
         ]
         spans_with_parent = spans_data[~(spans_data["references"].astype(str) == "[]")]
-        root_spans = spans_data[(spans_data["references"].astype(str) == "[]")]
-        root_spans = root_spans.rename(
-            columns={
-                "traceID": "traceId", 
-                "startTime": "traceTime",
-                "duration": "traceLatency"
-            }
+        root_spans = spans_data[(spans_data["references"].astype(str) == "[]")].rename(
+            columns={"traceID": "traceId", "startTime": "traceTime", "duration": "traceLatency"}
         )[["traceId", "traceTime", "traceLatency"]]
+
         spans_with_parent.loc[:, "parentId"] = spans_with_parent["references"].map(
             lambda x: x[0]["spanID"]
         )
         temp_parent_spans = spans_data[
             ["traceID", "spanID", "operationName", "duration", "processID"]
-        ].rename(
-            columns={
-                "spanID": "parentId",
-                "processID": "parentProcessId",
-                "operationName": "parentOperation",
-                "duration": "parentDuration",
-                "traceID": "traceId",
-            }
-        )
-        temp_children_spans = spans_with_parent[
-            [
-                "operationName",
-                "duration",
-                "parentId",
-                "traceID",
-                "spanID",
-                "processID",
-                "startTime",
-            ]
-        ].rename(
-            columns={
-                "spanID": "childId",
-                "processID": "childProcessId",
-                "operationName": "childOperation",
-                "duration": "childDuration",
-                "traceID": "traceId",
-            }
-        )
-        # A merged data frame that build relationship of different spans
-        merged_df = pd.merge(
-            temp_parent_spans, temp_children_spans, on=["parentId", "traceId"]
-        )
+        ].rename(columns={
+            "spanID": "parentId",
+            "processID": "parentProcessId",
+            "operationName": "parentOperation",
+            "duration": "parentDuration",
+            "traceID": "traceId",
+        })
 
-        merged_df = merged_df[
-            [
-                "traceId",
-                "childOperation",
-                "childDuration",
-                "parentOperation",
-                "parentDuration",
-                "parentId",
-                "childId",
-                "parentProcessId",
-                "childProcessId",
-                "startTime",
-            ]
-        ]
-        
-        # Map each span's processId to its microservice name
+        temp_children_spans = spans_with_parent[
+            ["operationName", "duration", "parentId", "traceID", "spanID", "processID", "startTime"]
+        ].rename(columns={
+            "spanID": "childId",
+            "processID": "childProcessId",
+            "operationName": "childOperation",
+            "duration": "childDuration",
+            "traceID": "traceId",
+        })
+
+        merged_df = pd.merge(temp_parent_spans, temp_children_spans, on=["parentId", "traceId"])
         merged_df = merged_df.merge(service_id_mapping, on="traceId")
         merged_df = merged_df.merge(root_spans, on="traceId")
+
         merged_df = merged_df.assign(
             childMS=merged_df.apply(lambda x: x[x["childProcessId"]], axis=1),
-            childPod=merged_df.apply(lambda x: x[f"{str(x['childProcessId'])}Pod"], axis=1),
+            childPod=merged_df.apply(lambda x: x[f"{x['childProcessId']}Pod"], axis=1),
             parentMS=merged_df.apply(lambda x: x[x["parentProcessId"]], axis=1),
-            parentPod=merged_df.apply(
-                lambda x: x[f"{str(x['parentProcessId'])}Pod"], axis=1
-            ),
-            endTime=merged_df["startTime"] + merged_df["childDuration"],
+            parentPod=merged_df.apply(lambda x: x[f"{x['parentProcessId']}Pod"], axis=1),
+            endTime=merged_df["startTime"] + merged_df["childDuration"]
         )
-        merged_df = merged_df[
-            [
-                "traceId",
-                "traceTime",
-                "startTime",
-                "endTime",
-                "parentId",
-                "childId",
-                "childOperation",
-                "parentOperation",
-                "childMS",
-                "childPod",
-                "parentMS",
-                "parentPod",
-                "parentDuration",
-                "childDuration",
-            ]
+
+        # 3. 저장할 디렉토리 구성
+        final_graph_type = test_data.get("graph_type", "simple").lower()
+        output_dir = os.path.join(
+           self.resultPath,
+            str(test_data['target_throughput']),
+            f"epoch_{repeat_num}",
+            final_graph_type
+        )
+        os.makedirs(output_dir, exist_ok=True)
+
+        #4. csv 파일 저장
+        ordered_cols = [
+            "traceId", "traceTime", "startTime", "endTime",
+            "parentId", "childId", "childOperation", "parentOperation",
+            "childMS", "childPod", "parentMS", "parentPod",
+            "parentDuration", "childDuration"
         ]
-        if no_nginx:
-            return True, merged_df, t_processor.no_entrance_trace_duration(merged_df, "nginx")
-        elif no_frontend:
-            return True, merged_df, t_processor.no_entrance_trace_duration(merged_df, "frontend")
+        merged_df = merged_df[ordered_cols]
+        merged_df.to_csv(os.path.join(output_dir, "raw_data.csv"), index=False)
+        print(f"[✓] Trace CSV 저장됨 → {output_dir}/raw_data.csv")
+
+        # Determine graph type (simple or complex)
+        if graph_type is None:
+            # Try to infer from test_data if available; otherwise default to 'simple'
+            final_graph_type = test_data.get('graph_type', 'simple')
         else:
-            return True, merged_df, root_spans
+            final_graph_type = graph_type
+        final_graph_type = final_graph_type.lower()  # normalize to 'simple' or 'complex'
+
+        # **NEW**: Ensure the output directory exists for the given throughput, epoch, and graph type
+        epoch_dir = os.path.join(
+            self.resultPath,
+            str(test_data['target_throughput']),
+            f"epoch_{repeat_num}",
+            final_graph_type
+        )
+        os.makedirs(epoch_dir, exist_ok=True)
+
+
+        # ... [existing code to perhaps compute and return ms_latency, pod_latency, trace_latency] ...
+
+    # def collect_trace_data(self, limit, start_time, operation=None, no_nginx=False, no_frontend=False):
+    #     # Generate fetching url
+    #     request_data = {
+    #         "start": int(start_time * 1000000),
+    #         "end": int((start_time + self.duration * 1000) * 1000000),
+    #         "limit": limit,
+    #         "service": self.entryPoint,
+    #         "tags": '{"http.status_code":"200"}',
+    #     }
+    #     if operation is not None:
+    #         request_data["operation"] = operation
+    #     req = requests.get(f"{self.jaegerHost}/api/traces", params=request_data)
+    #     self.write_log(f"Fetch latency data from: {req.url}")
+    #     res = json.loads(req.content)["data"]
+    #     if len(res) == 0:
+    #         self.write_log(f"No traces are fetched!", "error")
+    #         return False, None, None
+    #     else:
+    #         self.write_log(f"Number of traces: {len(res)}")
+    #     # Record process id and microservice name mapping of all traces
+    #     # Original headers: traceID, processes.p1.serviceName, processes.p2.serviceName, ...
+    #     # Processed headers: traceId, p1, p2, ...
+    #     service_id_mapping = (
+    #         pd.json_normalize(res)
+    #         .filter(regex="serviceName|traceID|tags")
+    #         .rename(
+    #             columns=lambda x: re.sub(
+    #                 r"processes\.(.*)\.serviceName|processes\.(.*)\.tags",
+    #                 lambda match_obj: match_obj.group(1)
+    #                 if match_obj.group(1)
+    #                 else f"{match_obj.group(2)}Pod",
+    #                 x,
+    #             )
+    #         )
+    #         .rename(columns={"traceID": "traceId"})
+    #     )
+    #     service_id_mapping = (
+    #         service_id_mapping.filter(regex=".*Pod")
+    #         .applymap(
+    #             lambda x: [v["value"] for v in x if v["key"] == "hostname"][0]
+    #             if isinstance(x, list)
+    #             else ""
+    #         )
+    #         .combine_first(service_id_mapping)
+    #     )
+    #     spans_data = pd.json_normalize(res, record_path="spans")[
+    #         [
+    #             "traceID",
+    #             "spanID",
+    #             "operationName",
+    #             "duration",
+    #             "processID",
+    #             "references",
+    #             "startTime",
+    #         ]
+    #     ]
+    #     spans_with_parent = spans_data[~(spans_data["references"].astype(str) == "[]")]
+    #     root_spans = spans_data[(spans_data["references"].astype(str) == "[]")]
+    #     root_spans = root_spans.rename(
+    #         columns={
+    #             "traceID": "traceId", 
+    #             "startTime": "traceTime",
+    #             "duration": "traceLatency"
+    #         }
+    #     )[["traceId", "traceTime", "traceLatency"]]
+    #     spans_with_parent.loc[:, "parentId"] = spans_with_parent["references"].map(
+    #         lambda x: x[0]["spanID"]
+    #     )
+    #     temp_parent_spans = spans_data[
+    #         ["traceID", "spanID", "operationName", "duration", "processID"]
+    #     ].rename(
+    #         columns={
+    #             "spanID": "parentId",
+    #             "processID": "parentProcessId",
+    #             "operationName": "parentOperation",
+    #             "duration": "parentDuration",
+    #             "traceID": "traceId",
+    #         }
+    #     )
+    #     temp_children_spans = spans_with_parent[
+    #         [
+    #             "operationName",
+    #             "duration",
+    #             "parentId",
+    #             "traceID",
+    #             "spanID",
+    #             "processID",
+    #             "startTime",
+    #         ]
+    #     ].rename(
+    #         columns={
+    #             "spanID": "childId",
+    #             "processID": "childProcessId",
+    #             "operationName": "childOperation",
+    #             "duration": "childDuration",
+    #             "traceID": "traceId",
+    #         }
+    #     )
+    #     # A merged data frame that build relationship of different spans
+    #     merged_df = pd.merge(
+    #         temp_parent_spans, temp_children_spans, on=["parentId", "traceId"]
+    #     )
+
+    #     merged_df = merged_df[
+    #         [
+    #             "traceId",
+    #             "childOperation",
+    #             "childDuration",
+    #             "parentOperation",
+    #             "parentDuration",
+    #             "parentId",
+    #             "childId",
+    #             "parentProcessId",
+    #             "childProcessId",
+    #             "startTime",
+    #         ]
+    #     ]
+        
+    #     # Map each span's processId to its microservice name
+    #     merged_df = merged_df.merge(service_id_mapping, on="traceId")
+    #     merged_df = merged_df.merge(root_spans, on="traceId")
+    #     merged_df = merged_df.assign(
+    #         childMS=merged_df.apply(lambda x: x[x["childProcessId"]], axis=1),
+    #         childPod=merged_df.apply(lambda x: x[f"{str(x['childProcessId'])}Pod"], axis=1),
+    #         parentMS=merged_df.apply(lambda x: x[x["parentProcessId"]], axis=1),
+    #         parentPod=merged_df.apply(
+    #             lambda x: x[f"{str(x['parentProcessId'])}Pod"], axis=1
+    #         ),
+    #         endTime=merged_df["startTime"] + merged_df["childDuration"],
+    #     )
+    #     merged_df = merged_df[
+    #         [
+    #             "traceId",
+    #             "traceTime",
+    #             "startTime",
+    #             "endTime",
+    #             "parentId",
+    #             "childId",
+    #             "childOperation",
+    #             "parentOperation",
+    #             "childMS",
+    #             "childPod",
+    #             "parentMS",
+    #             "parentPod",
+    #             "parentDuration",
+    #             "childDuration",
+    #         ]
+    #     ]
+    #     if no_nginx:
+    #         return True, merged_df, t_processor.no_entrance_trace_duration(merged_df, "nginx")
+    #     elif no_frontend:
+    #         return True, merged_df, t_processor.no_entrance_trace_duration(merged_df, "frontend")
+    #     else:
+    #         return True, merged_df, root_spans
 
     def construct_relationship(self, span_data: pd.DataFrame, max_edges: Dict, relation_df: Dict, service):
         if not service in max_edges:
@@ -375,7 +508,7 @@ class OfflineProfilingDataCollector:
             return
 
         try:
-            success, span_data, _ = self.collect_trace_data(self.max_traces, test_data["start_time"])
+            success, span_data, _ = self.collect_trace_data(test_data, test_data["repeat"])
             if success:
                 original_data = span_data.assign(
                     service=test_data["service"],

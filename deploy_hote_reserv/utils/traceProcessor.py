@@ -21,7 +21,7 @@ def _cal_exact_merge(data: pd.DataFrame):
 
         childDuration = 0
         for grp in conflictionGrp:
-            conflictChildren = potentialConflicGrp.loc[grp]
+            conflictChildren = potentialConflicGrp.loc[list(grp)]
             childDuration += (
                 conflictChildren["endTime"].max() - conflictChildren["startTime"].min()
             )
