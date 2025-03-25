@@ -34,7 +34,7 @@ class OfflineProfilingDataCollector:
         Args:
             namespace (str): Namespace
             duration (int): Duration of each round of test
-            jaegerHost (str): Address to access jaeger, e.g. http://localhost:16686
+            jaegerHost (str): Address to access jaeger, e.g. http://192.168.49.2:16686
             entryPoint (str): The entry point service of the test
             prometheusHost (str): Address to access Prometheus, similar to jaegerHost
             mointorInterval (str): Prometheus monitor interval
@@ -98,7 +98,7 @@ class OfflineProfilingDataCollector:
         # Calculate mean latency of each microservice
         pod_latency, _ = self.process_span_data(span_data)
         ms_latency = pod_latency.groupby("microservice").mean().reset_index()
-        # Get cpu usage or each microservice
+        # Get cpu usage of each microservice
         deployments = (
             pod_latency["pod"]
             .apply(lambda x: "-".join(str(x).split("-")[:-2]))
@@ -406,22 +406,26 @@ class OfflineProfilingDataCollector:
                 deployments, test_data["start_time"]
             ).rename(
                 columns={"usage": "cpuUsage"}
-            ).drop(columns="deployment")
+            )
         except Exception:
             self.write_log("Fetch CPU usage data failed!", "error")
             traceback.print_exc()
             return
+        if "deployment" in cpu_result.columns:
+            cpu_result = cpu_result.drop(columns="deployment")
         
         try:
             mem_result = self.collect_mem_usage(
                 deployments, test_data["start_time"]
             ).rename(
                 columns={"usage": "memUsage"}
-            ).drop(columns="deployment")
+            )
         except Exception:
             self.write_log("Fetch memory usage data failed!", "error")
             traceback.print_exc()
             return
+        if "deployment" in cpu_result.columns:
+            cpu_result = cpu_result.drop(columns="deployment")
 
         try:
             latency_by_pod = (
@@ -430,19 +434,20 @@ class OfflineProfilingDataCollector:
                 .merge(mem_result, on="pod", how="left")
             )
             original_data = original_data.merge(
-                cpu_result, left_on="childPod", right_on="pod"
+                cpu_result, left_on="childPod", right_on="pod", suffixes=("", "_childCpu")
             ).merge(
-                mem_result, left_on="childPod", right_on="pod"
+                mem_result, left_on="childPod", right_on="pod", suffixes=("", "_childMem")
             ).rename(
                 columns={"cpuUsage": "childPodCpuUsage", "memUsage": "childPodMemUsage"}
-            )
+            ).drop(columns=["pod", "pod_childMem"], errors="ignore")
+
             original_data = original_data.merge(
-                cpu_result, left_on="parentPod", right_on="pod"
+                cpu_result, left_on="parentPod", right_on="pod", suffixes=("", "_parentCpu")
             ).merge(
-                mem_result, left_on="childPod", right_on="pod"
+                mem_result, left_on="parentPod", right_on="pod", suffixes=("", "_parentMem")
             ).rename(
                 columns={"cpuUsage": "parentPodCpuUsage", "memUsage": "parentPodMemUsage"}
-            )
+            ).drop(columns=["pod", "pod_parentMem"], errors="ignore")
             latency_by_pod = latency_by_pod.assign(
                 repeat=test_data["repeat"],
                 service=test_data["service"],

@@ -33,6 +33,11 @@ spec:
         name: hotel-reserv-frontend
         ports:
         - containerPort: 5000
+        env:
+        - name: JAEGER_AGENT_HOST
+          value: "jaeger"
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
         resources:
           limits:
             cpu: 1000m

@@ -1,11 +1,14 @@
 import argparse
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import time
 from configs import log
 from dataCollector.OfflineProfilingDataCollector import OfflineProfilingDataCollector
 from deployment.deployer import Deployer
 from workloadGenerator.staticWorkload import StaticWorkloadGenerator
 from infGenerator.busyInf import BusyInf
+
 
 
 def timeParser(time):
@@ -17,6 +20,8 @@ def timeParser(time):
 
 
 if __name__ == "__main__":
+    cpuInstance=0
+    memoryInstance=0
     parser = argparse.ArgumentParser(
         description="Offline Profiling, testing part",
         formatter_class=argparse.RawTextHelpFormatter,
@@ -82,16 +87,16 @@ if __name__ == "__main__":
     namespace = app
     if service == "All":
         service = {
-            "hotel-reserv": ["Search"],
+            "hotel-reserv": ["Search", "Recommendation"],
             "sociel-network": ["ComposePost", "UserTimeline", "HomeTimeline"],
             "media-microsvc": ["ComposeReview"],
         }[app]
     else:
         service = [service]
     jaeger_host = {
-        "hotel-reserv": "http://localhost:30095",
-        "sociel-network": "http://localhost:30094",
-        "media-microsvc": "http://localhost:30093",
+        "hotel-reserv": "http://192.168.49.2:30095",
+        "sociel-network": "http://192.168.49.2:30094",
+        "media-microsvc": "http://192.168.49.2:30093",
     }[app]
     entry_point = {
         "hotel-reserv": "frontend",
@@ -99,10 +104,7 @@ if __name__ == "__main__":
         "media-microsvc": "nginx",
     }[app]
     nodes_for_test = [
-        "izj6c6vb9bfm8mxnvb4n44z",
-        "izj6c6vb9bfm8mxnvb4n45z",
-        "izj6c6vb9bfm8mxnvb4n46z",
-        "izj6c6vb9bfm8mxnvb4n47z",
+        "minikube",
     ]
     yaml_repo = {
         "hotel-reserv": "yamlRepository/hotelReservation",
@@ -116,8 +118,8 @@ if __name__ == "__main__":
     }[app]
     replica_configs = {
         "hotel-reserv": {
-            "Search": {"frontend": 6, "reservation": 3, "search": 2},
-            "Recommendation": {"frontend": 8, "profile": 5, "recommendation": 2},
+            "Search": {"frontend": 6, "reservation": 3, "search": 2, "geo": 1, "user": 1, "rate": 1},
+            "Recommendation": {"frontend": 8, "profile": 5, "recommendation": 2, "geo": 1, "user": 1, "rate": 1},
         },
         "social-network": {
             "ComposePost": {
@@ -185,9 +187,9 @@ if __name__ == "__main__":
         },
     }[app]
     url = {
-        "hotel-reserv": "http://localhost:30096",
-        "social-network": "http://localhost:30628",
-        "media-microsvc": "http://localhost:30092",
+        "hotel-reserv": "http://192.168.49.2:30096",
+        "social-network": "http://192.168.49.2:30628",
+        "media-microsvc": "http://192.168.49.2:30092",
     }[app]
     DEPLOYER = Deployer(namespace, 0.1, "100Mi", nodes_for_test, yaml_repo, app_img)
 
@@ -196,17 +198,17 @@ if __name__ == "__main__":
     os.system(f"rm -rf {data_path}")
     os.system(f"mkdir -p {data_path}")
     # Prepare interference generator
-    cpuInterGenerator = BusyInf(nodes_for_test, 0.4, "10Mi", "cpu", ["36000s"])
-    memoryInterGenerator = BusyInf(
-        nodes_for_test, 0.01, "800Mi", "memory", ["36000s", "wired", "100000s"]
-    )
+    # cpuInterGenerator = BusyInf(nodes_for_test, 0.4, "10Mi", "cpu", ["36000s"])
+    # memoryInterGenerator = BusyInf(
+    #     nodes_for_test, 0.01, "800Mi", "memory", ["36000s", "wired", "100000s"]
+    # )
 
     # Prepare data collector
     dataCollector = OfflineProfilingDataCollector(
         namespace,
         jaeger_host,
         entry_point,
-        "http://localhost:30090",
+        "http://192.168.49.2:30090",
         nodes_for_test,
         data_path,
         duration=40,
@@ -235,19 +237,19 @@ if __name__ == "__main__":
                 for memoryInstance in range(1, mem + 1):
                     DEPLOYER.delete_app()
                     # Clear all previous interference and generate new interference
-                    log.info("Deploying Interference...")
-                    cpuInterGenerator.clearAllInterference()
-                    cpuInterGenerator.generateInterference(cpuInstance)
-                    memoryInterGenerator.clearAllInterference()
-                    memoryInterGenerator.generateInterference(memoryInstance, True)
+                    # log.info("Deploying Interference...")
+                    # cpuInterGenerator.clearAllInterference()
+                    # cpuInterGenerator.generateInterference(cpuInstance)
+                    # memoryInterGenerator.clearAllInterference()
+                    # memoryInterGenerator.generateInterference(memoryInstance, True)
                     log.info("Deploying Application...")
                     DEPLOYER.deploy_app(containers)
                     dataCollector.wait_until_done()
                     for clientNum in range(1, 21):
                         roundStartTime = time.time()
-                        log.info(
-                            f"Repeat {repeat} of {svc}: {clientNum} clients, {cpuInstance} CPU interference and {memoryInstance} memory interference"
-                        )
+                        # log.info(
+                        #     f"Repeat {repeat} of {svc}: {clientNum} clients, {cpuInstance} CPU interference and {memoryInstance} memory interference"
+                        # )
                         if passedRound != 0:
                             avgTime = usedTime / passedRound
                             log.info(
@@ -276,5 +278,5 @@ if __name__ == "__main__":
                         usedTime += time.time() - roundStartTime
     dataCollector.wait_until_done()
     DEPLOYER.delete_app()
-    cpuInterGenerator.clearAllInterference()
-    memoryInterGenerator.clearAllInterference()
+    # cpuInterGenerator.clearAllInterference()
+    # memoryInterGenerator.clearAllInterference()

@@ -46,30 +46,30 @@ def start_test(continues=False):
         os.system(f"rm -rf {configs.GLOBAL_CONFIG.data_path}")
         os.system(f"mkdir -p {configs.GLOBAL_CONFIG.data_path}")
     # Prepare interference generator
-    interference_duration = str(
-        configs.TESTING_CONFIG.duration
-        * max(
-            [
-                x[1].max_clients
-                for x in configs.TESTING_CONFIG.workload_config.services.items()
-            ]
-        )
-        * 2
-    )
-    cpuInterGenerator = BusyInf(
-        configs.GLOBAL_CONFIG.nodes_for_test,
-        configs.TESTING_CONFIG.interference_config.cpu.cpu_size,
-        configs.TESTING_CONFIG.interference_config.cpu.mem_size,
-        "cpu",
-        [f"{interference_duration}s"],
-    )
-    memoryInterGenerator = BusyInf(
-        configs.GLOBAL_CONFIG.nodes_for_test,
-        configs.TESTING_CONFIG.interference_config.mem.cpu_size,
-        configs.TESTING_CONFIG.interference_config.mem.mem_size,
-        "memory",
-        [f"{interference_duration}s", "wired", "100000s"],
-    )
+    # interference_duration = str(
+    #     configs.TESTING_CONFIG.duration
+    #     * max(
+    #         [
+    #             x[1].max_clients
+    #             for x in configs.TESTING_CONFIG.workload_config.services.items()
+    #         ]
+    #     )
+    #     * 2
+    # )
+    # cpuInterGenerator = BusyInf(
+    #     configs.GLOBAL_CONFIG.nodes_for_test,
+    #     configs.TESTING_CONFIG.interference_config.cpu.cpu_size,
+    #     configs.TESTING_CONFIG.interference_config.cpu.mem_size,
+    #     "cpu",
+    #     [f"{interference_duration}s"],
+    # )
+    # memoryInterGenerator = BusyInf(
+    #     configs.GLOBAL_CONFIG.nodes_for_test,
+    #     configs.TESTING_CONFIG.interference_config.mem.cpu_size,
+    #     configs.TESTING_CONFIG.interference_config.mem.mem_size,
+    #     "memory",
+    #     ["300s", "anon", "300s"],
+    # )
 
     # Prepare data collector
     dataCollector = OfflineProfilingDataCollector(
@@ -115,55 +115,59 @@ def start_test(continues=False):
             currentWorkloadConfig.url,
         )
         for repeat in configs.TESTING_CONFIG.repeats:
-            for cpuInstance in configs.TESTING_CONFIG.interference_config.cpu.pod_range:
-                for (
-                    memoryInstance
-                ) in configs.TESTING_CONFIG.interference_config.mem.pod_range:
+            # for cpuInstance in configs.TESTING_CONFIG.interference_config.cpu.pod_range:
+            #     for (
+            #         memoryInstance
+            #     ) in configs.TESTING_CONFIG.interference_config.mem.pod_range:
                     # Clear all previous interference and generate new interference
-                    DEPLOYER.delete_app()
-                    log.info("Deploying Interference...")
-                    cpuInterGenerator.clearAllInterference()
-                    cpuInterGenerator.generateInterference(cpuInstance, True)
-                    memoryInterGenerator.clearAllInterference()
-                    memoryInterGenerator.generateInterference(memoryInstance, True)
-                    log.info("Deploying Application...")
-                    DEPLOYER.deploy_app(containers)
-                    dataCollector.wait_until_done()
-                    for clientNum in range(1, currentWorkloadConfig.max_clients + 1):
-                        roundStartTime = time.time()
-                        log.info(
-                            f"Repeat {repeat} of {service}: {clientNum} clients, {cpuInstance} CPU interference and {memoryInstance} memory interference"
-                        )
-                        if passedRound != 0:
-                            avgTime = usedTime / passedRound
-                            log.info(
-                                f"Used time: {timeParser(usedTime)}, "
-                                f"Avg. round time: {timeParser(avgTime)}, "
-                                f"Left time estimation: {timeParser(avgTime * (totalRound - passedRound))}"
-                            )
-                        testName = f"[{service}]{repeat}r{clientNum}c[{cpuInstance}u,{memoryInstance}m]"
-                        log.info("Test starts")
-                        # Start generating workload
-                        startTime = int(time.time())
-                        test_data = {
-                            "repeat": repeat,
-                            "start_time": startTime,
-                            "service": service,
-                            "cpu_inter": cpuInstance
-                            * configs.TESTING_CONFIG.interference_config.cpu.cpu_size,
-                            "mem_inter": memoryInstance
-                            * parse_mem(
-                                configs.TESTING_CONFIG.interference_config.mem.mem_size
-                            ),
-                            "target_throughput": clientNum
-                            * currentWorkloadConfig.throughput,
-                            "test_name": testName,
-                        }
-                        workloadGenerator.generateWorkload(testName, clientNum)
-                        # Record test result data
-                        dataCollector.collect_data_async(test_data)
-                        passedRound += 1
-                        usedTime += time.time() - roundStartTime
+            cpuInstance = 0
+            memoryInstance = 0
+                    
+            DEPLOYER.delete_app()
+                    # log.info("Deploying Interference...")
+                    # cpuInterGenerator.clearAllInterference()
+                    # cpuInterGenerator.generateInterference(cpuInstance, True)
+                    # memoryInterGenerator.clearAllInterference()
+                    # memoryInterGenerator.generateInterference(memoryInstance, True)
+            log.info("Deploying Application...")
+            DEPLOYER.deploy_app(containers)
+            dataCollector.wait_until_done()
+            for clientNum in range(1, currentWorkloadConfig.max_clients + 1):
+                roundStartTime = time.time()
+                log.info(
+                    f"Repeat {repeat} of {service}: {clientNum} clients, {cpuInstance} CPU interference and {memoryInstance} memory interference"
+                )
+                if passedRound != 0:
+                    avgTime = usedTime / passedRound
+                    log.info(
+                        f"Used time: {timeParser(usedTime)}, "
+                        f"Avg. round time: {timeParser(avgTime)}, "
+                        f"Left time estimation: {timeParser(avgTime * (totalRound - passedRound))}"
+                    )
+                testName = f"[{service}]{repeat}r{clientNum}c[{cpuInstance}u,{memoryInstance}m]"
+                log.info("Test starts")
+                # Start generating workload
+                startTime = int(time.time())
+                test_data = {
+                    "repeat": repeat,
+                    "start_time": startTime,
+                    "service": service,
+                    "cpu_inter": cpuInstance
+                    * configs.TESTING_CONFIG.interference_config.cpu.cpu_size,
+                    "mem_inter": memoryInstance
+                    * parse_mem(
+                        configs.TESTING_CONFIG.interference_config.mem.mem_size
+                    ),
+                    "target_throughput": clientNum
+                    * currentWorkloadConfig.throughput,
+                    "test_name": testName,
+                }
+                workloadGenerator.generateWorkload(testName, clientNum)
+                # Record test result data
+                dataCollector.collect_data_async(test_data)
+                passedRound += 1
+                usedTime += time.time() - roundStartTime
+                    
     dataCollector.wait_until_done()
 
 
