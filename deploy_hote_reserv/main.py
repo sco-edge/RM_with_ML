@@ -59,7 +59,7 @@ def online_scheduling():
 
 # full_init("social", 30628)
 # full_init("media", 30092)
-# full_init("hotel", 30096)
+full_init("hotel", 30096)
 # ==============================================================================================
 # Initialize application, redeploy all stateless deployments only
 

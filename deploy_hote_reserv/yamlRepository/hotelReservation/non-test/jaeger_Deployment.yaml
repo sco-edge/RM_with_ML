@@ -38,9 +38,14 @@ spec:
                 - k8s-bk-17
                 - k8s-bk-18
       containers:
-      - image: jaegertracing/all-in-one:latest
+      - image: jaegertracing/all-in-one:1.54
         imagePullPolicy: IfNotPresent
         name: hotel-reserv-jaeger
+        args:
+          - --collector.otlp.enabled=true
+          - --collector.zipkin.host-port=:9411
+          - --query.http-server.host-port=:16686
+          - --collector.http-server.host-port=:14268
         ports:
         - containerPort: 14269
         - containerPort: 5778

@@ -26,7 +26,7 @@ spec:
         io.kompose.service: consul
     spec:
       containers:
-      - image: consul:latest
+      - image: consul:1.8.4
         imagePullPolicy: IfNotPresent
         name: consul
         ports:
