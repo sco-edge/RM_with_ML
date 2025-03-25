@@ -8,7 +8,7 @@ from configs import log
 from dataCollector.OfflineProfilingDataCollector import OfflineProfilingDataCollector
 from deployment.deployer import Deployer
 from workloadGenerator.staticWorkload import StaticWorkloadGenerator
-from infGenerator.busyInf import BusyInf
+# from infGenerator.busyInf import BusyInf
 from utils.others import parse_mem
 
 import configs

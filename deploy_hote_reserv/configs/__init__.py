@@ -19,8 +19,8 @@ app = os.environ.get("ERMS_APP", "hotel")
 
 GLOBAL_CONFIG = Box.from_yaml(filename=f"configs/{app}-global.yaml")
 TESTING_CONFIG = Box.from_yaml(filename=f"configs/{app}-testing.yaml")
-FITTING_CONFIG = Box.from_yaml(filename="configs/fitting.yaml")
-SCALING_CONFIG = Box.from_yaml(filename="configs/scaling.yaml")
+# FITTING_CONFIG = Box.from_yaml(filename="configs/fitting.yaml")
+# SCALING_CONFIG = Box.from_yaml(filename="configs/scaling.yaml")
 
 
 class Logger(object):

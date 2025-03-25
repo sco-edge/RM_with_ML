@@ -1,0 +1,20 @@
+<info> <2025/03/25 21:25:52> Real Throughput: 23.025,Target Throughput: 30
+<error> <2025/03/25 21:25:52> Collect trace data failed!
+<info> <2025/03/25 21:29:25> Real Throughput: 23.0,Target Throughput: 30
+<error> <2025/03/25 21:29:25> Collect trace data failed!
+<info> <2025/03/25 21:30:05> Real Throughput: 30.7,Target Throughput: 40
+<error> <2025/03/25 21:30:06> Collect trace data failed!
+<info> <2025/03/25 21:30:45> Real Throughput: 38.375,Target Throughput: 50
+<error> <2025/03/25 21:30:46> Collect trace data failed!
+<info> <2025/03/25 22:21:00> Real Throughput: 23.025,Target Throughput: 30
+<error> <2025/03/25 22:21:00> Collect trace data failed!
+<info> <2025/03/25 22:21:52> Real Throughput: 23.025,Target Throughput: 30
+<error> <2025/03/25 22:21:52> Collect trace data failed!
+<info> <2025/03/25 22:22:46> Real Throughput: 23.0,Target Throughput: 30
+<error> <2025/03/25 22:22:48> Collect trace data failed!
+<info> <2025/03/25 22:23:46> Real Throughput: 46.05,Target Throughput: 60
+<error> <2025/03/25 22:23:47> Collect trace data failed!
+<info> <2025/03/25 22:24:46> Real Throughput: 46.05,Target Throughput: 60
+<error> <2025/03/25 22:24:47> Collect trace data failed!
+<info> <2025/03/25 22:25:44> Real Throughput: 46.05,Target Throughput: 60
+<error> <2025/03/25 22:25:45> Collect trace data failed!
