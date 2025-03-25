@@ -44,3 +44,14 @@ full_init(app, port number 명시) && start_test -> testCollection.py -> hotel-t
 
 hotel-testing.yaml에서 service종류를 명시 ex) Search, Recommendation, Login, Reservation등
 이 각 부하는 wrk2/scripts/hotel-reservation/ 에 있는 각 lua script들로 실행됨
+
+####Issues 
+Issue1: libssl version conflict in wrk2
+
+wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+
+Issue2: Connect refuse for worload
+
+hotel-testing.yaml
+localhost -> 192.168.49.2
