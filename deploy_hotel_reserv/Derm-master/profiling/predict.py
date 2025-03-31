@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import torch.nn.functional as F
 import time
 import os
+from scipy.special import rel_entr
 
 import torch
 import torch.nn as nn
@@ -54,10 +55,10 @@ class LSTMModel(nn.Module):
         return out
 
 
-input_size = 9
+input_size = 6
 hidden_size = 64
 num_layers = 2
-output_size = 4
+output_size = 6
 
 
 model = LSTMModel(input_size, hidden_size, num_layers, output_size)
@@ -109,32 +110,52 @@ def test():
     loss = criterion(test_output, y_test)
     print(test_output)
     print(f"Loss: {float(loss)}")
+    
+    
+
 
 def evaluate():
     model.load_state_dict(torch.load("models/graph_predict.pt"))
+    bin_size=1
     model.eval()
     with torch.no_grad():
         preds = model(x_test)
-        mse = mean_squared_error(y_test.numpy(), preds.numpy())
-        mae = mean_absolute_error(y_test.numpy(), preds.numpy())
-        print(f"\n📊 Evaluation Results:")
-        print(f"✅ MSE (Mean Squared Error): {mse:.6f}")
-        print(f"✅ MAE (Mean Absolute Error): {mae:.6f}")
 
-        # 예시: 첫 번째 테스트 샘플에 대해 예측 vs 실제
-        plt.figure(figsize=(8, 4))
-        plt.plot(preds[0].numpy(), label="Prediction", marker="o")
-        plt.plot(y_test[0].numpy(), label="Ground Truth", marker="x")
-        plt.title("Prediction vs Ground Truth (Sample 0)")
-        plt.xlabel("Output Dimension")
-        plt.ylabel("Value")
-        plt.legend()
-        plt.grid(True)
-        plt.tight_layout()
-        os.makedirs("figures", exist_ok=True)
-        plt.savefig("figures/evaluation_sample0.png")
-        plt.show()
+    kl_divs = []
+    for i in range(len(y_test)):
+        p = preds[i]
+        q = y_test[i]
+        p = torch.clamp(p, min=1e-8)
+        q = torch.clamp(q, min=1e-8)
+        kl = F.kl_div(p.log(), q, reduction='sum').item()
+        kl_divs.append(kl)
 
+    num_bins = len(kl_divs) // bin_size
+    binned_kl = []
+    for i in range(num_bins):
+        start = i * bin_size
+        end = start + bin_size
+        avg_kl = np.mean(kl_divs[start:end])
+        binned_kl.append(avg_kl)
+
+    # Plot
+    plt.figure(figsize=(10, 5))
+    plt.plot(range(num_bins), binned_kl, marker='o', linestyle='-', color='teal')
+    plt.title(f"KL Divergence (every samples)", fontsize=20)
+    plt.xlabel("Sample Index", fontsize=20)
+    plt.ylabel("Average KL Divergence", fontsize=20)
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.tight_layout()
+
+    plt.savefig("figures/evaluation_sample_detailed.png")
+    plt.show()
+
+    print(f"Average KL Divergence: {np.mean(kl_divs):.6f}")
+
+        
+
+
+    
 if __name__ == "__main__":
     import sys
 

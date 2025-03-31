@@ -22,7 +22,7 @@ child_services = [
     "reservation",
 ]
 complex_non_shared = ["geo", "rate", "reservation", "search"]
-simple_non_shared = ["reservation"]
+simple_non_shared = ["recommendation"]
 
 MSData = namedtuple(
     "MSData",

@@ -38,6 +38,8 @@ python3 main.py
 #### Testing
 kubectl create namespace interference(CPU, Memory inteference 발생용 pod가 배포될 namespace)
 
+chmod +x wrk2/wrk    (워크로드 실행 권한 부여)
+
 python3 profiling.py
 
 full_init(app, port number 명시) && start_test -> testCollection.py -> hotel-testing.yaml
@@ -55,3 +57,18 @@ Issue2: Connect refuse for worload
 
 hotel-testing.yaml
 localhost -> 192.168.49.2
+
+Issue3: delete namespace error
+
+kubectl get namespace hotel-reserv -o json > tmp-ns.json
+sed -i '/"kubernetes"/d' tmp-ns.json
+kubectl replace --raw "/api/v1/namespaces/hotel-reserv/finalize" -f ./tmp-ns.json
+
+
+### Derm
+
+#### fitting and learning
+python3 ./AE/scripts/print_ms_info.py  config값 계산(컨테이너수는 직접 pod확인해서 세야 함)
+
+python3 ./Derm-master/profiling/curve_cdf.py (서비스 별 fitting에 필요한 파라미터 계산)
+

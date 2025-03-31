@@ -1,3 +1,7 @@
-.vagrant/
-vagrant_2.4.0-1_amd64.deb
-bfg.jar
+/deploy_hotel_reserv/ksh
+/deploy_hotel_reserv/AE/data
+/deploy_hotel_reserv/tmp
+/deploy_hotel_reserv/tmp-ns.json
+/deploy_hotel_reserv/Derm-master/__pycache__/
+/deploy_hotel_reserv/Derm-master/*.png
+/deploy_hotel_reserv/Derm-master/*.pt

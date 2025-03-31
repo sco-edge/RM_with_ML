@@ -26,14 +26,14 @@ class LineFit:
         self.ms_list = ms_list
         self.graph_ratio = [graph_ratio] * len(self.ms_list)
         self.chain = chain
-        self.ms = np.arange(12).tolist()
+        self.ms = np.arange(7).tolist()
         self.invoke_times = invoke_times
 
     def line_f(self, x, a, b):
         return a * x + b
 
     def line_params(self, service):
-        data = pd.read_csv(f"data/{service}.csv")
+        data = pd.read_csv(f"data/hotel-reserv/{service}.csv")
         x = np.array(data["workloadPerPod"])
         fit_y = np.array(data["fit_pars"])
         ml_y = np.array(data["ml_pars"])
