@@ -154,3 +154,15 @@
 <error> <2025/03/27 15:41:21> Collect trace data failed!
 <info> <2025/03/27 15:42:48> Dummy Throughput Used: 60,Target Throughput: 60
 <error> <2025/03/27 15:42:52> Collect trace data failed!
+<info> <2025/03/28 00:49:16> Dummy Throughput Used: 30,Target Throughput: 30
+<error> <2025/03/28 00:49:20> Collect trace data failed!
+<info> <2025/03/28 00:50:48> Dummy Throughput Used: 30,Target Throughput: 30
+<error> <2025/03/28 00:50:52> Collect trace data failed!
+<info> <2025/03/28 00:52:19> Dummy Throughput Used: 30,Target Throughput: 30
+<error> <2025/03/28 00:52:23> Collect trace data failed!
+<info> <2025/03/28 00:53:51> Dummy Throughput Used: 60,Target Throughput: 60
+<error> <2025/03/28 00:53:55> Collect trace data failed!
+<info> <2025/03/28 00:55:23> Dummy Throughput Used: 60,Target Throughput: 60
+<error> <2025/03/28 00:55:27> Collect trace data failed!
+<info> <2025/03/28 00:56:55> Dummy Throughput Used: 60,Target Throughput: 60
+<error> <2025/03/28 00:56:58> Collect trace data failed!

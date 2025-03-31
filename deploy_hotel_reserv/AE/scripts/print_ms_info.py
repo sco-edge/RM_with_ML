@@ -104,7 +104,7 @@ ms_dict = {}
 for ms in all_services:
     simple_invokes = svc_stats[ms]["simple"]
     complex_invokes = svc_stats[ms]["complex"]
-    num_simple = trace_counts["simple"].get(ms, 1)  # 0 방지용 default 1
+    num_simple = trace_counts["simple"].get(ms, 1)  
     num_complex = trace_counts["complex"].get(ms, 1)
     
     avg_simple = simple_invokes / num_simple

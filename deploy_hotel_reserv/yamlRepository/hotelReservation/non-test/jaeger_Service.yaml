@@ -38,6 +38,9 @@ spec:
     port: 6832
     protocol: UDP
     targetPort: 6832
+  - name: '14250'
+    port: 14250
+    targetPort: 14250
   selector:
     io.kompose.service: jaeger
   type: NodePort
