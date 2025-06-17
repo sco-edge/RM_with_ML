@@ -38,8 +38,5 @@ spec:
             cpu: 1000m
           requests:
             cpu: 100m
-        env:
-        - name: MONGO_URL
-          value: mongodb-rate:27017
       restartPolicy: Always
 status: {}
