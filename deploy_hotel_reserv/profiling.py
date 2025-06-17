@@ -1,4 +1,4 @@
-from testing.testCollection import full_init, start_test
+from testing.testCollection_once import full_init, start_test
 from configs import app
 
 ports = {"social": 30628, "media": 30092, "hotel": 0}
