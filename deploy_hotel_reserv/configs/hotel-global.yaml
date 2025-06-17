@@ -4,11 +4,15 @@ yaml_repo_path: yamlRepository/hotelReservation
 namespace: hotel-reserv
 app_img: nicklin9907/erms:hotelreservation-1.0
 nodes_for_test:
-- minikube
+- masternode
+- node6
+- node7
 
 prometheus_host: http://192.168.49.2:30090
 nodes_for_infra:
-- minikube
+- masternode
+- node6
+- node7
 pod_spec:
   cpu_size: 0.1
   mem_size: 200Mi
