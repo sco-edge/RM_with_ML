@@ -44,6 +44,7 @@ spec:
         name: hotel-reserv-profile-mongo
         ports:
         - containerPort: 27017
+        command: ["mongod", "--bind_ip_all"]     
         resources:
           limits:
             cpu: 1000m

@@ -5,4 +5,5 @@ nodeAffinity:
       - key: kubernetes.io/hostname
         operator: In
         values: 
-        - minikube
+        - node6
+        - node7
