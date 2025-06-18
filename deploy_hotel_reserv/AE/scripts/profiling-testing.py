@@ -94,9 +94,9 @@ if __name__ == "__main__":
     else:
         service = [service]
     jaeger_host = {
-        "hotel-reserv": "http://192.168.49.2:30095",
-        "sociel-network": "http://192.168.49.2:30094",
-        "media-microsvc": "http://192.168.49.2:30093",
+        "hotel-reserv": "http://10.0.1.106:30095",
+        "sociel-network": "http://10.0.1.106:30094",
+        "media-microsvc": "http://10.0.1.106:30093",
     }[app]
     entry_point = {
         "hotel-reserv": "frontend",
@@ -104,7 +104,7 @@ if __name__ == "__main__":
         "media-microsvc": "nginx",
     }[app]
     nodes_for_test = [
-        "minikube",
+        "node6", "node7"
     ]
     yaml_repo = {
         "hotel-reserv": "yamlRepository/hotelReservation",
@@ -187,9 +187,9 @@ if __name__ == "__main__":
         },
     }[app]
     url = {
-        "hotel-reserv": "http://192.168.49.2:30096",
-        "social-network": "http://192.168.49.2:30628",
-        "media-microsvc": "http://192.168.49.2:30092",
+        "hotel-reserv": "http://10.0.1.106:30096",
+        "social-network": "http://10.0.1.106:30628",
+        "media-microsvc": "http://10.0.1.106:30092",
     }[app]
     DEPLOYER = Deployer(namespace, 0.1, "100Mi", nodes_for_test, yaml_repo, app_img)
 
@@ -208,7 +208,7 @@ if __name__ == "__main__":
         namespace,
         jaeger_host,
         entry_point,
-        "http://192.168.49.2:30090",
+        "http://10.0.1.106:30090",
         nodes_for_test,
         data_path,
         duration=80,

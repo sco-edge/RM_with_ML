@@ -11,7 +11,7 @@ end
 local function user_login()
   local user_name, password = get_user()
   local method = "GET"
-  local path = "http://localhost:5000/user?username=" .. user_name .. "&password=" .. password
+  local path = "http://10.0.1.106:30096/user?username=" .. user_name .. "&password=" .. password
   local headers = {}
   -- headers["Content-Type"] = "application/x-www-form-urlencoded"
   return wrk.format(method, path, headers, nil)

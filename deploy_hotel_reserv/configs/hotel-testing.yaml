@@ -23,30 +23,30 @@ workload_config:
       connection_num: 1
       throughput: 5
       script_path: wrk2/scripts/hotel-reservation/reserve.lua
-      url: http://192.168.49.2:30096
+      url: http://10.0.1.106:30096
     Recommendation:
       max_clients: 10
       thread_num: 2
       connection_num: 4
       throughput: 10
       script_path: wrk2/scripts/hotel-reservation/recommendation.lua
-      url: http://192.168.49.2:30096
+      url: http://10.0.1.106:30096
     Search:
       max_clients: 10
       thread_num: 1
       connection_num: 2
       throughput: 5
       script_path: wrk2/scripts/hotel-reservation/search.lua
-      url: http://192.168.49.2:30096
+      url: http://10.0.1.106:30096
     Login:
       max_clients: 20
       thread_num: 2
       connection_num: 4
       throughput: 8
       script_path: wrk2/scripts/hotel-reservation/login.lua
-      url: http://192.168.49.2:30096
+      url: http://10.0.1.106:30096
 collector_config:
-  jaeger_host: http://192.168.49.2:30095
+  jaeger_host: http://10.0.1.106:30095
   entry_point: frontend
   max_traces: 100000
   monitor_interval: 1

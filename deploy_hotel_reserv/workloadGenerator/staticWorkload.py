@@ -28,7 +28,7 @@ class StaticWorkloadGenerator:
             testName (str): A unique test name, will be used as the folder name to store result
             clientNum (int): Number of concurrent clients sending requests
         """
-        workload = f"{self.wrkPath} {self.args} {self.url} &"
+        workload = f"{self.wrkPath} {self.args} {self.url}"
         resultPath = f"tmp/wrkResult"
 
         if not os.path.isdir(resultPath):
