@@ -162,7 +162,9 @@ def start_test(continues=False):
                     * currentWorkloadConfig.throughput,
                     "test_name": testName,
                 }
+                print("start")
                 workloadGenerator.generateWorkload(testName, clientNum)
+                print("end")
                 # Record test result data
                 dataCollector.collect_data_async(test_data)
                 passedRound += 1

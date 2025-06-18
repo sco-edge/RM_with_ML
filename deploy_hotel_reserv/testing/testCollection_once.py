@@ -84,13 +84,11 @@ def start_test(continues=False):
         duration=configs.TESTING_CONFIG.duration,
     )
 
-    log.info("Deploying Application Once (No Interference)...")
-    for service in configs.TESTING_CONFIG.services:
-        containers = configs.GLOBAL_CONFIG.replicas[service]
-        DEPLOYER.deploy_app(containers)
+    # log.info("Deploying Application Once (No Interference)...")
+    # for service in configs.TESTING_CONFIG.services:
+    #     containers = configs.GLOBAL_CONFIG.replicas[service]
+    #     DEPLOYER.deploy_app(containers)
     
-    dataCollector.wait_until_done()
-
     totalRound = (
         len(configs.TESTING_CONFIG.repeats)
         * sum(

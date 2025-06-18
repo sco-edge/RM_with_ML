@@ -38,7 +38,7 @@ class OfflineProfilingDataCollector:
         Args:
             namespace (str): Namespace
             duration (int): Duration of each round of test
-            jaegerHost (str): Address to access jaeger, e.g. http://192.168.49.2:16686
+            jaegerHost (str): Address to access jaeger, e.g. http://10.0.1.106:16686
             entryPoint (str): The entry point service of the test
             prometheusHost (str): Address to access Prometheus, similar to jaegerHost
             mointorInterval (str): Prometheus monitor interval
@@ -315,6 +315,8 @@ class OfflineProfilingDataCollector:
             complex_df.to_csv(os.path.join(complex_path, "raw_data.csv"), index=False)
 
         print(f"[✓] 분리 저장됨 → simple: {len(simple_df)} rows, complex: {len(complex_df)} rows")
+
+        return True, merged_df, None
 
         # **NEW**: Ensure the output directory exists for the given throughput, epoch, and graph type
         
