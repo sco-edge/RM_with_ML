@@ -1,11 +1,21 @@
 parentMS,childMS,parentOperation,childOperation,tag,service
-frontend,frontend,HTTP GET /hotels,/search.Search/Nearby,1,Search
-frontend,search,/search.Search/Nearby,/search.Search/Nearby,1.1,Search
-search,search,/search.Search/Nearby,/geo.Geo/Nearby,1.1.1,Search
-search,geo,/geo.Geo/Nearby,/geo.Geo/Nearby,1.1.1.1,Search
-search,search,/search.Search/Nearby,/rate.Rate/GetRates,1.1.2,Search
-search,rate,/rate.Rate/GetRates,/rate.Rate/GetRates,1.1.2.1,Search
-frontend,frontend,HTTP GET /hotels,/reservation.Reservation/CheckAvailability,2,Search
-frontend,reservation,/reservation.Reservation/CheckAvailability,/reservation.Reservation/CheckAvailability,2.1,Search
-frontend,frontend,HTTP GET /hotels,/profile.Profile/GetProfiles,3,Search
-frontend,profile,/profile.Profile/GetProfiles,/profile.Profile/GetProfiles,3.1,Search
+frontend,frontend,HTTP GET /hotels,/reservation.Reservation/CheckAvailability,1,Search
+frontend,reservation,/reservation.Reservation/CheckAvailability,/reservation.Reservation/CheckAvailability,1.1,Search
+frontend,frontend,HTTP GET /hotels,/profile.Profile/GetProfiles,2,Search
+frontend,profile,/profile.Profile/GetProfiles,/profile.Profile/GetProfiles,2.1,Search
+frontend,frontend,HTTP GET /hotels,/search.Search/Nearby,3,Search
+frontend,search,/search.Search/Nearby,/search.Search/Nearby,3.1,Search
+search,search,/search.Search/Nearby,/geo.Geo/Nearby,3.1.1,Search
+search,geo,/geo.Geo/Nearby,/geo.Geo/Nearby,3.1.1.1,Search
+search,search,/search.Search/Nearby,/rate.Rate/GetRates,3.1.2,Search
+search,rate,/rate.Rate/GetRates,/rate.Rate/GetRates,3.1.2.1,Search
+frontend,frontend,HTTP GET /hotels,/search.Search/Nearby,1,Recommendation
+frontend,search,/search.Search/Nearby,/search.Search/Nearby,1.1,Recommendation
+search,search,/search.Search/Nearby,/geo.Geo/Nearby,1.1.1,Recommendation
+search,geo,/geo.Geo/Nearby,/geo.Geo/Nearby,1.1.1.1,Recommendation
+search,search,/search.Search/Nearby,/rate.Rate/GetRates,1.1.2,Recommendation
+search,rate,/rate.Rate/GetRates,/rate.Rate/GetRates,1.1.2.1,Recommendation
+frontend,frontend,HTTP GET /hotels,/reservation.Reservation/CheckAvailability,2,Recommendation
+frontend,reservation,/reservation.Reservation/CheckAvailability,/reservation.Reservation/CheckAvailability,2.1,Recommendation
+frontend,frontend,HTTP GET /hotels,/profile.Profile/GetProfiles,3,Recommendation
+frontend,profile,/profile.Profile/GetProfiles,/profile.Profile/GetProfiles,3.1,Recommendation

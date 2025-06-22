@@ -369,3 +369,15 @@
 <error> <2025/06/18 16:43:54> Collect trace data failed!
 <info> <2025/06/18 16:44:24> Dummy Throughput Used: 40,Target Throughput: 40
 <error> <2025/06/18 16:44:24> Collect trace data failed!
+<info> <2025/06/18 18:00:05> Dummy Throughput Used: 100,Target Throughput: 100
+<info> <2025/06/18 18:00:35> Dummy Throughput Used: 200,Target Throughput: 200
+<info> <2025/06/18 18:01:05> Dummy Throughput Used: 300,Target Throughput: 300
+<error> <2025/06/18 18:02:33> Fetch CPU usage data failed!
+<info> <2025/06/18 18:02:33> Dummy Throughput Used: 100,Target Throughput: 100
+<error> <2025/06/18 18:02:57> Fetch CPU usage data failed!
+<info> <2025/06/18 18:02:57> Dummy Throughput Used: 200,Target Throughput: 200
+<error> <2025/06/18 18:03:26> Fetch CPU usage data failed!
+<info> <2025/06/18 18:03:26> Dummy Throughput Used: 300,Target Throughput: 300
+<error> <2025/06/18 18:05:12> Fetch CPU usage data failed!
+<error> <2025/06/18 18:05:33> Fetch CPU usage data failed!
+<error> <2025/06/18 18:05:57> Fetch CPU usage data failed!

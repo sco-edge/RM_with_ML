@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("data/trace.csv")
+df = pd.read_csv("data/CallGraph/CallGraph_0.csv", on_bad_lines='skip')
 
-df['traceTime'] = df['traceTime'] // 1000
+
 
 graph_structures = {}
 graph_class_mapping = {}

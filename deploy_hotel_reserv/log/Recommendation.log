@@ -36,3 +36,6 @@
 <error> <2025/03/26 11:21:37> Collect trace data failed!
 <info> <2025/03/26 11:27:54> Real Throughput: 23.025,Target Throughput: 30
 <error> <2025/03/26 11:27:54> Collect trace data failed!
+<info> <2025/06/18 18:05:12> Dummy Throughput Used: 100,Target Throughput: 100
+<info> <2025/06/18 19:29:10> Dummy Throughput Used: 200,Target Throughput: 200
+<info> <2025/06/18 19:29:10> Dummy Throughput Used: 300,Target Throughput: 300
