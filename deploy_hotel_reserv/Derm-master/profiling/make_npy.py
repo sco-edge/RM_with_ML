@@ -15,6 +15,7 @@ arg_class_counter = 0
 trace_info_list = []
 trace_time_list = []
 
+df['traceTime'] = df.groupby('traceId')['timestamp'].transform('min') // 1000
 grouped = df.groupby("traceId")
 
 for trace_id, group in grouped:
@@ -116,8 +117,8 @@ all_input_array = np.array(inputs)
 all_target_array = np.array(targets)  
 
 # save
-np.save("data/graph_predict/all_input.npy", all_input_array)
-np.save("data/graph_predict/all_target.npy", all_target_array)
+np.save("data/graph_predict/all_input_Alibaba.npy", all_input_array)
+np.save("data/graph_predict/all_target_Alibaba.npy", all_target_array)
 
 print("all_input.npy shape:", all_input_array.shape)
 print("all_target.npy shape:", all_target_array.shape)
