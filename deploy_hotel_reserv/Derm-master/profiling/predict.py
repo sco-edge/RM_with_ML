@@ -55,10 +55,22 @@ class LSTMModel(nn.Module):
         return out
 
 
-input_size = 6
+input_data = np.load("data/graph_predict/all_input_hotel_reserv.npy")
+target_data = np.load("data/graph_predict/all_target_hotel_reserv.npy")
+
+target_data = target_data[:, 0, :]
+
+epsilon = 1e-8
+target_data += epsilon
+target_data = target_data / target_data.sum(axis=1, keepdims=True)
+
+input_size = input_data.shape[2]
+output_size = target_data.shape[1]
+
 hidden_size = 64
 num_layers = 2
-output_size = 6
+
+
 
 
 model = LSTMModel(input_size, hidden_size, num_layers, output_size)
@@ -68,9 +80,7 @@ criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
-input_data = np.load("data/graph_predict/all_input.npy")
-target_data = np.load("data/graph_predict/all_target.npy")
-target_data = target_data[:, 0, :]
+
 
 x_train, x_test, y_train, y_test = train_test_split(
     input_data, target_data, test_size=0.1
@@ -92,7 +102,6 @@ def train():
 
             outputs = model(inputs)
             loss = criterion(outputs, targets)
-
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -100,22 +109,56 @@ def train():
         
         print(f"Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}")
 
+    print("outputs.shape:", outputs.shape)
+    print("targets.shape:", targets.shape)
+    print("outputs[0]:", outputs[0])
+    print("targets[0]:", targets[0])
     os.system("mkdir -p models")
     torch.save(model.state_dict(), "models/graph_predict.pt")
 
 
-def test():
-    model.load_state_dict(torch.load("models/graph_predict.pt"))
-    test_output = model(x_test)
-    loss = criterion(test_output, y_test)
-    print(test_output)
-    print(f"Loss: {float(loss)}")
+# def test():
+#     model.load_state_dict(torch.load("models/graph_predict_Alibaba.pt"))
+#     test_output = model(x_test)
+#     loss = criterion(test_output, y_test)
+#     print(test_output)
+#     print(f"Loss: {float(loss)}")
     
+def test():
+    model.load_state_dict(torch.load("models/graph_predict_Alibaba.pt"))
+    model.eval()
+    with torch.no_grad():
+        test_output = model(x_test)  # log_softmax output
+        loss = criterion(test_output, y_test)
+        
+        print(f"Loss: {float(loss):.4f}")
+
+        # log_softmax → softmax로 복원
+        # probs = test_output.exp()  # shape: [num_samples, output_dim]
+        probs = test_output
+        # 예측 클래스와 실제 클래스 인덱스 (argmax 기준)
+        pred_indices = torch.argmax(probs, dim=1)
+        true_indices = torch.argmax(y_test, dim=1)
+
+        # 정확도 계산
+        correct = (pred_indices == true_indices).sum().item()
+        total = y_test.size(0)
+        accuracy = correct / total * 100
+
+        print(f"Accuracy: {accuracy:.2f}%")
+        
+        # 첫 샘플의 예측 분포와 실제 분포 비교 출력
+        print("\n[Sample 0 Prediction vs Target]")
+        print(f"Predicted index: {pred_indices[0].item()}, True index: {true_indices[0].item()}")
+        print(f"Predicted prob (top): {probs[0][pred_indices[0]].item():.4f}")
+        print(f"Target prob (top): {y_test[0][true_indices[0]].item():.4f}")
+        print(f"Predicted distribution (first 10): {probs[0][:10].numpy()}")
+        print(f"Target distribution (first 10):    {y_test[0][:10].numpy()}")
     
 
 
 def evaluate():
-    model.load_state_dict(torch.load("models/graph_predict.pt"))
+    model.load_state_dict(torch.load("models/graph_predict_Alibaba.pt"))
     bin_size=1
     model.eval()
     with torch.no_grad():
