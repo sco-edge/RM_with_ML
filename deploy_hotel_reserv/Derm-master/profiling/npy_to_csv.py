@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-input_npy_path = "data/graph_predict/all_input.npy"
-target_npy_path = "data/graph_predict/all_target.npy"
+input_npy_path = "data/graph_predict/all_input_train_ticket.npy"
+target_npy_path = "data/graph_predict/all_target_train_ticket.npy"
 
 input_array = np.load(input_npy_path)
 target_array = np.load(target_npy_path)

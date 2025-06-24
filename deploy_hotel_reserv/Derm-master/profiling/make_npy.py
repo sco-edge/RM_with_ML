@@ -1,7 +1,18 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("data/CallGraph/CallGraph_0.csv", on_bad_lines='skip')
+df = pd.read_csv("balanced_subset.csv", on_bad_lines='skip')
+
+def normalize_service_name(service: str) -> str:
+    if not isinstance(service, str):
+        return "unknown"
+    service = service.split("@")[0].split(":")[0]
+    return service.split("_POD_")[0]
+
+def normalize_arg(arg: str) -> str:
+    if not isinstance(arg, str):
+        return "unknown"
+    return arg.split(":")[0].upper()  
 
 
 
@@ -15,16 +26,16 @@ arg_class_counter = 0
 trace_info_list = []
 trace_time_list = []
 
-df['traceTime'] = df.groupby('traceId')['timestamp'].transform('min') // 1000
+df['traceTime'] = df.groupby('traceId')['traceTime'].transform('min') // 1000
 grouped = df.groupby("traceId")
 
 for trace_id, group in grouped:
     edges = set()
     for _, row in group.iterrows():
-        parentMS = 'parentMS'  
-        childMS = 'childMS'    
-        edges.add((row[parentMS], row[childMS]))
-    edge_key = tuple(sorted(edges))
+        parentMS = normalize_service_name(row['parentMS'])  
+        childMS = normalize_service_name(row['childMS'])    
+        edges.add((parentMS, childMS))
+    edge_key = tuple(sorted((str(src), str(dst)) for src, dst in edges))
     
     if edge_key not in graph_class_mapping:
         graph_class_mapping[edge_key] = graph_class_counter
@@ -39,6 +50,8 @@ for trace_id, group in grouped:
         arg_value = root_rows.iloc[0]["parentOperation"]
     else:
         arg_value = group.iloc[0]["parentOperation"]  # 대체값
+    
+    arg_value = normalize_arg(arg_value)
     
     if arg_value not in arg_class_mapping:
         arg_class_mapping[arg_value] = arg_class_counter
@@ -87,38 +100,55 @@ for i in range(total_windows):
 max_load = max(load_counts) if max(load_counts) > 0 else 1
 load_counts = [x / max_load for x in load_counts]
 
+arg_array = np.array(arg_dist_list)           
+graph_array = np.array(graph_dist_list)       
+load_array = np.array(load_counts).reshape(-1, 1)  
+
+full_vector = np.concatenate([arg_array, graph_array, load_array], axis=1)  # shape: (T, A+G+1)
 
 l = 5
-inputs = []
-targets = []
+input_seqs = []
+target_seqs = []
 
-for t in range(0, total_windows -2*l+1, l):
-    input_seq = []
-    target_seq = []
+# for t in range(0, total_windows -2*l+1, l):
+#     input_seq = []
+#     target_seq = []
 
-    for j in range(t, t + l):
-        vec = arg_dist_list[j] + graph_dist_list[j] + [load_counts[j]]
-        input_seq.append(vec)
+#     for j in range(t, t + l):
+#         vec = arg_dist_list[j] + graph_dist_list[j] + [load_counts[j]]
+#         input_seq.append(vec)
         
-    if t <= total_windows - 2 :
-        for j in range(t + l, t + l+2):
-            vec = arg_dist_list[j] + graph_dist_list[j] + [load_counts[j]]
-            target_seq.append(vec)
-    else:
-        #padding
-        last_vec = input_seq[-1]
-        target_seq = [last_vec] * l
+#     if t +l < total_windows:
+#         vec = arg_dist_list[t + l] + graph_dist_list[t + l] + [load_counts[t + l]]
+#         target_seq.append(vec)
+#     else:
+#         #padding
+#         last_vec = input_seq[-1]
+#         target_seq = [last_vec] * l
         
     
 
-    inputs.append(input_seq)
-    targets.append(target_seq)
-all_input_array = np.array(inputs)  
-all_target_array = np.array(targets)  
+#     inputs.append(input_seq)
+#     targets.append(target_seq)
+# all_input_array = np.array(inputs)  
+# all_target_array = np.array(targets)  
+for t in range(0, total_windows - 2*l + 1, l):
+    input_seq = full_vector[t : t + l]                     # shape: (l, D)
+    target = full_vector[t + l].reshape(1,-1)                     # 6번째 예측
 
+    input_seqs.append(input_seq)
+    target_seqs.append(target)
+
+    if t % 1000 == 0:
+        print(f"[INFO] Processed window {t}/{total_windows}")
+
+input_array = np.stack(input_seqs)         # shape: (N, l, D)
+target_array = np.stack(target_seqs)       # shape: (N, D)
+
+print(f"[DONE] Final shape - input: {input_array.shape}, target: {target_array.shape}")
 # save
-np.save("data/graph_predict/all_input_Alibaba.npy", all_input_array)
-np.save("data/graph_predict/all_target_Alibaba.npy", all_target_array)
+np.save("data/graph_predict/all_input_train_ticket.npy", input_array)
+np.save("data/graph_predict/all_target_train_ticket.npy", target_array)
 
-print("all_input.npy shape:", all_input_array.shape)
-print("all_target.npy shape:", all_target_array.shape)
+print("all_input.npy shape:", input_array.shape)
+print("all_target.npy shape:", target_array.shape)
