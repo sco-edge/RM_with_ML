@@ -51,12 +51,13 @@ class LSTMModel(nn.Module):
         out, _ = self.lstm(x, (h0, c0))
         context = self.attention(out)
         out = self.fc(context)
-        out = F.softmax(out, dim=1)
+        out = F.log_softmax(out, dim=1)
         return out
 
 
-input_data = np.load("data/graph_predict/all_input_hotel_reserv.npy")
-target_data = np.load("data/graph_predict/all_target_hotel_reserv.npy")
+
+input_data = np.load("data/graph_predict/all_input_Alibaba.npy")
+target_data = np.load("data/graph_predict/all_target_Alibaba.npy")
 
 target_data = target_data[:, 0, :]
 
@@ -67,8 +68,9 @@ target_data = target_data / target_data.sum(axis=1, keepdims=True)
 input_size = input_data.shape[2]
 output_size = target_data.shape[1]
 
-hidden_size = 64
-num_layers = 2
+hidden_size = 1024
+num_layers = 3
+
 
 
 
@@ -76,7 +78,7 @@ num_layers = 2
 model = LSTMModel(input_size, hidden_size, num_layers, output_size)
 
 
-criterion = nn.MSELoss()
+criterion = nn.KLDivLoss(reduction='batchmean')
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
@@ -125,7 +127,7 @@ def train():
 #     print(f"Loss: {float(loss)}")
     
 def test():
-    model.load_state_dict(torch.load("models/graph_predict_Alibaba.pt"))
+    model.load_state_dict(torch.load("models/graph_predict.pt"))
     model.eval()
     with torch.no_grad():
         test_output = model(x_test)  # log_softmax output
@@ -156,9 +158,62 @@ def test():
         print(f"Target distribution (first 10):    {y_test[0][:10].numpy()}")
     
 
+def detect_ood_with_softmax_thresholding(model, input_path, target_path, threshold=0.5, output_dir="output"):
+    
 
+    model.load_state_dict(torch.load("models/graph_predict.pt"))
+    model.eval()
+
+    x_test = np.load(input_path)
+    y_test = np.load(target_path)
+    x_test = torch.tensor(x_test, dtype=torch.float32)
+    y_test = torch.tensor(y_test, dtype=torch.float32)
+
+    
+
+    with torch.no_grad():
+        log_probs = model(x_test)  # log_softmax output
+        probs = log_probs.exp()    # softmax로 변환
+        max_scores = torch.max(probs, dim=1).values
+        pred_classes = torch.argmax(probs, dim=1)
+        true_classes = torch.argmax(y_test, dim=1)
+
+    ood_flags = (max_scores < threshold)
+    num_ood = ood_flags.sum().item()
+    total = x_test.size(0)
+
+    print(f"\n[Softmax Score Thresholding OOD Detection]")
+    print(f"Threshold: {threshold}")
+    print(f"OOD Detected: {num_ood} / {total} ({(num_ood / total) * 100:.2f}%)")
+
+    import os
+    os.makedirs(output_dir, exist_ok=True)
+    plt.figure(figsize=(10, 5))
+    plt.hist(max_scores[~ood_flags].cpu().numpy(), bins=50, alpha=0.6, label='In-Distribution')
+    plt.hist(max_scores[ood_flags].cpu().numpy(), bins=50, alpha=0.6, label='OOD')
+    plt.axvline(threshold, color='red', linestyle='--', label='Threshold')
+    plt.title("Softmax Score Distribution (Derm OOD Detection)")
+    plt.xlabel("Max Softmax Score")
+    plt.ylabel("Sample Count")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    fig_path = os.path.join(output_dir, "softmax_score_distribution.png")
+    plt.savefig(fig_path)
+    plt.show()
+    print(f"Softmax score histogram saved to: {fig_path}")
+
+    # 샘플 출력
+    print("\n[Sample Predictions]")
+    for i in range(min(10, total)):
+        print(f"Sample {i}:")
+        print(f"  Max Softmax Score: {max_scores[i].item():.4f}")
+        print(f"  Predicted Class: {pred_classes[i].item()}")
+        print(f"  True Class: {true_classes[i].item() if true_classes[i].numel() == 1 else true_classes[i]}")   
+        print(f"  OOD: {'O'if ood_flags[i].item() else 'x'}")    
+        
 def evaluate():
-    model.load_state_dict(torch.load("models/graph_predict_Alibaba.pt"))
+    model.load_state_dict(torch.load("models/graph_predict.pt"))
     bin_size=1
     model.eval()
     with torch.no_grad():
@@ -212,3 +267,16 @@ if __name__ == "__main__":
         test()
     if module == "evaluate":
         evaluate()
+    if module == "ood":
+        input_path = "data/graph_predict/all_input_Alibaba.npy"
+        target_path = "data/graph_predict/all_target_Alibaba.npy"
+
+        model = LSTMModel(input_size, hidden_size, num_layers, output_size)
+
+        detect_ood_with_softmax_thresholding(
+            model=model,
+            input_path=input_path,
+            target_path=target_path,
+            threshold=0.5,
+            output_dir="figures"
+        )
