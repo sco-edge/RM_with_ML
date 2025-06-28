@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 from collections import defaultdict, deque
-from networkx.drawing.nx_pydot import graphviz_layout
 import os
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -27,37 +26,7 @@ grouped = df.groupby("traceid")
 
 
 
-# 시각화 저장 디렉토리
-os.makedirs("graph_visualizations", exist_ok=True)
 
-# 시각화용 함수 정의
-def visualize_graph_class(graph_class_mapping):
-    for idx, (signature, class_id) in enumerate(graph_class_mapping.items()):
-        size = int(len(signature) ** 0.5)
-        adj = np.array(signature).reshape(size, size)
-
-        nodes = [f"N{i}" for i in range(size)]
-        G = nx.DiGraph()
-        G.add_nodes_from(nodes)
-
-        for i in range(size):
-            for j in range(size):
-                if adj[i][j] == 1:
-                    G.add_edge(nodes[i], nodes[j])
-
-        try:
-            pos = graphviz_layout(G, prog="dot")
-        except:
-            pos = nx.spring_layout(G, seed=42)  # fallback
-
-        plt.figure(figsize=(10, 6))
-        nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='gray', node_size=1200, font_size=10, arrows=True)
-        plt.title(f"Graph Class {class_id}")
-        plt.tight_layout()
-        save_path = f"graph_visualizations/graph_class_{class_id}.png"
-        plt.savefig(save_path)
-        plt.close()
-        print(f"[✓] Saved (tree layout): {save_path}",flush=True)
 
 
 
@@ -75,10 +44,7 @@ def graph_signature(G):
 
 # main loop
 for trace_id, group in tqdm(grouped, desc="Processing traces", total=len(grouped)):
-    
 
-    
-    
     G = nx.DiGraph()
     for _, row in group.iterrows():
         G.add_edge(row['um'], row['dm'])
@@ -96,10 +62,6 @@ for trace_id, group in tqdm(grouped, desc="Processing traces", total=len(grouped
         print(f" -> Edges: {list(G.edges())}",flush=True)
         print(f" -> Nodes: {list(G.nodes())}",flush=True)
         
-
-  
-
-    
     root_rows = group[~group['uminstanceid'].isin(group['dminstanceid'])]
 
 
@@ -120,7 +82,10 @@ for trace_id, group in tqdm(grouped, desc="Processing traces", total=len(grouped
     trace_info_list.append((graph_class_id, arg_class_id))
 
 # 시간 윈도우 설정
-window_s = 10
+window_s = 60
+zipped = sorted(zip(trace_info_list, trace_time_list), key=lambda x: x[1])
+trace_info_list, trace_time_list = zip(*zipped)
+
 start_time = min(trace_time_list)
 end_time = max(trace_time_list)
 total_windows = int((end_time - start_time) / window_s) + 1
