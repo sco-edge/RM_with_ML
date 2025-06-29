@@ -7,8 +7,8 @@ prepare_dir() {
 # $3 = start_hour, $4 = end_hour
 fetch_data() {
     # NodeMetrics만!
-    file_prefix="data/NodeMetrics/NodeMetrics"
-    remote_prefix="NodeMetricsUpdate/NodeMetricsUpdate"
+    file_prefix="data/MSRTMCR/MSRTMCR"
+    remote_prefix="MCRRTUpdate/MCRRTUpdate"
     ratio=720  # 12시간 단위
 
     start_min=$(($1 * 24 * 60 + $3 * 60))
