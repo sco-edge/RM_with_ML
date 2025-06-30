@@ -51,13 +51,13 @@ class LSTMModel(nn.Module):
         out, _ = self.lstm(x, (h0, c0))
         context = self.attention(out)
         out = self.fc(context)
-        out = F.log_softmax(out, dim=1)
+        out = F.softmax(out, dim=1)
         return out
 
 
 
-input_data = np.load("data/graph_predict/all_input_Alibaba.npy")
-target_data = np.load("data/graph_predict/all_target_Alibaba.npy")
+input_data = np.load("data/graph_predict/all_input_Alibaba_filtered.npy")
+target_data = np.load("data/graph_predict/all_target_Alibaba_filtered.npy")
 
 target_data = target_data[:, 0, :]
 
@@ -68,7 +68,7 @@ target_data = target_data / target_data.sum(axis=1, keepdims=True)
 input_size = input_data.shape[2]
 output_size = target_data.shape[1]
 
-hidden_size = 1024
+hidden_size = 256
 num_layers = 3
 
 
@@ -78,7 +78,7 @@ num_layers = 3
 model = LSTMModel(input_size, hidden_size, num_layers, output_size)
 
 
-criterion = nn.KLDivLoss(reduction='batchmean')
+criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
@@ -96,6 +96,22 @@ y_test = torch.from_numpy(y_test.astype(np.float32))
 dataset = torch.utils.data.TensorDataset(x_train, y_train)
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=100, shuffle=True)
 
+
+bias_input = np.load("ood_shift/cov_input_bias.npy")   
+bias_target = np.load("ood_shift/cov_target_bias.npy") 
+
+bias_target = bias_target[:, 0, :]
+
+x_bias_test = torch.from_numpy(bias_input.astype(np.float32))
+y_bias_test = torch.from_numpy(bias_target.astype(np.float32))
+
+gaussian_input = np.load("ood_shift/cov_input_gaussian.npy")   
+gaussian_target = np.load("ood_shift/cov_target_gaussian.npy") 
+
+gaussian_target = gaussian_target[:, 0, :]
+
+x_gaussian_test = torch.from_numpy(gaussian_input.astype(np.float32))
+y_gaussian_test = torch.from_numpy(gaussian_target.astype(np.float32))
 
 def train():
     num_epochs = 30
@@ -212,6 +228,52 @@ def detect_ood_with_softmax_thresholding(model, input_path, target_path, thresho
         print(f"  True Class: {true_classes[i].item() if true_classes[i].numel() == 1 else true_classes[i]}")   
         print(f"  OOD: {'O'if ood_flags[i].item() else 'x'}")    
         
+        
+def compare_kl_divergence_multi(id_x, id_y, bias_x, bias_y, gaussian_x, gaussian_y, save_path="figures/kl_comparison_multi.png"):
+    model.load_state_dict(torch.load("models/graph_predict.pt"))
+    model.eval()
+
+    with torch.no_grad():
+        id_preds = model(id_x)
+        bias_preds = model(bias_x)
+        gauss_preds = model(gaussian_x)
+
+    def compute_kl(preds, targets):
+        kl_list = []
+        for i in range(len(preds)):
+            p = preds[i]
+            q = targets[i]
+            p = torch.clamp(p, min=1e-8)
+            q = torch.clamp(q, min=1e-8)
+            kl = F.kl_div(p.log(), q, reduction='sum').item()
+            kl_list.append(kl)
+        return kl_list
+
+    id_kl = compute_kl(id_preds, id_y)
+    bias_kl = compute_kl(bias_preds, bias_y)
+    gauss_kl = compute_kl(gauss_preds, gaussian_y)
+
+    # 평균 KL divergence 출력
+    print(f"Average KL Divergence - ID:         {np.mean(id_kl):.6f}")
+    print(f"Average KL Divergence - Bias OOD:   {np.mean(bias_kl):.6f}")
+    print(f"Average KL Divergence - Gauss OOD:  {np.mean(gauss_kl):.6f}")
+
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    plt.figure(figsize=(10, 5))
+    plt.hist(id_kl, bins=50, alpha=0.5, label="In-Distribution", color='blue')
+    plt.hist(bias_kl, bins=50, alpha=0.5, label="Bias Shift OOD", color='orange')
+    plt.hist(gauss_kl, bins=50, alpha=0.5, label="Gaussian Shift OOD", color='green')
+    plt.title("KL Divergence Comparison (ID vs OOD Types)", fontsize=18)
+    plt.xlabel("KL Divergence", fontsize=14)
+    plt.ylabel("Sample Count", fontsize=14)
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.4)
+    plt.tight_layout()
+    plt.savefig(save_path)
+    plt.show()
+
+    print(f"KL divergence plot saved to: {save_path}")        
+
 def evaluate():
     model.load_state_dict(torch.load("models/graph_predict.pt"))
     bin_size=1
@@ -267,6 +329,12 @@ if __name__ == "__main__":
         test()
     if module == "evaluate":
         evaluate()
+    if module =="compare":
+        compare_kl_divergence_multi(
+            id_x=x_test, id_y=y_test,
+            bias_x=x_bias_test, bias_y=y_bias_test,
+            gaussian_x=x_gaussian_test, gaussian_y=y_gaussian_test
+        )
     if module == "ood":
         input_path = "data/graph_predict/all_input_Alibaba.npy"
         target_path = "data/graph_predict/all_target_Alibaba.npy"

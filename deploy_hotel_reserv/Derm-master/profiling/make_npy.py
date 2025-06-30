@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from tqdm import tqdm
 # CSV 로딩
-df = pd.read_parquet("./pre-processing/sample_data/filtered_trace_data.parquet")
+df = pd.read_parquet("./pre-processing/sample_data/argument_filtered_trace_data.parquet")
 
 # 그래프 및 argument 분류용 구조체
 graph_class_mapping = {}
@@ -62,13 +62,15 @@ for trace_id, group in tqdm(grouped, desc="Processing traces", total=len(grouped
         print(f" -> Edges: {list(G.edges())}",flush=True)
         print(f" -> Nodes: {list(G.nodes())}",flush=True)
         
-    root_rows = group[~group['uminstanceid'].isin(group['dminstanceid'])]
-
+    root_rows = group[
+        (group['um'] == "USER") &
+        (~group['uminstanceid'].isin(group['dminstanceid']))
+    ]
 
     if root_rows.empty:
-        arg_value = group.iloc[0]["service"]  # fallback
+        arg_value = group.iloc[0]["interface"]  # fallback
     else:
-        arg_value = root_rows.iloc[0]["service"]
+        arg_value = root_rows.iloc[0]["interface"]
 
     if arg_value not in arg_class_mapping:
         arg_class_mapping[arg_value] = arg_class_counter
@@ -105,55 +107,73 @@ for (graph_class_id, arg_class_id), t in zip(trace_info_list, trace_time_list):
         graph_counts[win_index][graph_class_id] += 1
 
 # 분포 계산
-arg_dist_list = []
-graph_dist_list = []
+arg_array = np.zeros((total_windows, num_arg_classes), dtype=np.float32)
+graph_array = np.zeros((total_windows, num_graph_classes), dtype=np.float32)
+
 for i in tqdm(range(total_windows), desc="Building window distribution"):
     count = load_counts[i]
     if count > 0:
-        arg_dist = [c / count for c in arg_counts[i]]
-        graph_dist = [c / count for c in graph_counts[i]]
-    else:
-        arg_dist = [0] * num_arg_classes
-        graph_dist = [0] * num_graph_classes
-    arg_dist_list.append(arg_dist)
-    graph_dist_list.append(graph_dist)
+        arg_array[i] = np.array(arg_counts[i], dtype=np.float32) / count
+        graph_array[i] = np.array(graph_counts[i], dtype=np.float32) / count
+    # else는 이미 0으로 초기화되어 있음
 
 # 부하 정규화
 max_load = max(load_counts) if max(load_counts) > 0 else 1
-load_counts = [x / max_load for x in load_counts]
+load_array = (np.array(load_counts, dtype=np.float32) / max_load).reshape(-1, 1)
 
-# 최종 벡터 구성
-arg_array = np.array(arg_dist_list)           
-graph_array = np.array(graph_dist_list)       
-load_array = np.array(load_counts).reshape(-1, 1)  
-
+# 최종 입력 벡터
 full_vector = np.concatenate([arg_array, graph_array, load_array], axis=1)  # shape: (T, A+G+1)
 
-# 시퀀스 생성
+# === 시퀀스 생성 + 배치 처리 ===
 l = 5
-input_seqs = []
-target_seqs = []
 arg_dim = arg_array.shape[1]
 graph_dim = graph_array.shape[1]
 
-for t in tqdm(range(0, total_windows - 2 * l + 1, l), desc="Generating sequences"):
+batch_size = 10000
+input_seq_batches = []
+target_seq_batches = []
+
+for i, t in enumerate(tqdm(range(0, total_windows - 2 * l + 1, l), desc="Generating sequences")):
     input_seq = full_vector[t : t + l]
-    target = full_vector[t + l][arg_dim:arg_dim + graph_dim].reshape(1, -1)
-    input_seqs.append(input_seq)
-    target_seqs.append(target)
+    target = full_vector[t + l][arg_dim : arg_dim + graph_dim].reshape(1, -1)
 
-    #if t % 1000 == 0:
-        #print(f"[INFO] Processed window {t}/{total_windows}")
+    input_seq_batches.append(input_seq)
+    target_seq_batches.append(target)
 
-# 저장
-input_array = np.stack(input_seqs)         # shape: (N, l, D)
-target_array = np.stack(target_seqs)       # shape: (N, D)
+    # 저장 기준 배치 수 도달 시 임시 NumPy 병합
+    if (i + 1) % batch_size == 0:
+        if 'input_array_total' not in locals():
+            input_array_total = np.array(input_seq_batches, dtype=np.float32)
+            target_array_total = np.array(target_seq_batches, dtype=np.float32)
+        else:
+            input_array_total = np.concatenate(
+                [input_array_total, np.array(input_seq_batches, dtype=np.float32)], axis=0
+            )
+            target_array_total = np.concatenate(
+                [target_array_total, np.array(target_seq_batches, dtype=np.float32)], axis=0
+            )
+        input_seq_batches = []
+        target_seq_batches = []
 
-np.save("data/graph_predict/all_input_Alibaba_filtered.npy", input_array)
-np.save("data/graph_predict/all_target_Alibaba_filtered.npy", target_array)
+# 남은 시퀀스 처리
+if input_seq_batches:
+    if 'input_array_total' not in locals():
+        input_array_total = np.array(input_seq_batches, dtype=np.float32)
+        target_array_total = np.array(target_seq_batches, dtype=np.float32)
+    else:
+        input_array_total = np.concatenate(
+            [input_array_total, np.array(input_seq_batches, dtype=np.float32)], axis=0
+        )
+        target_array_total = np.concatenate(
+            [target_array_total, np.array(target_seq_batches, dtype=np.float32)], axis=0
+        )
 
-print("all_input.npy shape:", input_array.shape,flush=True)
-print("all_target.npy shape:", target_array.shape,flush=True)
+
+np.save("data/graph_predict/all_input_Alibaba_filtered.npy", input_array_total)
+np.save("data/graph_predict/all_target_Alibaba_filtered.npy", target_array_total)
+
+print("all_input.npy shape:", input_array_total.shape,flush=True)
+print("all_target.npy shape:", target_array_total.shape,flush=True)
 print(arg_counts[0],graph_counts[0],flush=True)
 print("arg_array shape:", arg_array.shape,flush=True)
 print("graph_array shape:", graph_array.shape,flush=True)
