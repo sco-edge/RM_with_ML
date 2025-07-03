@@ -1,6 +1,0 @@
-__pycache__/
-*.png
-*.pt
-/profiling/data
-/profiling/pre-processing/sample_data
-run.log
