@@ -1,0 +1,7 @@
+traceId,traceTime,startTime,endTime,parentId,childId,childOperation,parentOperation,childMS,childPod,parentMS,parentPod,parentDuration,childDuration
+1fc8af8323a38781,1750232574097950,1750232574098000,1750232574135339,1fc8af8323a38781,49738291b902c364,/search.Search/Nearby,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,38233,37339
+1fc8af8323a38781,1750232574097950,1750232574135408,1750232574135692,1fc8af8323a38781,54079c4811d4ae7c,/reservation.Reservation/CheckAvailability,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,38233,284
+1fc8af8323a38781,1750232574097950,1750232574135754,1750232574136137,1fc8af8323a38781,43b9ed273b1e845b,/profile.Profile/GetProfiles,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,38233,383
+215021bee081695e,1750232574089898,1750232574091038,1750232574095311,215021bee081695e,54f54b95a547bb42,/search.Search/Nearby,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,7862,4273
+215021bee081695e,1750232574089898,1750232574095349,1750232574096399,215021bee081695e,26ad36245ed3648b,/reservation.Reservation/CheckAvailability,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,7862,1050
+215021bee081695e,1750232574089898,1750232574096457,1750232574097733,215021bee081695e,61ea046381319b58,/profile.Profile/GetProfiles,HTTP GET /hotels,frontend,frontend-6777cd69cf-rms2b,frontend,frontend-6777cd69cf-rms2b,7862,1276
