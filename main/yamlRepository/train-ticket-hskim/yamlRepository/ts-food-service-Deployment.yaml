@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-food-service
+  labels:
+    app: ts-food-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-food-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-food-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-food-service
+        image: swlove2024/ts-food-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18856
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

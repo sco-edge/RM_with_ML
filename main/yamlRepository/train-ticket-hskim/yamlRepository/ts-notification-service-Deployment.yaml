@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-notification-service
+  labels:
+    app: ts-notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-notification-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-notification-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-notification-service
+        image: swlove2024/ts-notification-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 17853
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

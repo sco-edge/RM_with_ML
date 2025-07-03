@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-register-service
+  labels:
+    app: ts-register-service
+spec:
+  selector:
+    app: ts-register-service
+  type: ClusterIP  #NodePort
+  ports:
+    - protocol: TCP
+      port: 12344
+      targetPort: 12344
+      #nodePort: 12344

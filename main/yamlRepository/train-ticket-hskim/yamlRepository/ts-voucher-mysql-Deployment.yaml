@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-voucher-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-voucher-mysql
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-voucher-mysql
+        version: v1
+    spec:
+      containers:
+      - name: ts-voucher-mysql
+        image: mysql
+        imagePullPolicy: IfNotPresent
+        env:
+        # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        ports:
+        - containerPort: 3306
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

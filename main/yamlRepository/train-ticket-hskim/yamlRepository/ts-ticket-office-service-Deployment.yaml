@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticket-office-service
+  labels:
+    app: ts-ticket-office-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-ticket-office-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-ticket-office-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-ticket-office-service
+        image: swlove2024/ts-ticket-office-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16108
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

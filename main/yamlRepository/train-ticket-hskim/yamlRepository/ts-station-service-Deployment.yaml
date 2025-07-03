@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-station-service
+  labels:
+    app: ts-station-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-station-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-station-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-station-service
+        image: swlove2024/ts-station-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12345
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

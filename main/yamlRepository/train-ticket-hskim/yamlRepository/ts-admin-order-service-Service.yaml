@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-order-service
+  labels:
+    app: ts-admin-order-service
+spec:
+  selector:
+    app: ts-admin-order-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16112
+      targetPort: 16112

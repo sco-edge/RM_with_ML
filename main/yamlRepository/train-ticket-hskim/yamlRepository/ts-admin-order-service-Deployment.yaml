@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-order-service
+  labels:
+    app: ts-admin-order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-order-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-order-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-order-service
+        image: swlove2024/ts-admin-order-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16112
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
