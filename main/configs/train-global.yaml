@@ -1,0 +1,17 @@
+data_path: data_train
+figure_path: data_train/figures
+yaml_repo_path: yamlRepository/trainTicket
+namespace: train-ticket
+app_img: swlove2024
+nodes_for_test:
+- node6
+- node7
+
+prometheus_host: http://192.168.199.233:30090
+nodes_for_infra:
+- masternode
+- node6
+- node7
+pod_spec:
+  cpu_size: 0.1
+  mem_size: 200Mi
