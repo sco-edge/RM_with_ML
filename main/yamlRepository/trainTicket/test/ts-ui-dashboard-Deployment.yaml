@@ -22,6 +22,19 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        env:
+        - name: JAEGER_AGENT_HOST
+          value: "jaeger"
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
+        - name: JAEGER_SAMPLE_RATIO
+          value: "1.0"
+        resources:
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
+      nodeName: node6
       tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"

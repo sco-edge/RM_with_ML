@@ -146,7 +146,7 @@ def deploy_by_yaml(folder, wait=False, namespace=None, timeout=300):
     for file in [
         x for x in os.listdir(folder) if x[-5:] == ".yaml" or x[-4:] == ".yml"
     ]:
-        utils.create_from_yaml(api_client, f"{folder}/{file}")
+        utils.create_from_yaml(api_client, f"{folder}/{file}", namespace=namespace)
     if wait:
         if namespace is None:
             raise BaseException("No namespace spcified")
