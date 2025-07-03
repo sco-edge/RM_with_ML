@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-cancel-service
+  labels:
+    app: ts-cancel-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-cancel-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-cancel-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-cancel-service
+        image: swlove2024/ts-cancel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18885
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

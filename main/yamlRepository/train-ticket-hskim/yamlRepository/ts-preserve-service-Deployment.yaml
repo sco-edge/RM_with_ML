@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-preserve-service
+  labels:
+    app: ts-preserve-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-preserve-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-preserve-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-preserve-service
+        image: swlove2024/ts-preserve-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14568
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

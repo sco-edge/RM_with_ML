@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-rebook-service
+  labels:
+    app: ts-rebook-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-rebook-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-rebook-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-rebook-service
+        image: swlove2024/ts-rebook-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18886
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

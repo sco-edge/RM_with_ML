@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-travel-service
+  labels:
+    app: ts-admin-travel-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-travel-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-travel-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-travel-service
+        image: swlove2024/ts-admin-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16114
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

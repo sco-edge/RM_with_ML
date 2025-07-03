@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-execute-service
+  labels:
+    app: ts-execute-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-execute-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-execute-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-execute-service
+        image: swlove2024/ts-execute-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12386
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

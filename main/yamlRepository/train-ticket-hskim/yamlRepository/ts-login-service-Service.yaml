@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-login-service
+  labels:
+    app: ts-login-service
+spec:
+  selector:
+    app: ts-login-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12342
+      targetPort: 12342

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-voucher-mysql
+  labels:
+    app: ts-voucher-mysql
+spec:
+  selector:
+    app: ts-voucher-mysql
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306

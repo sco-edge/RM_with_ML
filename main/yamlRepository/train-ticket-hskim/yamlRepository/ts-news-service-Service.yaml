@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-news-service
+  labels:
+    app: ts-news-service
+spec:
+  selector:
+    app: ts-news-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12862
+      targetPort: 12862

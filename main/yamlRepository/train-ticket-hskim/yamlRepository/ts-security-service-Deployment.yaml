@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-security-service
+  labels:
+    app: ts-security-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-security-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-security-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-security-service
+        image: swlove2024/ts-security-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11188
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

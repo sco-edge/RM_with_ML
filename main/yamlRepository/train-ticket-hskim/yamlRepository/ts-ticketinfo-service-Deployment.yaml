@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticketinfo-service
+  labels:
+    app: ts-ticketinfo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-ticketinfo-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-ticketinfo-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-ticketinfo-service
+        image: swlove2024/ts-ticketinfo-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15681
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

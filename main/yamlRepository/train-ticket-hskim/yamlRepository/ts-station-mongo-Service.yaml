@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-station-mongo
+  labels:
+    app: ts-station-mongo
+spec:
+  selector:
+    app: ts-station-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017

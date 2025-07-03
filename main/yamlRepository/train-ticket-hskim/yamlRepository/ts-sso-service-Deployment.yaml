@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-sso-service
+  labels:
+    app: ts-sso-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-sso-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-sso-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-sso-service
+        image: swlove2024/ts-sso-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12349
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

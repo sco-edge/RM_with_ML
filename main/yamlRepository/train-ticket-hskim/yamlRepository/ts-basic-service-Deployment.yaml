@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-basic-service
+  labels:
+    app: ts-basic-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-basic-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-basic-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-basic-service
+        image: swlove2024/ts-basic-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15680
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
