@@ -13,5 +13,5 @@ nodes_for_infra:
 - node6
 - node7
 pod_spec:
-  cpu_size: 0.1
-  mem_size: 200Mi
+  cpu_size: 0.2
+  mem_size: 512Mi
