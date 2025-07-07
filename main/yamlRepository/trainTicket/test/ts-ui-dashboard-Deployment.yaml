@@ -18,17 +18,17 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: ksh6283/ts-ui-dashboard:1.2
+        image: ksh6283/ts-ui-dashboard:1.8
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
-        # env:
-        # - name: JAEGER_AGENT_HOST
-        #   value: "jaeger"
-        # - name: JAEGER_AGENT_PORT
-        #   value: "6831"
-        # - name: JAEGER_SAMPLE_RATIO
-        #   value: "1.0"
+        env:
+        - name: JAEGER_AGENT_HOST
+          value: "jaeger"
+        - name: JAEGER_AGENT_PORT
+          value: "6831"
+        - name: JAEGER_SAMPLE_RATIO
+          value: "1.0"
         resources:
           limits:
             cpu: 1000m
