@@ -1,0 +1,31 @@
+repeats: [0, 1]
+duration: 30  
+services: 
+  - Booking
+
+interference_config:
+  cpu:
+    cpu_size: 0.25
+    mem_size: 10Mi
+    pod_range: [0]
+  mem:
+    cpu_size: 0.01
+    mem_size: 10Mi
+    pod_range: [0]
+
+workload_config:
+  wrk_path: wrk2/wrk  
+  services:
+    Booking:
+      max_clients: 10           
+      thread_num: 2
+      connection_num: 4
+      throughput: 50
+      script_path: wrk2/scripts/train-ticket/booking.lua
+      url: http://10.0.1.106:32677
+
+collector_config:
+  jaeger_host: http://10.0.1.106:30095
+  entry_point: ts-ui-dashboard
+  max_traces: 100000
+  monitor_interval: 1

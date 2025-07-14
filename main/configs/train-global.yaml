@@ -15,3 +15,21 @@ nodes_for_infra:
 pod_spec:
   cpu_size: 0.2
   mem_size: 512Mi
+
+replicas:
+  Booking:
+    ts-ui-dashboard: 1
+    ts-user-service: 1
+    ts-travel-service: 1
+    ts-route-service: 1
+    ts-station-service: 1
+    ts-train-service: 1
+    ts-price-service: 1
+    ts-assurance-service: 1
+    ts-food-service: 1
+    ts-contact-service: 1
+    ts-preserve-service: 1
+    ts-order-service: 1
+    ts-seat-service: 1
+    ts-payment-service: 1
+    ts-notification-service: 1
