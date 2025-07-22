@@ -583,3 +583,9 @@ class Query:
             logger.error(
                 f"preserve failed, code: {res.status_code}, {res.text}")
         return
+    
+    def get_auth_header(self):
+        return {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }

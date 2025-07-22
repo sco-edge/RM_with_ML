@@ -8,7 +8,7 @@ from configs import log
 from dataCollector.OfflineProfilingDataCollector import OfflineProfilingDataCollector
 from deployment.deployer import Deployer
 from workloadGenerator.staticWorkload import StaticWorkloadGenerator
-from workloadGenerator.pythonWorkload import PythonWorkloadGenerator
+from workloadGenerator.trainticketWorkload import TrainticketWorkloadGenerator
 # from infGenerator.busyInf import BusyInf
 from utils.others import parse_mem
 
@@ -106,8 +106,8 @@ def start_test(continues=False):
     for service in configs.TESTING_CONFIG.services:
         containers = configs.GLOBAL_CONFIG.replicas[service]
         currentWorkloadConfig = configs.TESTING_CONFIG.workload_config.services[service]
-        if service in ["Booking", "TrainTicket", "train-ticket"]:
-            workloadGenerator = PythonWorkloadGenerator(
+        if configs.TESTING_CONFIG.workload_config.wrk_path == "python":
+            workloadGenerator = TrainticketWorkloadGenerator(
                 duration=configs.TESTING_CONFIG.duration,
                 target_throughput=currentWorkloadConfig.throughput,  # 단일 client 기준
                 client_num=1,  # generateWorkload 함수에서 clientNum이 또 들어감
