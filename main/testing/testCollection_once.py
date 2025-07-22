@@ -8,6 +8,7 @@ from configs import log
 from dataCollector.OfflineProfilingDataCollector import OfflineProfilingDataCollector
 from deployment.deployer import Deployer
 from workloadGenerator.staticWorkload import StaticWorkloadGenerator
+from workloadGenerator.pythonWorkload import PythonWorkloadGenerator
 # from infGenerator.busyInf import BusyInf
 from utils.others import parse_mem
 
@@ -105,15 +106,23 @@ def start_test(continues=False):
     for service in configs.TESTING_CONFIG.services:
         containers = configs.GLOBAL_CONFIG.replicas[service]
         currentWorkloadConfig = configs.TESTING_CONFIG.workload_config.services[service]
-        workloadGenerator = StaticWorkloadGenerator(
-            currentWorkloadConfig.thread_num,
-            currentWorkloadConfig.connection_num,
-            configs.TESTING_CONFIG.duration,
-            currentWorkloadConfig.throughput,
-            configs.TESTING_CONFIG.workload_config.wrk_path,
-            currentWorkloadConfig.script_path,
-            currentWorkloadConfig.url,
-        )
+        if service in ["Booking", "TrainTicket", "train-ticket"]:
+            workloadGenerator = PythonWorkloadGenerator(
+                duration=configs.TESTING_CONFIG.duration,
+                target_throughput=currentWorkloadConfig.throughput,  # 단일 client 기준
+                client_num=1,  # generateWorkload 함수에서 clientNum이 또 들어감
+                base_url=currentWorkloadConfig.url
+            )
+        else:
+            workloadGenerator = StaticWorkloadGenerator(
+                currentWorkloadConfig.thread_num,
+                currentWorkloadConfig.connection_num,
+                configs.TESTING_CONFIG.duration,
+                currentWorkloadConfig.throughput,
+                configs.TESTING_CONFIG.workload_config.wrk_path,
+                currentWorkloadConfig.script_path,
+                currentWorkloadConfig.url,
+            )
 
         for repeat in configs.TESTING_CONFIG.repeats:
             for clientNum in range(1, currentWorkloadConfig.max_clients + 1):
