@@ -1,8 +1,10 @@
 from threading import Thread
 from time import time, sleep
-from train-ticket-auto-query import Query  
+from train_ticket_auto_query.queries import Query  
+from train_ticket_auto_query.scenarios import query_and_preserve  # 내부에서 랜덤한 시나리오 실행
+import logging
 
-class PythonWorkloadGenerator:
+class TrainticketWorkloadGenerator:
     def __init__(self, duration, target_throughput, client_num, base_url):
         self.duration = duration
         self.target_throughput = target_throughput
@@ -21,13 +23,13 @@ class PythonWorkloadGenerator:
     def run_client(self):
         q = Query(self.base_url)
         if not q.login():
+            logging.warning("Login failed")
             return
+        headers = q.get_auth_header()  # query_and_preserve가 요구하는 인증 헤더
         start_time = time()
         while time() - start_time < self.duration:
             try:
-                trip_ids = q.query_high_speed_ticket()
-                if trip_ids:
-                    q.preserve("Shang Hai", "Su Zhou", trip_ids)
+                query_and_preserve(headers)
             except Exception as e:
-                print(f"Exception in workload: {e}")
+                logging.warning(f"Exception in workload: {e}")
             sleep(1.0 / self.target_throughput)  # QPS 제어
