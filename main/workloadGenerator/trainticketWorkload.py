@@ -25,11 +25,10 @@ class TrainticketWorkloadGenerator:
         if not q.login():
             logging.warning("Login failed")
             return
-        headers = q.get_auth_header()  # query_and_preserve가 요구하는 인증 헤더
         start_time = time()
         while time() - start_time < self.duration:
             try:
-                query_and_preserve(headers)
+                query_and_preserve(q)
             except Exception as e:
                 logging.warning(f"Exception in workload: {e}")
             sleep(1.0 / self.target_throughput)  # QPS 제어

@@ -17,12 +17,12 @@ workload_config:
   wrk_path: python  # wrk 대신 python 사용
   services:
     Booking:
-      max_clients: 10
+      max_clients: 1
       thread_num: 0         # Python 워크로드엔 의미 없음 (필요 시 삭제 가능)
       connection_num: 0     # ↑ same
       throughput: 5         # QPS per client
       script_path: workloadGenerator/trainticketWorkload.py  # Python 경로로 변경
-      url: http://10.0.1.106:32677                # ts-ui-dashboard NodePort 주소
+      url: http://10.0.1.106:32677             # ts-login-service 주소
 
 collector_config:
   jaeger_host: http://10.0.1.106:30095
