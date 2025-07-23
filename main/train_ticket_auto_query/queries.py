@@ -9,58 +9,63 @@ logger = logging.getLogger("auto-queries")
 datestr = time.strftime("%Y-%m-%d", time.localtime())
 
 
-class Query:
-    """
-    train-ticket query class
-    """
+from urllib.parse import urljoin
+import requests
+import logging
 
+logger = logging.getLogger("auto-queries")
+
+class Query:
     def __init__(self, ts_address: str) -> None:
-        self.address = ts_address
+        self.address = ts_address.rstrip("/")
         self.uid = ""
         self.token = ""
         self.session = requests.Session()
         self.session.headers.update({
-            'Proxy-Connection': 'keep-alive',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
             'Content-Type': 'application/json',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-            'Connection': 'keep-alive',
+            'Accept': 'application/json',
+            'User-Agent': 'curl/7.68.0',
         })
 
-    def login(self, username="fdse_microservice", password="111111") -> bool:
-        """
-        登陆并建立session，返回登陆结果
-        """
-        url = f"{self.address}/api/v1/users/login"
+    def login(self, email="fdse_microservices@163.com", password="DefaultPassword") -> bool:
+        # 정확한 로그인 URL
+        url = urljoin(self.address, "/login")
+        print(f"Login URL: {url}")
 
-        headers = {
-            'Origin': url,
-            'Referer': f"{self.address}/client_login.html",
+        # 수동으로 YsbCaptcha 쿠키 설정
+        self.session.cookies.set("YsbCaptcha", "1234")
+
+        payload = {
+            "email": email,
+            "password": password,
+            "verificationCode": "1234"
         }
 
-        data = '{"username":"' + username + '","password":"' + \
-            password + '","verificationCode":"1234"}'
-
-        # 获取cookies
-        verify_url = self.address + '/api/v1/verifycode/generate'
-        r = self.session.get(url=verify_url)
-        r = self.session.post(url=url, headers=headers,
-                              data=data, verify=False)
+        # 로그인 요청
+        r = self.session.post(url=url, json=payload)
 
         if r.status_code == 200:
-            data = r.json().get("data")
-            self.uid = data.get("userId")
-            self.token = data.get("token")
-            self.session.headers.update(
-                {"Authorization": f"Bearer {self.token}"}
-            )
-            logger.info(f"login success, uid: {self.uid}")
-            return True
+            result = r.json()
+            if result.get("status") is True:
+                self.uid = result["account"]["id"]
+                self.token = result["token"]
+                self.session.headers.update({
+                    "Authorization": f"Bearer {self.token}"
+                })
+                logger.info(f"login success, uid: {self.uid}")
+                return True
+            else:
+                logger.error(f"login failed: {result.get('message')}")
         else:
-            logger.error("login failed")
-            return False
+            logger.error(f"login failed with status: {r.status_code}")
+        return False
+
+    def get_auth_header(self):
+        return {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json"
+        }
+
 
     def admin_login(self):
         return self.login
@@ -73,7 +78,7 @@ class Query:
         :return: TripId 列表
         """
 
-        url = f"{self.address}/api/v1/travelservice/trips/left"
+        url = f"{self.address}/travel/query"
         place_pairs = [("Shang Hai", "Su Zhou"),
                        ("Su Zhou", "Shang Hai"),
                        ("Nan Jing", "Shang Hai")]
@@ -107,7 +112,7 @@ class Query:
         return trip_ids
 
     def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
-        url = f"{self.address}/api/v1/travel2service/trips/left"
+        url = f"{self.address}/travel2/query"
         place_pairs = [("Shang Hai", "Nan Jing"),
                        ("Nan Jing", "Shang Hai")]
 
@@ -147,7 +152,7 @@ class Query:
         :return: TripId 列表
         """
 
-        url = f"{self.address}/api/v1/travelservice/trips/left_parallel"
+        url = f"{self.address}/travel/query"
         place_pairs = [("Shang Hai", "Su Zhou"),
                        ("Su Zhou", "Shang Hai"),
                        ("Nan Jing", "Shang Hai")]
@@ -186,7 +191,7 @@ class Query:
         :param type [cheapet, quickest, minStation]
         """
 
-        url = f"{self.address}/api/v1/travelplanservice/travelPlan/{type}"
+        url = f"{self.address}/travelplanservice/travelPlan/{type}"
         place_pairs = [("Shang Hai", "Su Zhou"),
                        ("Su Zhou", "Shang Hai"),
                        ("Nan Jing", "Shang Hai")]
@@ -219,7 +224,7 @@ class Query:
         return trip_ids
 
     def query_assurances(self, headers: dict = {}):
-        url = f"{self.address}/api/v1/assuranceservice/assurances/types"
+        url = f"{self.address}/assurance/getAllAssuranceType"
 
         response = self.session.get(url=url, headers=headers)
         if response.status_code != 200 or response.json().get("data") is None:
@@ -232,7 +237,7 @@ class Query:
         return [{"assurance": "1"}]
 
     def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
-        url = f"{self.address}/api/v1/foodservice/foods/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
+        url = f"{self.address}/food/getFood/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
 
         response = self.session.get(url=url, headers=headers)
         if response.status_code != 200 or response.json().get("data") is None:
@@ -256,7 +261,7 @@ class Query:
         :param headers:
         :return: id list
         """
-        url = f"{self.address}/api/v1/contactservice/contacts/account/{self.uid}"
+        url = f"{self.address}/contacts/getContacsById/{self.uid}"
 
         response = self.session.get(url=url, headers=headers)
         if response.status_code != 200 or response.json().get("data") is None:
@@ -281,9 +286,9 @@ class Query:
         url = ""
 
         if query_other:
-            url = f"{self.address}/api/v1/orderOtherService/orderOther/refresh"
+            url = f"{self.address}/orderOtherService/orderOther/refresh"
         else:
-            url = f"{self.address}/api/v1/orderservice/order/refresh"
+            url = f"{self.address}/orderservice/order/refresh"
 
         payload = {
             "loginId": self.uid,
@@ -321,9 +326,9 @@ class Query:
         """
 
         if query_other:
-            url = f"{self.address}/api/v1/orderOtherService/orderOther/refresh"
+            url = f"{self.address}/orderOtherService/orderOther/refresh"
         else:
-            url = f"{self.address}/api/v1/orderservice/order/refresh"
+            url = f"{self.address}/orderservice/order/refresh"
 
         payload = {
             "loginId": self.uid,
@@ -352,7 +357,7 @@ class Query:
         return list
 
     def put_consign(self, result, headers: dict = {}) -> str:
-        url = f"{self.address}/api/v1/consignservice/consigns"
+        url = f"{self.address}/consignservice/consigns"
         consignload = {
             "accountId": result["accountId"],
             "handleDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
@@ -381,9 +386,9 @@ class Query:
 
     def query_route(self, routeId: str = '', headers: dict = {}):
         if routeId == '':
-            url = f"{self.address}/api/v1/routeservice/routes"
+            url = f"{self.address}/routeservice/routes"
         else:
-            url = f"{self.address}/api/v1/routeservice/routes/{routeId}"
+            url = f"{self.address}/routeservice/routes/{routeId}"
 
         res = self.session.get(url=url, headers=headers)
 
@@ -396,7 +401,7 @@ class Query:
         return
 
     def pay_order(self, order_id: str, trip_id: str, headers: dict = {}) -> str:
-        url = f"{self.address}/api/v1/inside_pay_service/inside_payment"
+        url = f"{self.address}/inside_pay_service/inside_payment"
         payload = {
             "orderId": order_id,
             "tripId": trip_id
@@ -414,7 +419,7 @@ class Query:
         return order_id
 
     def cancel_order(self, order_id, headers: dict = {}):
-        url = f"{self.address}/api/v1/cancelservice/cancel/{order_id}/{self.uid}"
+        url = f"{self.address}/cancelservice/cancel/{order_id}/{self.uid}"
 
         res = self.session.get(url=url, headers=headers)
 
@@ -427,7 +432,7 @@ class Query:
         return order_id
 
     def collect_order(self, order_id, headers: dict = {}):
-        url = f"{self.address}/api/v1/executeservice/execute/collected/{order_id}"
+        url = f"{self.address}/executeservice/execute/collected/{order_id}"
         res = self.session.get(url=url, headers=headers)
         if res.status_code == 200:
             logger.info(f"order {order_id} collect success")
@@ -438,7 +443,7 @@ class Query:
         return order_id
 
     def enter_station(self, order_id, headers: dict = {}):
-        url = f"{self.address}/api/v1/executeservice/execute/execute/{order_id}"
+        url = f"{self.address}/executeservice/execute/execute/{order_id}"
         res = self.session.get(url=url,
                                headers=headers)
         if res.status_code == 200:
@@ -459,7 +464,7 @@ class Query:
         self.query_advanced_ticket(type="quickest", date=date)
 
     def query_admin_basic_price(self, headers: dict = {}):
-        url = f"{self.address}/api/v1/adminbasicservice/adminbasic/prices"
+        url = f"{self.address}/adminbasicservice/adminbasic/prices"
         response = self.session.get(url=url, headers=headers)
 
         if response.status_code == 200:
@@ -470,7 +475,7 @@ class Query:
             return None
 
     def query_admin_basic_config(self, headers: dict = {}):
-        url = f"{self.address}/api/v1/adminbasicservice/adminbasic/configs"
+        url = f"{self.address}/adminbasicservice/adminbasic/configs"
         response = self.session.get(url=url, headers=headers)
         if response.status_code == 200:
             logger.info(f"config success")
@@ -480,7 +485,7 @@ class Query:
             return None
 
     def rebook_ticket(self, old_order_id, old_trip_id, new_trip_id, new_date="", new_seat_type="", headers: dict = {}):
-        url = f"{self.address}/api/v1/rebookservice/rebook"
+        url = f"{self.address}/rebookservice/rebook"
 
         if new_date == "":
             new_date = datestr
@@ -506,7 +511,7 @@ class Query:
         return
 
     def query_admin_travel(self, headers: dict = {}):
-        url = f"{self.address}/api/v1/admintravelservice/admintravel"
+        url = f"{self.address}/admintravelservice/admintravel"
 
         r = self.session.get(url=url, headers=headers)
         if r.status_code == 200 and r.json()["status"] == 1:
@@ -521,9 +526,9 @@ class Query:
             date = datestr
 
         if is_high_speed:
-            PRESERVE_URL = f"{self.address}/api/v1/preserveservice/preserve"
+            PRESERVE_URL = f"{self.address}/preserve"
         else:
-            PRESERVE_URL = f"{self.address}/api/v1/preserveotherservice/preserveOther"
+            PRESERVE_URL = f"{self.address}/preserveOther"
 
         base_preserve_payload = {
             "accountId": self.uid,
@@ -584,8 +589,4 @@ class Query:
                 f"preserve failed, code: {res.status_code}, {res.text}")
         return
     
-    def get_auth_header(self):
-        return {
-            "Authorization": f"Bearer {self.token}",
-            "Content-Type": "application/json"
-        }
+

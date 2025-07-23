@@ -6,12 +6,28 @@ import random
 import requests
 import time
 
+
+login_response = requests.post(
+    url="http://10.0.1.107:31855/login",
+    headers={"Content-Type": "application/json", "Cookie": "YsbCaptcha=1234"},
+    json={
+        "email": "fdse_microservices@163.com",
+        "password": "DefaultPassword",
+        "verificationCode": "1234",
+        "token":"d20423d3-c2e5-4bbc-9ad8-538f1d4da488"
+    }
+)
+
+login_json = login_response.json()
+token = login_json["token"]  # loginToken
+uuid = login_json["account"]["id"]
+
 logger = logging.getLogger("query_and_preserve")
 # The UUID of user fdse_microservice is that
 uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 date = time.strftime("%Y-%m-%d", time.localtime())
 
-base_address = "http://10.0.1.106:32677"
+base_address = "http://10.0.1.107:31855"
 
 
 def query_and_preserve(headers):
@@ -33,13 +49,13 @@ def query_and_preserve(headers):
         end = "Su Zhou"
         high_speed_place_pair = (start, end)
         trip_ids = _query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=date)
-        PRESERVE_URL = f"{base_address}/api/v1/preserveservice/preserve"
+        PRESERVE_URL = f"{base_address}/preserve"
     else:
         start = "Shang Hai"
         end = "Nan Jing"
         other_place_pair = (start, end)
         trip_ids = _query_normal_ticket(place_pair=other_place_pair, headers=headers, time=date)
-        PRESERVE_URL = f"{base_address}/api/v1/preserveotherservice/preserveOther"
+        PRESERVE_URL = f"{base_address}/preserveOther"
 
     _ = _query_assurances(headers=headers)
     food_result = _query_food(headers=headers)
@@ -104,7 +120,7 @@ def query_and_preserve(headers):
 if __name__ == '__main__':
     headers = {
         "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNzE5OTA0NCwiZXhwIjoxNjI3MjAyNjQ0fQ.3IIwwz7AwqHtOFDeXfih25i6_7nQBPL_K7BFxuyFiKQ",
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
 
