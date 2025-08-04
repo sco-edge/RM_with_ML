@@ -37,7 +37,7 @@ class LineFit:
         x = np.array(data["workloadPerPod"])
         fit_y = np.array(data["fit_pars"])
         ml_y = np.array(data["ml_pars"])
-        fit_params, _ = curve_fit(f=self.line_f, xdata=x, ydata=fit_y, maxfev=500000)
+        fit_params, _ = curve_fit(f=self.line_f, xdata=x, ydata=fit_y, maxfev=500000) # linear regression
         ml_params, _ = curve_fit(f=self.line_f, xdata=x, ydata=ml_y, maxfev=500000)
         self.fit_a.append(fit_params[0])
         self.fit_b.append(fit_params[1])
