@@ -1,6 +1,6 @@
-__pycache__/
-*.png
-*.pt
-/profiling/data
-/profiling/pre-processing/sample_data
+/prediction_model/__pycache__
+/prediction_model/*.png
+/prediction_model/*.pt
+/profiling/prediction_model/data
+/profiling/prediction_model/pre-processing/sample_data
 run.log
