@@ -2,3 +2,8 @@
 /AE/data
 /tmp
 tmp-ns.json
+__pycache__
+*.png
+main/Derm-master/profiling/prediction_model/models/
+main/Derm-master/profiling/prediction_model/data/
+main/Derm-master/profiling/prediction_model/pre-processing/sample_data/

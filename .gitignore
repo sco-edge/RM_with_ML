@@ -1,7 +1,5 @@
-/deploy_hotel_reserv/ksh
-/deploy_hotel_reserv/AE/data
-/deploy_hotel_reserv/tmp
-/deploy_hotel_reserv/tmp-ns.json
-/deploy_hotel_reserv/Derm-master/__pycache__/
-/deploy_hotel_reserv/Derm-master/*.png
-/deploy_hotel_reserv/Derm-master/*.pt
+__pycache__
+*.png
+main/Derm-master/profiling/prediction_model/models/
+main/Derm-master/profiling/prediction_model/data/
+main/Derm-master/profiling/prediction_model/pre-processing/sample_data/
