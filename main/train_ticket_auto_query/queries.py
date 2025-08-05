@@ -97,18 +97,33 @@ class Query:
 
         response = self.session.post(url=url, headers=headers, json=payload)
 
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
-            return None
+            return []
 
-        data = response.json().get("data")  # type: dict
+        response_json = response.json()
+        if isinstance(response_json, list):
+            data = response_json
+        elif isinstance(response_json, dict):
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"request for {url} failed. response data is {response.text}")
+                return []
+        else:
+            logger.warning(f"request for {url} failed. response data is {response.text}")
+            return []
 
         trip_ids = []
-        for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
-            trip_ids.append(trip_id)
+        if isinstance(data, list):
+            for d in data:
+                if isinstance(d, dict) and d.get("tripId"):
+                    trip_id_obj = d.get("tripId")
+                    if isinstance(trip_id_obj, dict):
+                        trip_id = trip_id_obj.get("type", "") + trip_id_obj.get("number", "")
+                    else:
+                        trip_id = str(trip_id_obj)
+                    trip_ids.append(trip_id)
         return trip_ids
 
     def query_normal_ticket(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
@@ -130,18 +145,33 @@ class Query:
 
         response = self.session.post(url=url, headers=headers, json=payload)
 
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
-            return None
+            return []
 
-        data = response.json().get("data")  # type: dict
+        response_json = response.json()
+        if isinstance(response_json, list):
+            data = response_json
+        elif isinstance(response_json, dict):
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"request for {url} failed. response data is {response.text}")
+                return []
+        else:
+            logger.warning(f"request for {url} failed. response data is {response.text}")
+            return []
 
         trip_ids = []
-        for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
-            trip_ids.append(trip_id)
+        if isinstance(data, list):
+            for d in data:
+                if isinstance(d, dict) and d.get("tripId"):
+                    trip_id_obj = d.get("tripId")
+                    if isinstance(trip_id_obj, dict):
+                        trip_id = trip_id_obj.get("type", "") + trip_id_obj.get("number", "")
+                    else:
+                        trip_id = str(trip_id_obj)
+                    trip_ids.append(trip_id)
         return trip_ids
 
     def query_high_speed_ticket_parallel(self, place_pair: tuple = (), time: str = "", headers: dict = {}) -> List[str]:
@@ -171,18 +201,33 @@ class Query:
 
         response = self.session.post(url=url, headers=headers, json=payload)
 
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"request for {url} failed. response data is {response.text}")
-            return None
+            return []
 
-        data = response.json().get("data")  # type: dict
+        response_json = response.json()
+        if isinstance(response_json, list):
+            data = response_json
+        elif isinstance(response_json, dict):
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"request for {url} failed. response data is {response.text}")
+                return []
+        else:
+            logger.warning(f"request for {url} failed. response data is {response.text}")
+            return []
 
         trip_ids = []
-        for d in data:
-            trip_id = d.get("tripId").get("type") + \
-                d.get("tripId").get("number")
-            trip_ids.append(trip_id)
+        if isinstance(data, list):
+            for d in data:
+                if isinstance(d, dict) and d.get("tripId"):
+                    trip_id_obj = d.get("tripId")
+                    if isinstance(trip_id_obj, dict):
+                        trip_id = trip_id_obj.get("type", "") + trip_id_obj.get("number", "")
+                    else:
+                        trip_id = str(trip_id_obj)
+                    trip_ids.append(trip_id)
         return trip_ids
 
     def query_advanced_ticket(self, place_pair: tuple = (), type: str = "cheapest", date: str = "", headers: dict = {}) -> List[str]:
@@ -227,24 +272,45 @@ class Query:
         url = f"{self.address}/assurance/getAllAssuranceType"
 
         response = self.session.get(url=url, headers=headers)
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"query assurance failed, response data is {response.text}")
-            return None
-        _ = response.json().get("data")
+            return [{"assurance": "1"}]
+        
+        response_json = response.json()
+        if isinstance(response_json, list):
+            _ = response_json
+        elif isinstance(response_json, dict):
+            _ = response_json.get("data")
+        else:
+            logger.warning(f"query assurance failed, response data is {response.text}")
+        
         # assurance只有一种
-
         return [{"assurance": "1"}]
 
     def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
         url = f"{self.address}/food/getFood/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
 
         response = self.session.get(url=url, headers=headers)
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"query food failed, response data is {response.text}")
-            return None
-        _ = response.json().get("data")
+            # food 是什么不会对后续调用链有影响，因此查询后返回一个固定数值
+            return [{
+                "foodName": "Soup",
+                "foodPrice": 3.7,
+                "foodType": 2,
+                "stationName": "Su Zhou",
+                "storeName": "Roman Holiday"
+            }]
+        
+        response_json = response.json()
+        if isinstance(response_json, list):
+            _ = response_json
+        elif isinstance(response_json, dict):
+            _ = response_json.get("data")
+        else:
+            logger.warning(f"query food failed, response data is {response.text}")
 
         # food 是什么不会对后续调用链有影响，因此查询后返回一个固定数值
         return [{
@@ -264,12 +330,23 @@ class Query:
         url = f"{self.address}/contacts/getContacsById/{self.uid}"
 
         response = self.session.get(url=url, headers=headers)
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"query contacts failed, response data is {response.text}")
-            return None
+            return []
 
-        data = response.json().get("data")
+        response_json = response.json()
+        if isinstance(response_json, list):
+            data = response_json
+        elif isinstance(response_json, dict):
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"query contacts failed, response data is {response.text}")
+                return []
+        else:
+            logger.warning(f"query contacts failed, response data is {response.text}")
+            return []
+
         # print("contacts")
         # pprint(data)
 
@@ -295,19 +372,30 @@ class Query:
         }
 
         response = self.session.post(url=url, headers=headers, json=payload)
-        if response.status_code != 200 or response.json().get("data") is None:
+        if response.status_code != 200:
             logger.warning(
                 f"query orders failed, response data is {response.text}")
-            return None
+            return []
 
-        data = response.json().get("data")
+        response_json = response.json()
+        if isinstance(response_json, list):
+            data = response_json
+        elif isinstance(response_json, dict):
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"query orders failed, response data is {response.text}")
+                return []
+        else:
+            logger.warning(f"query orders failed, response data is {response.text}")
+            return []
         pairs = []
-        for d in data:
-            # status = 0: not paid
-            # status=1 paid not collect
-            # status=2 collected
-            if d.get("status") in types:
-                order_id = d.get("id")
+        if isinstance(data, list):
+            for d in data:
+                # status = 0: not paid
+                # status=1 paid not collect
+                # status=2 collected
+                if isinstance(d, dict) and d.get("status") in types:
+                    order_id = d.get("id")
                 trip_id = d.get("trainNumber")
                 pairs.append((order_id, trip_id))
 
@@ -541,6 +629,9 @@ class Query:
         }
 
         trip_id = random_from_list(trip_ids)
+        if trip_id is None:
+            logger.warning("No trip_id available, using default")
+            trip_id = "D1345"
         base_preserve_payload["tripId"] = trip_id
 
         need_food = random_boolean()
@@ -548,7 +639,8 @@ class Query:
             logger.info("need food")
             food_result = self.query_food()
             food_dict = random_from_list(food_result)
-            base_preserve_payload.update(food_dict)
+            if food_dict is not None:
+                base_preserve_payload.update(food_dict)
         else:
             logger.info("not need food")
             base_preserve_payload["foodType"] = "0"
@@ -559,6 +651,9 @@ class Query:
 
         contacts_result = self.query_contacts()
         contacts_id = random_from_list(contacts_result)
+        if contacts_id is None:
+            logger.warning("No contacts available, using default")
+            contacts_id = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
         base_preserve_payload["contactsId"] = contacts_id
 
         # 高铁 2-3
@@ -582,8 +677,15 @@ class Query:
                                 headers=headers,
                                 json=base_preserve_payload)
 
-        if res.status_code == 200 and res.json()["data"] == "Success":
-            logger.info(f"preserve trip {trip_id} success")
+        if res.status_code == 200:
+            try:
+                response_json = res.json()
+                if isinstance(response_json, dict) and response_json.get("data") == "Success":
+                    logger.info(f"preserve trip {trip_id} success")
+                else:
+                    logger.warning(f"preserve response: {res.text}")
+            except Exception as e:
+                logger.warning(f"preserve response parsing error: {e}, response: {res.text}")
         else:
             logger.error(
                 f"preserve failed, code: {res.status_code}, {res.text}")

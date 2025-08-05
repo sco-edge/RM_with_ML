@@ -1,0 +1,9 @@
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/domain/InsertConsignRecordResult.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/controller/ConsignController.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/domain/ConsignRecord.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/domain/ConsignRequest.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/ConsignApplication.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/repository/ConsignRepository.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/service/ConsignServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/domain/GetPriceDomain.java
+/home/hskim66/korea/train-ticket/ts-consign-service/src/main/java/consign/service/ConsignService.java

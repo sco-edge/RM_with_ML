@@ -1,0 +1,14 @@
+food/domain/QueryTrainFoodInfo.class
+food/init/InitData.class
+food/service/FoodMapService.class
+food/domain/TrainFood.class
+food/repository/TrainFoodRepository.class
+food/service/FoodMapServiceImpl.class
+food/FoodMapApplication.class
+food/repository/FoodStoreRepository.class
+food/domain/Food.class
+food/domain/GetTrainFoodListResult.class
+food/domain/GetFoodStoresListResult.class
+food/domain/QueryFoodStoresInfo.class
+food/domain/FoodStore.class
+food/controller/FoodMapController.class

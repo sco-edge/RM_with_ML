@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ts-security-service
+  data:
+    mongodb:
+      host: ts-security-mongo
+#      username: user
+#      password: ${MONGODB_PASSWORD}
+      database: ts
+      port: 27017
+
+# HTTP Server
+server:
+  port: 11188  # HTTP (Tomcat) port

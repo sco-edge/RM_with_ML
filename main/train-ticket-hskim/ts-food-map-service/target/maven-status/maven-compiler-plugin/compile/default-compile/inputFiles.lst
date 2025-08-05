@@ -1,0 +1,14 @@
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/QueryFoodStoresInfo.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/FoodMapApplication.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/controller/FoodMapController.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/service/FoodMapServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/service/FoodMapService.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/GetTrainFoodListResult.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/Food.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/GetFoodStoresListResult.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/repository/TrainFoodRepository.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/QueryTrainFoodInfo.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/TrainFood.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/repository/FoodStoreRepository.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/domain/FoodStore.java
+/home/hskim66/korea/train-ticket/ts-food-map-service/src/main/java/food/init/InitData.java

@@ -1,0 +1,10 @@
+register/service/RegisterService.class
+register/controller/AccountRegisterController.class
+register/domain/RegisterInfo.class
+register/RegisterApplication.class
+register/domain/Account.class
+register/service/RegisterServiceImpl.class
+register/domain/RegisterResult.class
+register/domain/Gender.class
+register/domain/DocumentType.class
+register/domain/CreateAccountInfo.class

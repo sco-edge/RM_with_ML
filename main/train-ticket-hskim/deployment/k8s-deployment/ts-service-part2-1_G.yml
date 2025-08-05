@@ -1,0 +1,414 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-basic-info-service
+  labels:
+    app: ts-admin-basic-info-service
+spec:
+  selector:
+    app: ts-admin-basic-info-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18767
+      targetPort: 18767
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-order-service
+  labels:
+    app: ts-admin-order-service
+spec:
+  selector:
+    app: ts-admin-order-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16112
+      targetPort: 16112
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-route-service
+  labels:
+    app: ts-admin-route-service
+spec:
+  selector:
+    app: ts-admin-route-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16113
+      targetPort: 16113
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-travel-service
+  labels:
+    app: ts-admin-travel-service
+spec:
+  selector:
+    app: ts-admin-travel-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16114
+      targetPort: 16114
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-user-service
+  labels:
+    app: ts-admin-user-service
+spec:
+  selector:
+    app: ts-admin-user-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16115
+      targetPort: 16115
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-assurance-service
+  labels:
+    app: ts-assurance-service
+spec:
+  selector:
+    app: ts-assurance-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18888
+      targetPort: 18888
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-basic-service
+  labels:
+    app: ts-basic-service
+spec:
+  selector:
+    app: ts-basic-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 15680
+      targetPort: 15680
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-cancel-service
+  labels:
+    app: ts-cancel-service
+spec:
+  selector:
+    app: ts-cancel-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18885
+      targetPort: 18885 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-config-service
+  labels:
+    app: ts-config-service
+spec:
+  selector:
+    app: ts-config-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 15679
+      targetPort: 15679  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-price-service
+  labels:
+    app: ts-consign-price-service
+spec:
+  selector:
+    app: ts-consign-price-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16110
+      targetPort: 16110 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-service
+  labels:
+    app: ts-consign-service
+spec:
+  selector:
+    app: ts-consign-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16111
+      targetPort: 16111
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-contacts-service
+  labels:
+    app: ts-contacts-service
+spec:
+  selector:
+    app: ts-contacts-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12347
+      targetPort: 12347
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-execute-service
+  labels:
+    app: ts-execute-service
+spec:
+  selector:
+    app: ts-execute-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12386
+      targetPort: 12386
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-map-service
+  labels:
+    app: ts-food-map-service
+spec:
+  selector:
+    app: ts-food-map-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18855
+      targetPort: 18855
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-service
+  labels:
+    app: ts-food-service
+spec:
+  selector:
+    app: ts-food-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18856
+      targetPort: 18856
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-service
+  labels:
+    app: ts-inside-payment-service
+spec:
+  selector:
+    app: ts-inside-payment-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18673
+      targetPort: 18673
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-login-service
+  labels:
+    app: ts-login-service
+spec:
+  selector:
+    app: ts-login-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12342
+      targetPort: 12342
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-notification-service
+  labels:
+    app: ts-notification-service
+spec:
+  selector:
+    app: ts-notification-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 17853
+      targetPort: 17853
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-news-service
+  labels:
+    app: ts-news-service
+spec:
+  selector:
+    app: ts-news-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12862
+      targetPort: 12862
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-other-service
+  labels:
+    app: ts-order-other-service
+spec:
+  selector:
+    app: ts-order-other-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12032
+      targetPort: 12032
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-service
+  labels:
+    app: ts-order-service
+spec:
+  selector:
+    app: ts-order-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 12031
+      targetPort: 12031  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-payment-service
+  labels:
+    app: ts-payment-service
+spec:
+  selector:
+    app: ts-payment-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 19001
+      targetPort: 19001
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-preserve-other-service
+  labels:
+    app: ts-preserve-other-service
+spec:
+  selector:
+    app: ts-preserve-other-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 14569
+      targetPort: 14569  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-preserve-service
+  labels:
+    app: ts-preserve-service
+spec:
+  selector:
+    app: ts-preserve-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 14568
+      targetPort: 14568
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-price-service
+  labels:
+    app: ts-price-service
+spec:
+  selector:
+    app: ts-price-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 16579
+      targetPort: 16579
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-rebook-service
+  labels:
+    app: ts-rebook-service
+spec:
+  selector:
+    app: ts-rebook-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 18886
+      targetPort: 18886

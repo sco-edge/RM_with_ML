@@ -1,0 +1,14 @@
+seat/service/SeatServiceImpl.class
+seat/SeatApplication.class
+seat/domain/QueryConfig.class
+seat/domain/Ticket.class
+seat/controller/SeatController.class
+seat/domain/SeatRequest.class
+seat/domain/QueryForStationId.class
+seat/domain/GetTrainTypeResult.class
+seat/domain/SeatClass.class
+seat/domain/Route.class
+seat/domain/TrainType.class
+seat/service/SeatService.class
+seat/domain/LeftTicketInfo.class
+seat/domain/GetRouteResult.class

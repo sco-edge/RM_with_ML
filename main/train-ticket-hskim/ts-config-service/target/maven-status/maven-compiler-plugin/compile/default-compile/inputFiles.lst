@@ -1,0 +1,9 @@
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/service/ConfigServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/service/ConfigService.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/init/InitData.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/domain/Information.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/ConfigApplication.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/repository/ConfigRepository.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/controller/ConfigController.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/domain/Config.java
+/home/hskim66/korea/train-ticket/ts-config-service/src/main/java/config/domain/Information2.java

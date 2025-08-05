@@ -1,0 +1,778 @@
+apiVersion: apps/v1 #extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-admin-basic-info-service
+  labels:
+    app: ts-admin-basic-info-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-basic-info-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-basic-info-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-basic-info-service
+        image: swlove2024/ts-admin-basic-info-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18767
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"        
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-order-service
+  labels:
+    app: ts-admin-order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-order-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-order-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-order-service
+        image: swlove2024/ts-admin-order-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16112
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-route-service
+  labels:
+    app: ts-admin-route-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-route-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-route-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-route-service
+        image: swlove2024/ts-admin-route-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16113
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-travel-service
+  labels:
+    app: ts-admin-travel-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-travel-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-travel-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-travel-service
+        image: swlove2024/ts-admin-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16114
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-user-service
+  labels:
+    app: ts-admin-user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-admin-user-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-user-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-admin-user-service
+        image: swlove2024/ts-admin-user-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16115
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-assurance-service
+  labels:
+    app: ts-assurance-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-assurance-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-assurance-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-assurance-service
+        image: swlove2024/ts-assurance-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18888
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-basic-service
+  labels:
+    app: ts-basic-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-basic-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-basic-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-basic-service
+        image: swlove2024/ts-basic-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15680
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-cancel-service
+  labels:
+    app: ts-cancel-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-cancel-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-cancel-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-cancel-service
+        image: swlove2024/ts-cancel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18885
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-config-service
+  labels:
+    app: ts-config-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-config-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-config-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-config-service
+        image: swlove2024/ts-config-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15679
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-consign-price-service
+  labels:
+    app: ts-consign-price-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-consign-price-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-price-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-consign-price-service
+        image: swlove2024/ts-consign-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16110
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-consign-service
+  labels:
+    app: ts-consign-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-consign-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-consign-service
+        image: swlove2024/ts-consign-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16111
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-contacts-service
+  labels:
+    app: ts-contacts-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-contacts-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-contacts-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-contacts-service
+        image: swlove2024/ts-contacts-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12347
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-execute-service
+  labels:
+    app: ts-execute-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-execute-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-execute-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-execute-service
+        image: swlove2024/ts-execute-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12386
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-food-map-service
+  labels:
+    app: ts-food-map-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-food-map-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-food-map-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-food-map-service
+        image: swlove2024/ts-food-map-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18855
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-food-service
+  labels:
+    app: ts-food-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-food-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-food-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-food-service
+        image: swlove2024/ts-food-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18856
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-inside-payment-service
+  labels:
+    app: ts-inside-payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-inside-payment-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-inside-payment-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-inside-payment-service
+        image: swlove2024/ts-inside-payment-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18673
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-login-service
+  labels:
+    app: ts-login-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-login-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-login-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-login-service
+        image: swlove2024/ts-login-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12342
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-news-service
+  labels:
+    app: ts-news-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-news-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-news-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-news-service
+        image: swlove2024/ts-news-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12862
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-notification-service
+  labels:
+    app: ts-notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-notification-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-notification-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-notification-service
+        image: swlove2024/ts-notification-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 17853
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-order-other-service
+  labels:
+    app: ts-order-other-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-order-other-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-order-other-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-order-other-service
+        image: swlove2024/ts-order-other-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12032
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-order-service
+  labels:
+    app: ts-order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-order-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-order-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-order-service
+        image: swlove2024/ts-order-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12031
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-payment-service
+  labels:
+    app: ts-payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-payment-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-payment-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-payment-service
+        image: swlove2024/ts-payment-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 19001
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-preserve-other-service
+  labels:
+    app: ts-preserve-other-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-preserve-other-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-preserve-other-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-preserve-other-service
+        image: swlove2024/ts-preserve-other-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14569
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-preserve-service
+  labels:
+    app: ts-preserve-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-preserve-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-preserve-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-preserve-service
+        image: swlove2024/ts-preserve-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14568
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-price-service
+  labels:
+    app: ts-price-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-price-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-price-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-price-service
+        image: swlove2024/ts-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16579
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-rebook-service
+  labels:
+    app: ts-rebook-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-rebook-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-rebook-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-rebook-service
+        image: swlove2024/ts-rebook-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18886
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"        

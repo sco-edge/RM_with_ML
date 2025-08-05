@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-contacts-service
+  labels:
+    app: ts-contacts-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-contacts-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-contacts-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-contacts-service
+        image: swlove2024/ts-contacts-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12347
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

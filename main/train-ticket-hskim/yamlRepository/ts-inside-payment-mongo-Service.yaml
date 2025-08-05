@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-mongo
+  labels:
+    app: ts-inside-payment-mongo
+spec:
+  selector:
+    app: ts-inside-payment-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017

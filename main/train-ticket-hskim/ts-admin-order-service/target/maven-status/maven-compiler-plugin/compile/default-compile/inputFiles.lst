@@ -1,0 +1,16 @@
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/request/AddOrderRequest.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/request/UpdateOrderRequest.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/response/GetAllOrderResult.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/response/DeleteOrderResult.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/bean/OrderStatus.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/response/QueryOrderResult.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/bean/DeleteOrderInfo.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/service/AdminOrderServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/bean/Order.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/bean/SeatClass.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/request/DeleteOrderRequest.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/service/AdminOrderService.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/controller/AdminOrderController.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/AdminOrderApplication.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/response/AddOrderResult.java
+/home/hskim66/korea/train-ticket/ts-admin-order-service/src/main/java/adminorder/domain/response/UpdateOrderResult.java

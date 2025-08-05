@@ -1,0 +1,9 @@
+consign/domain/InsertConsignRecordResult.class
+consign/domain/GetPriceDomain.class
+consign/controller/ConsignController.class
+consign/domain/ConsignRequest.class
+consign/repository/ConsignRepository.class
+consign/service/ConsignServiceImpl.class
+consign/ConsignApplication.class
+consign/service/ConsignService.class
+consign/domain/ConsignRecord.class

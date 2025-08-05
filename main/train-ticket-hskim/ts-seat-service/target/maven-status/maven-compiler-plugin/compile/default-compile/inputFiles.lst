@@ -1,0 +1,14 @@
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/QueryForStationId.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/service/SeatService.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/SeatApplication.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/SeatClass.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/service/SeatServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/GetTrainTypeResult.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/SeatRequest.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/GetRouteResult.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/TrainType.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/Ticket.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/Route.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/QueryConfig.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/domain/LeftTicketInfo.java
+/home/hskim66/korea/train-ticket/ts-seat-service/src/main/java/seat/controller/SeatController.java

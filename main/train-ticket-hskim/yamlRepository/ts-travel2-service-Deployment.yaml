@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel2-service
+  labels:
+    app: ts-travel2-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-travel2-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-travel2-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-travel2-service
+        image: swlove2024/ts-travel2-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16346
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

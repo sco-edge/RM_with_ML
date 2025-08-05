@@ -1,0 +1,387 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  selector:
+    app: redis
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-account-mongo
+  labels:
+    app: ts-account-mongo
+spec:
+  selector:
+    app: ts-account-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-mongo
+  labels:
+    app: ts-route-mongo
+spec:
+  selector:
+    app: ts-route-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-contacts-mongo
+  labels:
+    app: ts-contacts-mongo
+spec:
+  selector:
+    app: ts-contacts-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-mongo
+  labels:
+    app: ts-order-mongo
+spec:
+  selector:
+    app: ts-order-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-other-mongo
+  labels:
+    app: ts-order-other-mongo
+spec:
+  selector:
+    app: ts-order-other-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-config-mongo
+  labels:
+    app: ts-config-mongo
+spec:
+  selector:
+    app: ts-config-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-station-mongo
+  labels:
+    app: ts-station-mongo
+spec:
+  selector:
+    app: ts-station-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-train-mongo
+  labels:
+    app: ts-train-mongo
+spec:
+  selector:
+    app: ts-train-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel-mongo
+  labels:
+    app: ts-travel-mongo
+spec:
+  selector:
+    app: ts-travel-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel2-mongo
+  labels:
+    app: ts-travel2-mongo
+spec:
+  selector:
+    app: ts-travel2-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-price-mongo
+  labels:
+    app: ts-price-mongo
+spec:
+  selector:
+    app: ts-price-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-security-mongo
+  labels:
+    app: ts-security-mongo
+spec:
+  selector:
+    app: ts-security-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-mongo
+  labels:
+    app: ts-inside-payment-mongo
+spec:
+  selector:
+    app: ts-inside-payment-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-payment-mongo
+  labels:
+    app: ts-payment-mongo
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: ts-payment-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-assurance-mongo
+  labels:
+    app: ts-assurance-mongo
+spec:
+  selector:
+    app: ts-assurance-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-ticket-office-mongo
+  labels:
+    app: ts-ticket-office-mongo
+spec:
+  selector:
+    app: ts-ticket-office-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-voucher-mysql
+  labels:
+    app: ts-voucher-mysql
+spec:
+  selector:
+    app: ts-voucher-mysql
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-map-mongo
+  labels:
+    app: ts-food-map-mongo
+spec:
+  selector:
+    app: ts-food-map-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-mongo
+  labels:
+    app: ts-consign-mongo
+spec:
+  selector:
+    app: ts-consign-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-price-mongo
+  labels:
+    app: ts-consign-price-mongo
+spec:
+  selector:
+    app: ts-consign-price-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-mongo
+  labels:
+    app: ts-food-mongo
+spec:
+  selector:
+    app: ts-food-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-verification-code-mongo
+  labels:
+    app: ts-verification-code-mongo
+spec:
+  selector:
+    app: ts-verification-code-mongo
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017

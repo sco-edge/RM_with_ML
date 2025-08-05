@@ -1,0 +1,14 @@
+server:
+  port: 18673
+
+spring:
+  application:
+    name: ts-inside-payment-service
+
+  data:
+    mongodb:
+      host: ts-inside-payment-mongo
+#     username: user
+#     password: ${MONGODB_PASSWORD}
+      database: ts
+      port: 27017

@@ -1,0 +1,9 @@
+config/init/InitData.class
+config/ConfigApplication.class
+config/service/ConfigServiceImpl.class
+config/domain/Config.class
+config/repository/ConfigRepository.class
+config/controller/ConfigController.class
+config/service/ConfigService.class
+config/domain/Information2.class
+config/domain/Information.class

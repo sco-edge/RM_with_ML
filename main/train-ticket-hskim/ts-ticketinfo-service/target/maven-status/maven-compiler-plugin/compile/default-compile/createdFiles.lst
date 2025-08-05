@@ -1,0 +1,11 @@
+ticketinfo/TicketInfoApplication.class
+ticketinfo/service/TicketInfoService.class
+ticketinfo/domain/Type.class
+ticketinfo/domain/QueryForStationId.class
+ticketinfo/domain/ResultForTravel.class
+ticketinfo/domain/Trip.class
+ticketinfo/domain/QueryForTravel.class
+ticketinfo/domain/TripId.class
+ticketinfo/service/TicketInfoServiceImpl.class
+ticketinfo/domain/TrainType.class
+ticketinfo/controller/TicketInfoController.class

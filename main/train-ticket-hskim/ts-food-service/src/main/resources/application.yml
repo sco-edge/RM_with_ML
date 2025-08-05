@@ -1,0 +1,13 @@
+server:
+  port: 18856
+
+spring:
+  application:
+    name: ts-food-service
+  data:
+    mongodb:
+      host: ts-food-mongo
+#      username: user
+#      password: ${MONGODB_PASSWORD}
+      database: ts
+      port: 27017

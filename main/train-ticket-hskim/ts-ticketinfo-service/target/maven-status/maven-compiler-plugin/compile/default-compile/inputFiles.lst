@@ -1,0 +1,11 @@
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/service/TicketInfoService.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/Type.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/TripId.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/QueryForStationId.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/QueryForTravel.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/Trip.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/ResultForTravel.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/service/TicketInfoServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/domain/TrainType.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/TicketInfoApplication.java
+/home/hskim66/korea/train-ticket/ts-ticketinfo-service/src/main/java/ticketinfo/controller/TicketInfoController.java

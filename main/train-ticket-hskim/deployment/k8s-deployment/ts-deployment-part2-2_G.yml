@@ -1,0 +1,387 @@
+apiVersion: apps/v1 #apps/v1
+kind: Deployment
+metadata:
+  name: ts-register-service
+  labels:
+    app: ts-register-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-register-service
+  template:
+    metadata:
+      labels:
+        app: ts-register-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-register-service
+        image: swlove2024/ts-register-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12344
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route-plan-service
+  labels:
+    app: ts-route-plan-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-route-plan-service
+  template:
+    metadata:
+      labels:
+        app: ts-route-plan-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-route-plan-service
+        image: swlove2024/ts-route-plan-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14578
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route-service
+  labels:
+    app: ts-route-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-route-service
+  template:
+    metadata:
+      labels:
+        app: ts-route-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-route-service
+        image: swlove2024/ts-route-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11178
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-seat-service
+  labels:
+    app: ts-seat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-seat-service
+  template:
+    metadata:
+      labels:
+        app: ts-seat-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-seat-service
+        image: swlove2024/ts-seat-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18898
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-security-service
+  labels:
+    app: ts-security-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-security-service
+  template:
+    metadata:
+      labels:
+        app: ts-security-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-security-service
+        image: swlove2024/ts-security-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11188
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-sso-service
+  labels:
+    app: ts-sso-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-sso-service
+  template:
+    metadata:
+      labels:
+        app: ts-sso-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-sso-service
+        image: swlove2024/ts-sso-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12349
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-station-service
+  labels:
+    app: ts-station-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-station-service
+  template:
+    metadata:
+      labels:
+        app: ts-station-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-station-service
+        image: swlove2024/ts-station-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12345
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticket-office-service
+  labels:
+    app: ts-ticket-office-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-ticket-office-service
+  template:
+    metadata:
+      labels:
+        app: ts-ticket-office-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-ticket-office-service
+        image: swlove2024/ts-ticket-office-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16108
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticketinfo-service
+  labels:
+    app: ts-ticketinfo-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-ticketinfo-service
+  template:
+    metadata:
+      labels:
+        app: ts-ticketinfo-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-ticketinfo-service
+        image: swlove2024/ts-ticketinfo-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15681
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-train-service
+  labels:
+    app: ts-train-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-train-service
+  template:
+    metadata:
+      labels:
+        app: ts-train-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-train-service
+        image: swlove2024/ts-train-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14567
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel2-service
+  labels:
+    app: ts-travel2-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-travel2-service
+  template:
+    metadata:
+      labels:
+        app: ts-travel2-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-travel2-service
+        image: swlove2024/ts-travel2-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16346
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel-plan-service
+  labels:
+    app: ts-travel-plan-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-travel-plan-service
+  template:
+    metadata:
+      labels:
+        app: ts-travel-plan-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-travel-plan-service
+        image: swlove2024/ts-travel-plan-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14322
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel-service
+  labels:
+    app: ts-travel-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-travel-service
+  template:
+    metadata:
+      labels:
+        app: ts-travel-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-travel-service
+        image: swlove2024/ts-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12346
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-verification-code-service
+  labels:
+    app: ts-verification-code-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-verification-code-service
+  template:
+    metadata:
+      labels:
+        app: ts-verification-code-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-verification-code-service
+        image: swlove2024/ts-verification-code-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15678
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-voucher-service
+  labels:
+    app: ts-voucher-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-voucher-service
+  template:
+    metadata:
+      labels:
+        app: ts-voucher-service
+        #version: v1
+    spec:
+      containers:
+      - name: ts-voucher-service
+        image: swlove2024/ts-voucher-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16101

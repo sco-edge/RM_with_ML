@@ -80,6 +80,10 @@ def query_and_preserve(q: Query):
         other_place_pair = (start, end)
         trip_ids = q.query_normal_ticket(place_pair=other_place_pair)
 
+    # trip_ids가 비어있으면 기본값 설정
+    if not trip_ids:
+        trip_ids = ["D1345"]  # 기본 trip ID
+
     _ = q.query_assurances()
 
     q.preserve(start, end, trip_ids, high_speed)

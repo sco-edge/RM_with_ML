@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-assurance-service
+  labels:
+    app: ts-assurance-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-assurance-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-assurance-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-assurance-service
+        image: swlove2024/ts-assurance-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18888
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

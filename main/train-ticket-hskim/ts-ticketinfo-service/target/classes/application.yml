@@ -1,0 +1,7 @@
+# HTTP Server
+server:
+  port: 15681  # HTTP (Tomcat) port
+
+spring:
+  application:
+    name: ts-ticketinfo-service

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-notification-service
+  labels:
+    app: ts-notification-service
+spec:
+  selector:
+    app: ts-notification-service
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 17853
+      targetPort: 17853

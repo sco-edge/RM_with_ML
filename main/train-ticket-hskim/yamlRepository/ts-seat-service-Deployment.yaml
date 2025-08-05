@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-seat-service
+  labels:
+    app: ts-seat-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-seat-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-seat-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-seat-service
+        image: swlove2024/ts-seat-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18898
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"

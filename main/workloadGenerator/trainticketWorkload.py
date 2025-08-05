@@ -31,4 +31,6 @@ class TrainticketWorkloadGenerator:
                 query_and_preserve(q)
             except Exception as e:
                 logging.warning(f"Exception in workload: {e}")
+                import traceback
+                logging.warning(f"Traceback: {traceback.format_exc()}")
             sleep(1.0 / self.target_throughput)  # QPS 제어

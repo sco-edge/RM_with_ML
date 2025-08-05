@@ -1,0 +1,12 @@
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/service/AdminRouteServiceImpl.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/service/AdminRouteService.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/bean/CreateAndModifyRouteInfo.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/request/DeleteRouteRequest.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/request/CreateAndModifyRouteRequest.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/AdminRouteApplication.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/response/GetRoutesListlResult.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/controller/AdminRouteController.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/response/DeleteRouteResult.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/bean/Route.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/response/CreateAndModifyRouteResult.java
+/home/hskim66/korea/train-ticket/ts-admin-route-service/src/main/java/adminroute/domain/bean/DeleteRouteInfo.java

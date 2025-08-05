@@ -8,6 +8,8 @@ def random_boolean() -> bool:
 
 
 def random_from_list(l: List):
+    if not l or len(l) == 0:
+        return None
     return random.choice(l)
 
 

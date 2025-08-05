@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-price-service
+  labels:
+    app: ts-price-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-price-service
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ts-price-service
+        version: v1
+    spec:
+      containers:
+      - name: ts-price-service
+        image: swlove2024/ts-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16579
+      tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
