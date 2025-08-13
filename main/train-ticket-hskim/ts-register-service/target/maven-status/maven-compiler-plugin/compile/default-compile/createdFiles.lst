@@ -1,5 +1,5 @@
-register/service/RegisterService.class
 register/controller/AccountRegisterController.class
+register/service/RegisterService.class
 register/domain/RegisterInfo.class
 register/RegisterApplication.class
 register/domain/Account.class

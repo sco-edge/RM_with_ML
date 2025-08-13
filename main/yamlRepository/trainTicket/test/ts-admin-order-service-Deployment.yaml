@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: swlove2024/ts-admin-order-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-admin-order-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16112
       tolerations:

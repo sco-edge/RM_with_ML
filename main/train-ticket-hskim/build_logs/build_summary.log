@@ -1,0 +1,16 @@
+🚀 병렬 빌드 시작 - 최대 동시 작업: 4
+📅 시작 시간: 2025. 08. 13. (수) 20:53:16 KST
+📊 총 서비스 수: 38
+==================================
+🔄 작업 시작: ts-admin-basic-info-service (PID: 3634412)
+🔨 빌드 시작: ts-admin-basic-info-service
+🔄 작업 시작: ts-admin-order-service (PID: 3634417)
+🔨 빌드 시작: ts-admin-order-service
+🔄 작업 시작: ts-admin-route-service (PID: 3634423)
+🔨 빌드 시작: ts-admin-route-service
+🔄 작업 시작: ts-admin-travel-service (PID: 3634429)
+🔨 빌드 시작: ts-admin-travel-service
+❌ Maven 빌드 실패: ts-admin-basic-info-service
+❌ Maven 빌드 실패: ts-admin-route-service
+❌ Maven 빌드 실패: ts-admin-travel-service
+❌ Maven 빌드 실패: ts-admin-order-service

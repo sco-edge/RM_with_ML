@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-verification-code-service
+  namespace: train-ticket
   labels:
     app: ts-verification-code-service
+    version: v1
 spec:
   replicas: 1
   selector:
@@ -18,11 +20,13 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: swlove2024/ts-verification-code-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-verification-code-service:v6
         ports:
         - containerPort: 15678
-      tolerations:
-      - key: "node-role.kubernetes.io/control-plane"
-        operator: "Exists"
-        effect: "NoSchedule"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi

@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: swlove2024/ts-cancel-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-cancel-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18885
       tolerations:

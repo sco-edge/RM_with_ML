@@ -6,8 +6,8 @@ foodsearch/domain/QueryTrainFoodInfo.class
 foodsearch/domain/FoodOrder.class
 foodsearch/domain/QueryFoodStoresInfo.class
 foodsearch/domain/AddFoodOrderResult.class
-foodsearch/domain/UpdateFoodOrderResult.class
 foodsearch/domain/UpdateFoodOrderInfo.class
+foodsearch/domain/UpdateFoodOrderResult.class
 foodsearch/controller/FoodController.class
 foodsearch/service/FoodService.class
 foodsearch/repository/FoodOrderRepository.class

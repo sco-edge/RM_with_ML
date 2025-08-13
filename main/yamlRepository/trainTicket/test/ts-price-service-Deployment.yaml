@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: swlove2024/ts-price-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-price-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16579
       tolerations:

@@ -33,14 +33,12 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - k8s-bk-15
-                - k8s-bk-16
-                - k8s-bk-17
-                - k8s-bk-18
+                - node6
+                - node7
       containers:
       - image: jaegertracing/all-in-one:1.54
         imagePullPolicy: IfNotPresent
-        name: hotel-reserv-jaeger
+        name: train-ticket-jaeger
         args:
           - --collector.otlp.enabled=true
           - --collector.zipkin.host-port=:9411

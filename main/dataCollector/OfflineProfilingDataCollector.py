@@ -1,6 +1,7 @@
 from datetime import datetime
 import multiprocessing
 import os
+import time
 
 from time import sleep
 import traceback
@@ -170,25 +171,176 @@ class OfflineProfilingDataCollector:
         Collect trace data and output merged trace information to CSV.
         (Existing docstring content remains unchanged or can be updated to mention the CSV output.)
         """
+        # Set log file
+        self.log_file = f"log/Booking.log"
+        
         # ... [existing code that gathers trace spans and builds merged_df] ...
         # Assume merged_df is now created with the required columns:
         # traceId, traceTime, startTime, endTime, parentId, childId, childOperation, parentOperation,
         # childMS, childPod, parentMS, parentPod, parentDuration, childDuration
+        # 테스트 시작 시간을 기준으로 시간 범위 설정 (더 넓은 범위)
+        test_start_time = test_data["start_time"]
+        start_time = test_start_time - 60  # 테스트 시작 1분 전
+        end_time = test_start_time + self.duration + 120  # 테스트 종료 2분 후
+        
         request_data = {
-        "start": int(test_data["start_time"] * 1000000),
-        "end": int((test_data["start_time"] + self.duration * 1000) * 1000000),
+        "start": start_time * 1000000,
+        "end": end_time * 1000000,
         "limit": self.max_traces,
         "service": self.entryPoint,
-        "tags": '{"http.status_code":"200"}',
         }
+        # Jaeger가 트레이스를 처리할 시간을 주기 위해 더 오래 대기
+        time.sleep(10)
+        
         req = requests.get(f"{self.jaegerHost}/api/traces", params=request_data)
+        print(f"Jaeger API Response Status: {req.status_code}")
+        print(f"Jaeger API Response Content: {req.content[:500]}...")
         res = json.loads(req.content)["data"]
+        
+        print(f"Request URL: {req.url}")
+        print(f"Response status: {req.status_code}")
+        print(f"Number of traces found: {len(res)}")
+        print(f"Type of res: {type(res)}")
+        print(f"Length check: {len(res) > 0}")
+        print(f"Time range: {start_time} to {end_time}")
+        print(f"Test start time: {test_data['start_time']}")
+        print(f"Current time: {int(time.time())}")
 
         if len(res) == 0:
             self.write_log(f"No traces fetched! Creating dummy trace data for testing.", "warning")
             # Create dummy trace data for testing
             dummy_data = self.create_dummy_trace_data(test_data)
             return True, dummy_data, None
+
+        # 실제 트레이스가 있을 때만 이 부분을 실행
+        if len(res) > 0:
+            print("Entering trace processing block...")
+            # 2. span -> merged_df 구성
+            service_id_mapping = (
+                pd.json_normalize(res)
+                .filter(regex="serviceName|traceID|tags")
+                .rename(
+                    columns=lambda x: re.sub(
+                        r"processes\.(.*)\.serviceName|processes\.(.*)\.tags",
+                        lambda match: match.group(1) if match.group(1) else f"{match.group(2)}Pod",
+                        x
+                    )
+                )
+                .rename(columns={"traceID": "traceId"})
+            )
+
+            service_id_mapping = (
+                service_id_mapping.filter(regex=".*Pod")
+                .applymap(
+                    lambda x: [v["value"] for v in x if v["key"] == "hostname"][0]
+                    if isinstance(x, list)
+                    else ""
+                )
+                .combine_first(service_id_mapping)
+            )
+
+            spans_data = pd.json_normalize(res, record_path="spans")[
+                [
+                    "traceID", "spanID", "operationName", "duration",
+                    "processID", "references", "startTime"
+                ]
+            ]
+            spans_with_parent = spans_data[~(spans_data["references"].astype(str) == "[]")]
+            root_spans = spans_data[(spans_data["references"].astype(str) == "[]")].rename(
+                columns={"traceID": "traceId", "startTime": "traceTime", "duration": "traceLatency"}
+            )[["traceId", "traceTime", "traceLatency"]]
+
+            spans_with_parent.loc[:, "parentId"] = spans_with_parent["references"].map(
+                lambda x: x[0]["spanID"]
+            )
+            temp_parent_spans = spans_data[
+                ["traceID", "spanID", "operationName", "duration", "processID"]
+            ].rename(columns={
+                "spanID": "parentId",
+                "processID": "parentProcessId",
+                "operationName": "parentOperation",
+                "duration": "parentDuration",
+                "traceID": "traceId",
+            })
+
+            temp_children_spans = spans_with_parent[
+                ["operationName", "duration", "parentId", "traceID", "spanID", "processID", "startTime"]
+            ].rename(columns={
+                "spanID": "childId",
+                "processID": "childProcessId",
+                "operationName": "childOperation",
+                "duration": "childDuration",
+                "traceID": "traceId",
+            })
+
+            merged_df = pd.merge(temp_parent_spans, temp_children_spans, on=["parentId", "traceId"])
+            merged_df = merged_df.merge(service_id_mapping, on="traceId")
+            merged_df = merged_df.merge(root_spans, on="traceId")
+
+            merged_df = merged_df.assign(
+                childMS=merged_df.apply(lambda x: x[x["childProcessId"]], axis=1),
+                childPod=merged_df.apply(lambda x: x[f"{x['childProcessId']}Pod"], axis=1),
+                parentMS=merged_df.apply(lambda x: x[x["parentProcessId"]], axis=1),
+                parentPod=merged_df.apply(lambda x: x[f"{x['parentProcessId']}Pod"], axis=1),
+                endTime=merged_df["startTime"] + merged_df["childDuration"]
+            )
+
+            # 3. 저장할 디렉토리 구성
+            
+            #4. csv 파일 저장
+            ordered_cols = [
+                "traceId", "traceTime", "startTime", "endTime",
+                "parentId", "childId", "childOperation", "parentOperation",
+                "childMS", "childPod", "parentMS", "parentPod",
+                "parentDuration", "childDuration"
+            ]
+            merged_df = merged_df[ordered_cols]
+            
+            trace_groups = merged_df.groupby("traceId")
+            simple_rows = []
+            complex_rows = []
+
+            for trace_id, trace_df in trace_groups:
+                # num_services = len(set(trace_df["childMS"]).union(set(trace_df["parentMS"])))
+                # fan_out = trace_df["parentId"].value_counts().max()
+                # print(f"[traceId: {trace_id}] services: {num_services}, fan-out: {fan_out}")
+                if is_complex_trace(trace_df,4):  
+                    complex_rows.append(trace_df)
+                    print("complex")
+                else:               
+                    simple_rows.append(trace_df)
+                    print("simple")
+
+            if len(simple_rows) > 0:
+                simple_df = pd.concat(simple_rows, ignore_index=True)
+            else:
+                simple_df = pd.DataFrame()  # 혹시나 대비
+
+            if len(complex_rows) > 0:
+                complex_df = pd.concat(complex_rows, ignore_index=True)
+            else:
+                complex_df = pd.DataFrame()
+            
+            
+
+            # 저장 경로 설정
+            base_dir = os.path.join(self.resultPath, str(test_data['target_throughput']), f"epoch_{repeat_num}")
+            simple_path = os.path.join(base_dir, "simple")
+            complex_path = os.path.join(base_dir, "complex")
+            os.makedirs(simple_path, exist_ok=True)
+            os.makedirs(complex_path, exist_ok=True)
+            
+            
+
+            # 저장
+            if not simple_df.empty:
+                simple_df.to_csv(os.path.join(simple_path, "raw_data.csv"), index=False)
+            if not complex_df.empty:
+                complex_df.to_csv(os.path.join(complex_path, "raw_data.csv"), index=False)
+
+            print(f"[✓] 분리 저장됨 → simple: {len(simple_df)} rows, complex: {len(complex_df)} rows")
+
+            return True, merged_df, None
 
     def create_dummy_trace_data(self, test_data):
         """Create dummy trace data for testing when Jaeger is not properly configured"""
@@ -219,137 +371,9 @@ class OfflineProfilingDataCollector:
         
         return dummy_data
 
-        # 2. span -> merged_df 구성
-        service_id_mapping = (
-            pd.json_normalize(res)
-            .filter(regex="serviceName|traceID|tags")
-            .rename(
-                columns=lambda x: re.sub(
-                    r"processes\.(.*)\.serviceName|processes\.(.*)\.tags",
-                    lambda match: match.group(1) if match.group(1) else f"{match.group(2)}Pod",
-                    x
-                )
-            )
-            .rename(columns={"traceID": "traceId"})
-        )
-
-        service_id_mapping = (
-            service_id_mapping.filter(regex=".*Pod")
-            .applymap(
-                lambda x: [v["value"] for v in x if v["key"] == "hostname"][0]
-                if isinstance(x, list)
-                else ""
-            )
-            .combine_first(service_id_mapping)
-        )
-
-        spans_data = pd.json_normalize(res, record_path="spans")[
-            [
-                "traceID", "spanID", "operationName", "duration",
-                "processID", "references", "startTime"
-            ]
-        ]
-        spans_with_parent = spans_data[~(spans_data["references"].astype(str) == "[]")]
-        root_spans = spans_data[(spans_data["references"].astype(str) == "[]")].rename(
-            columns={"traceID": "traceId", "startTime": "traceTime", "duration": "traceLatency"}
-        )[["traceId", "traceTime", "traceLatency"]]
-
-        spans_with_parent.loc[:, "parentId"] = spans_with_parent["references"].map(
-            lambda x: x[0]["spanID"]
-        )
-        temp_parent_spans = spans_data[
-            ["traceID", "spanID", "operationName", "duration", "processID"]
-        ].rename(columns={
-            "spanID": "parentId",
-            "processID": "parentProcessId",
-            "operationName": "parentOperation",
-            "duration": "parentDuration",
-            "traceID": "traceId",
-        })
-
-        temp_children_spans = spans_with_parent[
-            ["operationName", "duration", "parentId", "traceID", "spanID", "processID", "startTime"]
-        ].rename(columns={
-            "spanID": "childId",
-            "processID": "childProcessId",
-            "operationName": "childOperation",
-            "duration": "childDuration",
-            "traceID": "traceId",
-        })
-
-        merged_df = pd.merge(temp_parent_spans, temp_children_spans, on=["parentId", "traceId"])
-        merged_df = merged_df.merge(service_id_mapping, on="traceId")
-        merged_df = merged_df.merge(root_spans, on="traceId")
-
-        merged_df = merged_df.assign(
-            childMS=merged_df.apply(lambda x: x[x["childProcessId"]], axis=1),
-            childPod=merged_df.apply(lambda x: x[f"{x['childProcessId']}Pod"], axis=1),
-            parentMS=merged_df.apply(lambda x: x[x["parentProcessId"]], axis=1),
-            parentPod=merged_df.apply(lambda x: x[f"{x['parentProcessId']}Pod"], axis=1),
-            endTime=merged_df["startTime"] + merged_df["childDuration"]
-        )
-
-        # 3. 저장할 디렉토리 구성
-        
-
-        #4. csv 파일 저장
-        ordered_cols = [
-            "traceId", "traceTime", "startTime", "endTime",
-            "parentId", "childId", "childOperation", "parentOperation",
-            "childMS", "childPod", "parentMS", "parentPod",
-            "parentDuration", "childDuration"
-        ]
-        merged_df = merged_df[ordered_cols]
-        
-
-   
-        trace_groups = merged_df.groupby("traceId")
-        simple_rows = []
-        complex_rows = []
-
-        for trace_id, trace_df in trace_groups:
-            # num_services = len(set(trace_df["childMS"]).union(set(trace_df["parentMS"])))
-            # fan_out = trace_df["parentId"].value_counts().max()
-            # print(f"[traceId: {trace_id}] services: {num_services}, fan-out: {fan_out}")
-            if is_complex_trace(trace_df,4):  
-                complex_rows.append(trace_df)
-                print("complex")
-            else:               
-                simple_rows.append(trace_df)
-                print("simple")
-
-        if len(simple_rows) > 0:
-            simple_df = pd.concat(simple_rows, ignore_index=True)
-        else:
-            simple_df = pd.DataFrame()  # 혹시나 대비
-
-        if len(complex_rows) > 0:
-            complex_df = pd.concat(complex_rows, ignore_index=True)
-        else:
-            complex_df = pd.DataFrame()
-        
-        
-
-        # 저장 경로 설정
-        base_dir = os.path.join(self.resultPath, str(test_data['target_throughput']), f"epoch_{repeat_num}")
-        simple_path = os.path.join(base_dir, "simple")
-        complex_path = os.path.join(base_dir, "complex")
-        os.makedirs(simple_path, exist_ok=True)
-        os.makedirs(complex_path, exist_ok=True)
-        
-        
-
-        # 저장
-        if not simple_df.empty:
-            simple_df.to_csv(os.path.join(simple_path, "raw_data.csv"), index=False)
-        if not complex_df.empty:
-            complex_df.to_csv(os.path.join(complex_path, "raw_data.csv"), index=False)
-
-        print(f"[✓] 분리 저장됨 → simple: {len(simple_df)} rows, complex: {len(complex_df)} rows")
-
-        return True, merged_df, None
-
-        # **NEW**: Ensure the output directory exists for the given throughput, epoch, and graph type
+        # 트레이스가 없거나 처리에 실패한 경우
+        self.write_log(f"No traces processed or processing failed.", "warning")
+        return False, None, None
         
 
     

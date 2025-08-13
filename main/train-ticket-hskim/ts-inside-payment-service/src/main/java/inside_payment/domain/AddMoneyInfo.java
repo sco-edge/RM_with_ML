@@ -1,7 +1,5 @@
 package inside_payment.domain;
 
-import javax.xml.ws.soap.Addressing;
-
 
 public class AddMoneyInfo {
     private String userId;

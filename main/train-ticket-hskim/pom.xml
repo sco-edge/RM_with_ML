@@ -11,7 +11,7 @@
 	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>1.5.22.RELEASE</version>
     </parent>
 
 	<modules>
@@ -53,21 +53,10 @@
         <module>ts-admin-route-service</module>
         <module>ts-admin-travel-service</module>
 		<module>ts-admin-user-service</module>
+		<module>ts-common</module>
 		<!--<module>ts-ticket-advance-service</module>-->
 		<!--<module>1_services_analysis_mvn</module>-->
     </modules>
-
-	<!--<dependencyManagement>-->
-		<!--<dependencies>-->
-			<!--<dependency>-->
-				<!--<groupId>org.springframework.cloud</groupId>-->
-				<!--<artifactId>spring-cloud-sleuth</artifactId>-->
-				<!--<version>1.2.3.BUILD-SNAPSHOT</version>-->
-				<!--<type>pom</type>-->
-				<!--<scope>import</scope>-->
-			<!--</dependency>-->
-		<!--</dependencies>-->
-	<!--</dependencyManagement>-->
 
 	<dependencies>
 

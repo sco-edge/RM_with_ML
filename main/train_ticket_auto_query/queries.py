@@ -34,7 +34,7 @@ class Query:
 
         # 수동으로 YsbCaptcha 쿠키 설정
         self.session.cookies.set("YsbCaptcha", "1234")
-
+        
         payload = {
             "email": email,
             "password": password,
@@ -691,4 +691,3 @@ class Query:
                 f"preserve failed, code: {res.status_code}, {res.text}")
         return
     
-

@@ -1,0 +1,117 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective model for fdse.microservice:ts-admin-user-service:jar:1.0
+[[1;33mWARNING[m] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.services:ts-common:jar -> duplicate declaration of version 0.1.0 @ line 32, column 21
+[[1;33mWARNING[m] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.services:ts-common:jar -> duplicate declaration of version 0.1.0 @ line 37, column 21
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] It is highly recommended to fix these problems because they threaten the stability of your build.
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] For this reason, future Maven versions might no longer support building such malformed projects.
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------< [0;36mfdse.microservice:ts-admin-user-service[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding ts-admin-user-service 1.0[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-clean-plugin:2.6.1:clean[m [1m(default-clean)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Deleting /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.7:resources[m [1m(default-resources)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 0 resource
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 16 source files to /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/target/classes
+[[1;33mWARNING[m] /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/src/main/java/adminuser/service/AdminUserServiceImpl.java: /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/src/main/java/adminuser/service/AdminUserServiceImpl.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/src/main/java/adminuser/service/AdminUserServiceImpl.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.7:testResources[m [1m(default-testResources)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.18.1:test[m [1m(default-test)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Tests are skipped.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.6:jar[m [1m(default-jar)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/target/ts-admin-user-service-1.0.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mspring-boot-maven-plugin:1.5.22.RELEASE:repackage[m [1m(default)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-install-plugin:2.5.2:install[m [1m(default-install)[m @ [36mts-admin-user-service[0;1m ---[m
+[[1;34mINFO[m] Installing /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/target/ts-admin-user-service-1.0.jar to /home/masternode/.m2/repository/fdse/microservice/ts-admin-user-service/1.0/ts-admin-user-service-1.0.jar
+[[1;34mINFO[m] Installing /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-admin-user-service/pom.xml to /home/masternode/.m2/repository/fdse/microservice/ts-admin-user-service/1.0/ts-admin-user-service-1.0.pom
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  9.343 s
+[[1;34mINFO[m] Finished at: 2025-08-13T20:30:06+09:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 193B done
+#1 DONE 1.6s
+
+#2 [internal] load metadata for docker.io/library/openjdk:8-jre
+#2 ...
+
+#3 [auth] library/openjdk:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/openjdk:8-jre
+#2 DONE 2.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 2B done
+#4 DONE 3.6s
+
+#5 [1/2] FROM docker.io/library/openjdk:8-jre@sha256:667a15e7bc533a90fb39ddb7e5bed63162ac3c13a97e6c698bf4f139f51b7d33
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 ...
+
+#5 [1/2] FROM docker.io/library/openjdk:8-jre@sha256:667a15e7bc533a90fb39ddb7e5bed63162ac3c13a97e6c698bf4f139f51b7d33
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 31.47MB 0.2s done
+#6 DONE 3.0s
+
+#7 [2/2] ADD ./target/ts-admin-user-service-1.0.jar /app/
+#7 DONE 9.2s
+
+#8 exporting to image
+#8 exporting layers
+#8 exporting layers 1.6s done
+#8 writing image sha256:2ea232c994ca8257a087b974d9c2c7483efb867d56523c369141e2957a028d9a
+#8 writing image sha256:2ea232c994ca8257a087b974d9c2c7483efb867d56523c369141e2957a028d9a 0.5s done
+#8 naming to docker.io/ksh6283/ts-admin-user-service:v2
+#8 naming to docker.io/ksh6283/ts-admin-user-service:v2 0.4s done
+#8 DONE 4.0s
+The push refers to repository [docker.io/ksh6283/ts-admin-user-service]
+bf738923019e: Preparing
+1aaddf64804f: Preparing
+990c5138f5d1: Preparing
+5c384ea5f752: Preparing
+293d5db30c9f: Preparing
+03127cdb479b: Preparing
+9c742cd6c7a5: Preparing
+03127cdb479b: Waiting
+293d5db30c9f: Waiting
+9c742cd6c7a5: Waiting
+5c384ea5f752: Layer already exists
+990c5138f5d1: Layer already exists
+1aaddf64804f: Layer already exists
+293d5db30c9f: Layer already exists
+03127cdb479b: Layer already exists
+9c742cd6c7a5: Layer already exists
+bf738923019e: Pushed
+v2: digest: sha256:1af3eb8cd151d531e711f414c3f63a00d7a7e405a91630051665310bc746ed21 size: 1794

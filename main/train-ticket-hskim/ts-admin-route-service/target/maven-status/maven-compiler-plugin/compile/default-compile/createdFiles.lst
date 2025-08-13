@@ -1,5 +1,5 @@
-adminroute/domain/bean/DeleteRouteInfo.class
 adminroute/domain/request/DeleteRouteRequest.class
+adminroute/domain/bean/DeleteRouteInfo.class
 adminroute/domain/bean/Route.class
 adminroute/domain/request/CreateAndModifyRouteRequest.class
 adminroute/domain/response/GetRoutesListlResult.class

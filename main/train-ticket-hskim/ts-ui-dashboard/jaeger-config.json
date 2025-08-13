@@ -1,0 +1,11 @@
+{
+  "service_name": "ts-ui-dashboard",
+  "sampler": {
+    "type": "const",
+    "param": 1
+  },
+  "reporter": {
+    "logSpans": true,
+    "localAgentHostPort": "jaeger:6831"
+  }
+} 

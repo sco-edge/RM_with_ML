@@ -5,12 +5,12 @@ security/domain/GetOrderInfoForSecurityResult.class
 security/controller/SecurityController.class
 security/repository/SecurityRepository.class
 security/domain/Order.class
-security/domain/SecurityConfig.class
 security/domain/CheckInfo.class
-security/init/initData.class
+security/domain/SecurityConfig.class
 security/domain/CreateSecurityConfigResult.class
-security/service/SecurityServiceImpl.class
+security/init/initData.class
 security/SecurityApplication.class
+security/service/SecurityServiceImpl.class
 security/domain/GetOrderInfoForSecurity.class
 security/domain/DeleteConfigInfo.class
 security/domain/OrderStatus.class

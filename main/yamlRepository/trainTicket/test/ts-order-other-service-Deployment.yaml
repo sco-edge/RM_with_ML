@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: swlove2024/ts-order-other-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-order-other-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12032
       tolerations:

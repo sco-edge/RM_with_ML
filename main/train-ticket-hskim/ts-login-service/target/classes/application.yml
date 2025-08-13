@@ -7,3 +7,9 @@ server:
 spring:
   application:
     name: ts-login-service
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

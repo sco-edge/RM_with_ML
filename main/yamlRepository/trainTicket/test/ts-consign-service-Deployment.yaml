@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: swlove2024/ts-consign-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-consign-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16111
       tolerations:

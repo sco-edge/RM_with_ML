@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    config:
+      uri: http://ts-config-service:15679
+      fail-fast: false

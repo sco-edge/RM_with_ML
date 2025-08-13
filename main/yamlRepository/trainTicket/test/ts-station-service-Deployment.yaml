@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: swlove2024/ts-station-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-station-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12345
       tolerations:

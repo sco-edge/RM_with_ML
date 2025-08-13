@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: swlove2024/ts-food-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-food-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18856
       tolerations:

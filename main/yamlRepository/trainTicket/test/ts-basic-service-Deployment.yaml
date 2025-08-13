@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: swlove2024/ts-basic-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-basic-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15680
       tolerations:

@@ -12,5 +12,5 @@ adminuser/domain/bean/DocumentType.class
 adminuser/domain/request/UpdateAccountRequest.class
 adminuser/domain/bean/Gender.class
 adminuser/domain/bean/ModifyAccountInfo.class
-adminuser/domain/response/ModifyAccountResult.class
 adminuser/domain/request/AddAccountRequest.class
+adminuser/domain/response/ModifyAccountResult.class

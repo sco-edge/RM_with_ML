@@ -1,7 +1,5 @@
 package rebook.domain;
 
-import javax.xml.ws.soap.Addressing;
-
 
 public class AddMoneyInfo {
 

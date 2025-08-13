@@ -1,6 +1,6 @@
 preserveOther/domain/Contacts.class
-preserveOther/domain/Type.class
 preserveOther/domain/AddAssuranceResult.class
+preserveOther/domain/Type.class
 preserveOther/domain/NotifyInfo.class
 preserveOther/domain/AddFoodOrderResult.class
 preserveOther/domain/OrderStatus.class
@@ -10,8 +10,8 @@ preserveOther/PreserveOtherApplication.class
 preserveOther/domain/TripResponse.class
 preserveOther/domain/GetAccountByIdResult.class
 preserveOther/domain/ConsignRecord.class
-preserveOther/domain/CheckResult.class
 preserveOther/domain/AddAssuranceInfo.class
+preserveOther/domain/CheckResult.class
 preserveOther/domain/Assurance.class
 preserveOther/domain/TrainType.class
 preserveOther/domain/GetContactsInfo.class
@@ -40,8 +40,8 @@ preserveOther/domain/TripId.class
 preserveOther/domain/VerifyResult.class
 preserveOther/domain/Account.class
 preserveOther/domain/GetTripAllDetailInfo.class
-preserveOther/domain/QueryPriceInfo.class
 preserveOther/domain/GetTripInfo.class
+preserveOther/domain/QueryPriceInfo.class
 preserveOther/domain/ResultForTravel.class
 preserveOther/service/PreserveOtherServiceImpl.class
 preserveOther/domain/Order.class

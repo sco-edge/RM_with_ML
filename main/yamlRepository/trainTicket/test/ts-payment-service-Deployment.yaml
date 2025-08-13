@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: swlove2024/ts-payment-service
-        imagePullPolicy: Always
+        image: ksh6283/ts-payment-service:v2
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 19001
       tolerations:

@@ -381,3 +381,11 @@
 <error> <2025/06/18 18:05:12> Fetch CPU usage data failed!
 <error> <2025/06/18 18:05:33> Fetch CPU usage data failed!
 <error> <2025/06/18 18:05:57> Fetch CPU usage data failed!
+<info> <2025/08/07 15:27:04> Dummy Throughput Used: 100,Target Throughput: 100
+<info> <2025/08/07 15:27:35> Dummy Throughput Used: 200,Target Throughput: 200
+<info> <2025/08/07 15:30:27> Dummy Throughput Used: 100,Target Throughput: 100
+<info> <2025/08/07 15:30:57> Dummy Throughput Used: 200,Target Throughput: 200
+<info> <2025/08/07 15:31:27> Dummy Throughput Used: 300,Target Throughput: 300
+<info> <2025/08/07 15:33:05> Dummy Throughput Used: 100,Target Throughput: 100
+<info> <2025/08/07 15:33:42> Dummy Throughput Used: 200,Target Throughput: 200
+<info> <2025/08/07 15:34:19> Dummy Throughput Used: 300,Target Throughput: 300

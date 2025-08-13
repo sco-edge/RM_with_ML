@@ -2,10 +2,11 @@ server:
   port: 15678  # HTTP (Tomcat) port
 
 spring:
-
   application:
     name: ts-verification-code-service
-
+  cloud:
+    config:
+      uri: http://ts-config-service:15679
   data:
     mongodb:
       host: ts-verification-code-mongo

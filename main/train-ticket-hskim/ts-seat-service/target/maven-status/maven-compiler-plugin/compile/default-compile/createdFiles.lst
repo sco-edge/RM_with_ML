@@ -4,8 +4,8 @@ seat/domain/QueryConfig.class
 seat/domain/Ticket.class
 seat/controller/SeatController.class
 seat/domain/SeatRequest.class
-seat/domain/QueryForStationId.class
 seat/domain/GetTrainTypeResult.class
+seat/domain/QueryForStationId.class
 seat/domain/SeatClass.class
 seat/domain/Route.class
 seat/domain/TrainType.class
