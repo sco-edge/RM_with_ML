@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ts-register-service
-        image: ksh6283/ts-register-service:v2
+        image: ksh6283/ts-register-service:v4
         ports:
         - containerPort: 12345
         resources:

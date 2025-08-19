@@ -4,6 +4,7 @@
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/ContactsApplication.java
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/domain/DeleteContactsResult.java
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/init/InitData.java
+/home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/util/JWTUtil.java
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/repository/ContactsRepository.java
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/service/ContactsServiceImpl.java
 /home/masternode/RM_with_ML/main/train-ticket-hskim/ts-contacts-service/src/main/java/contacts/domain/GetContactsInfo.java

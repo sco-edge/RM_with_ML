@@ -812,3 +812,10 @@
 <error> <2025/07/23 16:06:23> No traces fetched!
 <info> <2025/07/23 16:06:54> Dummy Throughput Used: 5,Target Throughput: 5
 <error> <2025/07/23 16:06:54> No traces fetched!
+=== NEW LOG ENTRY 2025. 08. 19. (화) 19:23:42 KST ===
+<info> <2025/08/19 19:24:26> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/19 19:24:57> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/19 19:26:54> Fetch CPU usage data failed!
+<error> <2025/08/19 19:27:23> Fetch CPU usage data failed!
+<info> <2025/08/19 19:28:05> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/19 19:28:36> Dummy Throughput Used: 5,Target Throughput: 5

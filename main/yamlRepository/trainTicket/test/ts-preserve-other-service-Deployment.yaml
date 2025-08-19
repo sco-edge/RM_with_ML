@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: ksh6283/ts-preserve-other-service:v2
+        image: ksh6283/ts-preserve-other-service:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 14569

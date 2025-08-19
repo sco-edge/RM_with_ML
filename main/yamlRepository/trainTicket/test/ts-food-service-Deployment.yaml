@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: ksh6283/ts-food-service:v2
+        image: ksh6283/ts-food-service:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18856

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: ksh6283/ts-contacts-service:v2
+        image: ksh6283/ts-contacts-service:v5
         ports:
         - containerPort: 12347
         resources:

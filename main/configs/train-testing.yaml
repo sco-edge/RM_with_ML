@@ -26,6 +26,6 @@ workload_config:
 
 collector_config:
   jaeger_host: http://10.0.1.106:30095
-  entry_point: ts-ui-dashboard
+  entry_point: ts-login-service
   max_traces: 100000
   monitor_interval: 1

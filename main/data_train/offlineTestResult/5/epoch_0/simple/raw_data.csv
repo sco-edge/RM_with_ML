@@ -1,0 +1,9 @@
+traceId,traceTime,startTime,endTime,parentId,childId,childOperation,parentOperation,childMS,childPod,parentMS,parentPod,parentDuration,childDuration
+8cdc61ee320151d1,1755599255108000,1755599255174000,1755599255181560,76160ef85c899ee8,11d230d8fb632688,POST,login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,29684,7560
+8cdc61ee320151d1,1755599255108000,1755599255184000,1755599255199803,76160ef85c899ee8,f4f2f57e86d3a51d,POST,login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,29684,15803
+8cdc61ee320151d1,1755599255108000,1755599255171000,1755599255200684,bd3f47ab03ae748e,76160ef85c899ee8,login,/login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,33241,29684
+8cdc61ee320151d1,1755599255108000,1755599255108535,1755599255141776,8cdc61ee320151d1,bd3f47ab03ae748e,/login,/login,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,33776,33241
+c0f3ef2f1444e61c,1755599285669000,1755599285736000,1755599285743501,bc437115c61f9324,69af618d32db12f1,POST,login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,30173,7501
+c0f3ef2f1444e61c,1755599285669000,1755599285746000,1755599285761456,bc437115c61f9324,880e4d89a3803c6d,POST,login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,30173,15456
+c0f3ef2f1444e61c,1755599285669000,1755599285733000,1755599285763173,b724718ed300d887,bc437115c61f9324,login,/login,ts-login-service,ts-login-service-55cbfcdcfb-gd6sb,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,33527,30173
+c0f3ef2f1444e61c,1755599285669000,1755599285669115,1755599285702642,c0f3ef2f1444e61c,b724718ed300d887,/login,/login,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,ts-ui-dashboard,ts-ui-dashboard-6986c6bfcd-9qzv7,33643,33527

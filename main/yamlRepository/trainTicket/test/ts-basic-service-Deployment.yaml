@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: ksh6283/ts-basic-service:v2
+        image: ksh6283/ts-basic-service:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 15680

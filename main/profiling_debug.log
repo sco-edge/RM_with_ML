@@ -1,0 +1,336 @@
+mkdir: cannot create directory ‘tmp’: File exists
+mkdir: cannot create directory ‘log’: File exists
+INFO:auto-queries:login success, uid: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:False  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591135117,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:False  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591137520,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591139993,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591140221,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:False  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591141979,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591143453,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591143490,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591145658,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591146193,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591148163,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:True  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591148250,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591150770,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591151027,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591153388,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591153494,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591154880,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591154971,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:False  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591157124,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: False  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591159658,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591162404,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591164055,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591164234,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:login success, uid: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591167951,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591170382,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591170424,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591173308,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591173400,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591177156,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:True  need_consign: False  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591177248,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591180296,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: False  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591180794,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: False  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591182148,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591184873,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:True  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591184930,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591186479,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:True  need_consign: True  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591186830,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: False  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591188779,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:False  need_consign: True  need_assurance:False
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591190625,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+INFO:auto-queries:not need food
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: False need_food:False  need_consign: True  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591193353,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserveOther"}
+INFO:auto-queries:need food
+WARNING:auto-queries:query food failed, response data is {"timestamp":1755591194250,"status":404,"error":"Not Found","message":"No message available","path":"/food/getFood/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"}
+WARNING:auto-queries:query contacts failed, response data is <html>
+<head><title>404 Not Found</title></head>
+<body>
+<center><h1>404 Not Found</h1></center>
+<hr><center>nginx/1.27.5</center>
+</body>
+</html>
+
+WARNING:auto-queries:No contacts available, using default
+INFO:auto-queries:choices: preserve_high: True need_food:True  need_consign: False  need_assurance:True
+ERROR:auto-queries:preserve failed, code: 500, {"timestamp":1755591194629,"status":500,"error":"Internal Server Error","exception":"org.springframework.web.client.HttpServerErrorException","message":"500 ","path":"/preserve"}
+- Repeat 0 of Booking: 1 clients (No Interference)
+Login URL: http://10.0.1.106:32677/login
+- Repeat 1 of Booking: 1 clients (No Interference)
+- Used time: 00:00:31, Avg. round time: 00:00:31, Estimated time left: 00:00:31
+Login URL: http://10.0.1.106:32677/login

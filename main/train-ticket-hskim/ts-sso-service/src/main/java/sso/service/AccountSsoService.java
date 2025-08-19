@@ -29,4 +29,10 @@ public interface AccountSsoService {
 
     DeleteAccountResult deleteAccount(String accountId, HttpHeaders headers);
 
+    // JWT 토큰 검증 메서드
+    boolean verifyJWTToken(String token);
+
+    // JWT 토큰에서 사용자 ID 추출 메서드
+    String extractUserIdFromJWT(String token);
+
 }

@@ -1,0 +1,5 @@
+parentMS,childMS,parentOperation,childOperation,tag,service
+ts-ui-dashboard,ts-ui-dashboard,/login,/login,1,Booking
+ts-ui-dashboard,ts-login-service,/login,login,1.1,Booking
+ts-login-service,ts-login-service,login,POST,1.1.1,Booking
+ts-login-service,ts-login-service,login,POST,1.1.2,Booking

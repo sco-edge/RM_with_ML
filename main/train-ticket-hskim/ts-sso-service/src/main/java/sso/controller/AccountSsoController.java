@@ -59,14 +59,15 @@ public class AccountSsoController {
             System.out.println("[SSO Service][Login] Login Fail. No token generate.");
             return lr;
         }else{
-            //Post token to the sso
+            //Post token to the sso (UUID 토큰은 내부 세션 관리용으로만 사용)
             System.out.println("[SSO Service][Login] Password Right. Put token to sso.");
             PutLoginResult tokenResult = loginPutToken(lr.getAccount().getId().toString());
             System.out.println("[SSO Service] PutLoginResult Status: " + tokenResult.isStatus());
             if(tokenResult.isStatus() == true){
-                System.out.println("[SSO Service][Login] Post to sso:" + tokenResult.getToken());
-                lr.setToken(tokenResult.getToken());
-                lr.setMessage(tokenResult.getMsg());
+                System.out.println("[SSO Service][Login] UUID token for session: " + tokenResult.getToken());
+                // JWT 토큰은 이미 설정되어 있음 (AccountSsoServiceImpl.login()에서)
+                // UUID 토큰은 내부 세션 관리용으로만 사용
+                System.out.println("[SSO Service][Login] JWT token maintained: " + lr.getToken());
             }else{
                 System.out.println("[SSO Service][Login] Token Result Fail.");
                 lr.setToken(null);
@@ -94,6 +95,21 @@ public class AccountSsoController {
     @RequestMapping(path = "/verifyLoginToken/{token}", method = RequestMethod.GET)
     public VerifyResult verifyLoginToken(@PathVariable String token, @RequestHeader HttpHeaders headers){
         return ssoService.verifyLoginToken(token,headers);
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/verifyJWTToken", method = RequestMethod.POST)
+    public VerifyResult verifyJWTToken(@RequestBody String token, @RequestHeader HttpHeaders headers){
+        VerifyResult vr = new VerifyResult();
+        boolean isValid = ssoService.verifyJWTToken(token);
+        if(isValid){
+            vr.setStatus(true);
+            vr.setMessage("JWT Token verification successful");
+        }else{
+            vr.setStatus(false);
+            vr.setMessage("JWT Token verification failed");
+        }
+        return vr;
     }
 
     public PutLoginResult loginPutToken(String loginId){

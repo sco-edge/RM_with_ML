@@ -28,9 +28,9 @@ class Query:
         })
 
     def login(self, email="fdse_microservices@163.com", password="DefaultPassword") -> bool:
-        # 정확한 로그인 URL
-        url = urljoin(self.address, "/login")
-        print(f"Login URL: {url}")
+        # Step 1: 먼저 ts-login-service로 로그인하여 기본 인증 정보 획득
+        login_url = urljoin(self.address, "/login")
+        print(f"Login URL: {login_url}")
 
         # 수동으로 YsbCaptcha 쿠키 설정
         self.session.cookies.set("YsbCaptcha", "1234")
@@ -42,23 +42,41 @@ class Query:
         }
 
         # 로그인 요청
-        r = self.session.post(url=url, json=payload)
+        r = self.session.post(url=login_url, json=payload)
 
         if r.status_code == 200:
             result = r.json()
             if result.get("status") is True:
                 self.uid = result["account"]["id"]
-                self.token = result["token"]
-                self.session.headers.update({
-                    "Authorization": f"Bearer {self.token}"
-                })
-                logger.info(f"login success, uid: {self.uid}")
-                return True
+                basic_token = result["token"]
+                print(f"DEBUG: Basic login successful, received UUID token: {basic_token}")
+                
+                # Step 2: ts-sso-service에서 받은 토큰이 JWT인지 확인
+                if basic_token and basic_token.count('.') == 2:
+                    # JWT 토큰인 경우
+                    self.token = basic_token
+                    print(f"DEBUG: JWT token received from SSO: {basic_token[:50]}...")
+                    self.session.headers.update({
+                        "Authorization": f"Bearer {self.token}"
+                    })
+                    logger.info(f"login success with JWT from SSO, uid: {self.uid}")
+                    return True
+                else:
+                    # UUID 토큰인 경우 쿠키 기반 인증 사용
+                    print("DEBUG: UUID token received, using cookie-based auth")
+                    self.token = basic_token
+                    # 쿠키 설정
+                    self.session.cookies.set("loginId", self.uid)
+                    self.session.cookies.set("loginToken", self.token)
+                    logger.info(f"login success with cookies, uid: {self.uid}")
+                    return True
             else:
                 logger.error(f"login failed: {result.get('message')}")
         else:
             logger.error(f"login failed with status: {r.status_code}")
         return False
+
+
 
     def get_auth_header(self):
         return {
@@ -289,9 +307,23 @@ class Query:
         return [{"assurance": "1"}]
 
     def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
-        url = f"{self.address}/food/getFood/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
+        url = f"{self.address}/food/getFood"
 
-        response = self.session.get(url=url, headers=headers)
+        # Food 서비스는 POST 요청과 요청 본문이 필요
+        payload = {
+            "date": "2021-07-14",
+            "startStation": place_pair[0],
+            "endStation": place_pair[1],
+            "tripId": train_num
+        }
+
+        # 쿠키 기반 인증 사용
+        cookies = {
+            "loginId": self.uid,
+            "loginToken": self.token
+        }
+
+        response = self.session.post(url=url, json=payload, cookies=cookies)
         if response.status_code != 200:
             logger.warning(
                 f"query food failed, response data is {response.text}")
@@ -305,31 +337,82 @@ class Query:
             }]
         
         response_json = response.json()
+        
+        # Food 서비스 응답 로그 출력
+        logger.info(f"Food service response: {response_json}")
+        
         if isinstance(response_json, list):
-            _ = response_json
+            data = response_json
+            logger.info(f"Found {len(data)} food items")
+            for food in data:
+                if isinstance(food, dict):
+                    food_name = food.get("foodName", "Unknown")
+                    food_price = food.get("foodPrice", 0.0)
+                    food_type = food.get("foodType", 0)
+                    station = food.get("stationName", "Unknown")
+                    store = food.get("storeName", "Unknown")
+                    logger.info(f"Food: {food_name}, Price: {food_price}, Type: {food_type}, Station: {station}, Store: {store}")
         elif isinstance(response_json, dict):
-            _ = response_json.get("data")
+            data = response_json.get("data")
+            if data is None:
+                logger.warning(f"query food failed, response data is {response.text}")
+                return [{
+                    "foodName": "Soup",
+                    "foodPrice": 3.7,
+                    "foodType": 2,
+                    "stationName": "Su Zhou",
+                    "storeName": "Roman Holiday"
+                }]
+            logger.info(f"Found {len(data)} food items")
+            for food in data:
+                if isinstance(food, dict):
+                    food_name = food.get("foodName", "Unknown")
+                    food_price = food.get("foodPrice", 0.0)
+                    food_type = food.get("foodType", 0)
+                    station = food.get("stationName", "Unknown")
+                    store = food.get("storeName", "Unknown")
+                    logger.info(f"Food: {food_name}, Price: {food_price}, Type: {food_type}, Station: {station}, Store: {store}")
         else:
             logger.warning(f"query food failed, response data is {response.text}")
+            return [{
+                "foodName": "Soup",
+                "foodPrice": 3.7,
+                "foodType": 2,
+                "stationName": "Su Zhou",
+                "storeName": "Roman Holiday"
+            }]
 
-        # food 是什么不会对后续调用链有影响，因此查询后返回一个固定数值
-        return [{
-            "foodName": "Soup",
-            "foodPrice": 3.7,
-            "foodType": 2,
-            "stationName": "Su Zhou",
-            "storeName": "Roman Holiday"
-        }]
+        # 실제 데이터가 있으면 반환, 없으면 기본값 반환
+        if isinstance(response_json, list) and len(response_json) > 0:
+            return response_json
+        elif isinstance(response_json, dict) and response_json.get("data") and len(response_json.get("data")) > 0:
+            return response_json.get("data")
+        else:
+            logger.info("No food data found, using default values")
+            return [{
+                "foodName": "Soup",
+                "foodPrice": 3.7,
+                "foodType": 2,
+                "stationName": "Su Zhou",
+                "storeName": "Roman Holiday"
+            }]
 
     def query_contacts(self, headers: dict = {}) -> List[str]:
         """
-        返回座位id列表
+        返回연락처id列表
         :param headers:
         :return: id list
         """
-        url = f"{self.address}/contacts/getContacsById/{self.uid}"
+        # 먼저 사용자의 모든 연락처를 조회
+        url = f"{self.address}/contacts/findContacts"
 
-        response = self.session.get(url=url, headers=headers)
+        # 쿠키 기반 인증 사용
+        cookies = {
+            "loginId": self.uid,
+            "loginToken": self.token
+        }
+
+        response = self.session.get(url=url, cookies=cookies)
         if response.status_code != 200:
             logger.warning(
                 f"query contacts failed, response data is {response.text}")
@@ -673,9 +756,16 @@ class Query:
         logger.info(
             f"choices: preserve_high: {is_high_speed} need_food:{need_food}  need_consign: {need_consign}  need_assurance:{need_assurance}")
 
+        # 쿠키 기반 인증 사용
+        cookies = {
+            "loginId": self.uid,
+            "loginToken": self.token
+        }
+
         res = self.session.post(url=PRESERVE_URL,
                                 headers=headers,
-                                json=base_preserve_payload)
+                                json=base_preserve_payload,
+                                cookies=cookies)
 
         if res.status_code == 200:
             try:

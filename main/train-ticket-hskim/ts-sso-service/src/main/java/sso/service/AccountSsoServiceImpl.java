@@ -8,6 +8,12 @@ import sso.repository.AccountRepository;
 import sso.repository.LoginUserListRepository;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Date;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Claims;
+import javax.crypto.SecretKey;
 
 @Service
 public class AccountSsoServiceImpl implements AccountSsoService{
@@ -17,6 +23,10 @@ public class AccountSsoServiceImpl implements AccountSsoService{
 
     @Autowired
     private LoginUserListRepository loginUserListRepository;
+
+    // 고정된 JWT 시크릿 키 (실제 운영환경에서는 환경변수나 설정파일에서 관리)
+    private static final String JWT_SECRET_KEY = "train-ticket-microservices-jwt-secret-key-2024";
+    private static final SecretKey FIXED_JWT_KEY = Keys.hmacShaKeyFor(JWT_SECRET_KEY.getBytes());
 
     //private static HashMap<String,String > loginUserList = new HashMap<>();
 
@@ -84,6 +94,16 @@ public class AccountSsoServiceImpl implements AccountSsoService{
             lr.setStatus(true);
             lr.setMessage("Success");
             lr.setAccount(result);
+            
+            // JWT 토큰 생성 및 설정
+            String jwtToken = generateJWTToken(result);
+            if (jwtToken != null) {
+                lr.setToken(jwtToken);
+                System.out.println("[SSO Service][Login] JWT token set successfully.");
+            } else {
+                System.out.println("[SSO Service][Login] Failed to generate JWT token.");
+            }
+            
             return lr;
         }else{
             LoginResult lr = new LoginResult();
@@ -277,6 +297,62 @@ public class AccountSsoServiceImpl implements AccountSsoService{
             result.setAccount(account);
         }
         return result;
+    }
+
+    /**
+     * JWT 토큰 생성
+     */
+    private String generateJWTToken(Account account) {
+        try {
+            // 고정된 JWT 시크릿 키 사용
+            String token = Jwts.builder()
+                    .setSubject(account.getId().toString())
+                    .claim("email", account.getEmail())
+                    .claim("name", account.getName())
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24시간 유효
+                    .signWith(FIXED_JWT_KEY, SignatureAlgorithm.HS256)
+                    .compact();
+            
+            System.out.println("[SSO Service][JWT] Generated JWT token with fixed key for user: " + account.getEmail());
+            return token;
+        } catch (Exception e) {
+            System.out.println("[SSO Service][JWT] Error generating JWT token: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * JWT 토큰 검증 (다른 서비스에서 사용)
+     */
+    public boolean verifyJWTToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(FIXED_JWT_KEY)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            System.out.println("[SSO Service][JWT] Token verification failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * JWT 토큰에서 사용자 ID 추출
+     */
+    public String extractUserIdFromJWT(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                .setSigningKey(FIXED_JWT_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+            return claims.getSubject();
+        } catch (Exception e) {
+            System.out.println("[SSO Service][JWT] Failed to extract user ID: " + e.getMessage());
+            return null;
+        }
     }
 }
 

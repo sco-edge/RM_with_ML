@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: ksh6283/ts-ui-dashboard:v2
+        image: ksh6283/ts-ui-dashboard:v4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

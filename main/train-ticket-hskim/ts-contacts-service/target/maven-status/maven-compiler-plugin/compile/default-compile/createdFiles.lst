@@ -6,6 +6,7 @@ contacts/domain/GetAllContactsResult.class
 contacts/ContactsApplication.class
 contacts/domain/GetContactsInfo.class
 contacts/domain/ModifyContactsInfo.class
+contacts/util/JWTUtil.class
 contacts/domain/DocumentType.class
 contacts/init/InitData.class
 contacts/service/ContactsServiceImpl.class

@@ -156,21 +156,40 @@ public class ContactsController {
 //    }
 
     private VerifyResult verifySsoLogin(String loginToken, @RequestHeader HttpHeaders headers){
-        System.out.println("[Order Service][Verify Login] Verifying....");
+        System.out.println("[Contacts Service][Verify Login] Verifying....");
 
-        HttpEntity requestTokenResult = new HttpEntity(null,headers);
-        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
-                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
-                HttpMethod.GET,
-                requestTokenResult,
-                VerifyResult.class);
-        VerifyResult tokenResult = reTokenResult.getBody();
-//        VerifyResult tokenResult = restTemplate.getForObject(
-//                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
-//                VerifyResult.class);
-
-
-        return tokenResult;
+        // JWT 토큰인지 확인 (점이 2개 포함되어 있으면 JWT)
+        if (loginToken != null && loginToken.contains(".") && loginToken.split("\\.").length == 3) {
+            System.out.println("[Contacts Service][Verify Login] JWT token detected, using local verification");
+            
+            // JWT 토큰 로컬 검증
+            boolean isValid = contacts.util.JWTUtil.verifyJWTToken(loginToken);
+            if (isValid) {
+                System.out.println("[Contacts Service][Verify Login] JWT verification successful");
+                VerifyResult tokenResult = new VerifyResult();
+                tokenResult.setStatus(true);
+                tokenResult.setMessage("JWT verification successful");
+                return tokenResult;
+            } else {
+                System.out.println("[Contacts Service][Verify Login] JWT verification failed");
+                VerifyResult tokenResult = new VerifyResult();
+                tokenResult.setStatus(false);
+                tokenResult.setMessage("JWT verification failed");
+                return tokenResult;
+            }
+        } else {
+            System.out.println("[Contacts Service][Verify Login] UUID token detected, using SSO service verification");
+            
+            // UUID 토큰인 경우 기존 SSO 서비스 호출
+            HttpEntity requestTokenResult = new HttpEntity(null,headers);
+            ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
+                    "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+                    HttpMethod.GET,
+                    requestTokenResult,
+                    VerifyResult.class);
+            VerifyResult tokenResult = reTokenResult.getBody();
+            return tokenResult;
+        }
     }
 
 }
