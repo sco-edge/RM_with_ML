@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: ksh6283/ts-verification-code-service:v6
+        image: ksh6283/ts-verification-code-service:v7
         ports:
         - containerPort: 15678
         resources:

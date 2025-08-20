@@ -187,7 +187,7 @@ class OfflineProfilingDataCollector:
         "start": start_time * 1000000,
         "end": end_time * 1000000,
         "limit": self.max_traces,
-        "service": self.entryPoint,
+        "service": self.entryPoint,  # ts-ui-dashboard로 설정 (Jaeger API 필수 파라미터)
         }
         # Jaeger가 트레이스를 처리할 시간을 주기 위해 더 오래 대기
         time.sleep(10)
@@ -205,6 +205,25 @@ class OfflineProfilingDataCollector:
         print(f"Time range: {start_time} to {end_time}")
         print(f"Test start time: {test_data['start_time']}")
         print(f"Current time: {int(time.time())}")
+        
+        # 트레이스 구조 분석을 위한 디버깅 정보
+        if len(res) > 0:
+            print(f"\n=== Trace Structure Analysis ===")
+            for i, trace in enumerate(res[:3]):  # 처음 3개 트레이스만 분석
+                print(f"\nTrace {i+1}:")
+                print(f"  TraceID: {trace.get('traceID', 'N/A')}")
+                print(f"  Spans: {len(trace.get('spans', []))}")
+                print(f"  Services: {list(trace.get('processes', {}).values())}")
+                
+                # 루트 span 찾기
+                root_spans = [s for s in trace.get('spans', []) if len(s.get('references', [])) == 0]
+                if root_spans:
+                    root_span = root_spans[0]
+                    process_id = root_span.get('processID')
+                    service_name = trace.get('processes', {}).get(process_id, {}).get('serviceName', 'Unknown')
+                    print(f"  Root Service: {service_name}")
+                    print(f"  Root Operation: {root_span.get('operationName', 'N/A')}")
+            print("=== End Analysis ===\n")
 
         if len(res) == 0:
             self.write_log(f"No traces fetched! Creating dummy trace data for testing.", "warning")
@@ -215,6 +234,32 @@ class OfflineProfilingDataCollector:
         # 실제 트레이스가 있을 때만 이 부분을 실행
         if len(res) > 0:
             print("Entering trace processing block...")
+            
+            # ts-ui-dashboard를 루트로 하는 트레이스만 필터링
+            filtered_traces = []
+            for trace in res:
+                # ts-ui-dashboard가 루트 span인지 확인
+                has_ui_dashboard_root = False
+                for span in trace["spans"]:
+                    # references가 없고 (루트 span) ts-ui-dashboard 서비스인 경우
+                    if len(span.get("references", [])) == 0:
+                        process_id = span.get("processID")
+                        if process_id and trace.get("processes", {}).get(process_id, {}).get("serviceName") == "ts-ui-dashboard":
+                            has_ui_dashboard_root = True
+                            break
+                
+                if has_ui_dashboard_root:
+                    filtered_traces.append(trace)
+            
+            print(f"Total traces: {len(res)}, ts-ui-dashboard root traces: {len(filtered_traces)}")
+            
+            if len(filtered_traces) == 0:
+                print("No traces with ts-ui-dashboard as root found!")
+                return True, None, None
+            
+            # 필터링된 트레이스만 사용
+            res = filtered_traces
+            
             # 2. span -> merged_df 구성
             service_id_mapping = (
                 pd.json_normalize(res)
@@ -450,31 +495,44 @@ class OfflineProfilingDataCollector:
             traceback.print_exc()
             return
 
-        try:
-            cpu_result = self.collect_cpu_usage(
-                deployments, test_data["start_time"]
-            ).rename(
-                columns={"usage": "cpuUsage"}
-            )
-        except Exception:
-            self.write_log("Fetch CPU usage data failed!", "error")
-            traceback.print_exc()
-            return
-        if "deployment" in cpu_result.columns:
-            cpu_result = cpu_result.drop(columns="deployment")
-        
-        try:
-            mem_result = self.collect_mem_usage(
-                deployments, test_data["start_time"]
-            ).rename(
-                columns={"usage": "memUsage"}
-            )
-        except Exception:
-            self.write_log("Fetch memory usage data failed!", "error")
-            traceback.print_exc()
-            return
-        if "deployment" in cpu_result.columns:
-            cpu_result = cpu_result.drop(columns="deployment")
+        # Prometheus 메트릭 수집 (prometheusHost가 None이면 건너뛰기)
+        if self.prometheusHost:
+            try:
+                cpu_result = self.collect_cpu_usage(
+                    deployments, test_data["start_time"]
+                ).rename(
+                    columns={"usage": "cpuUsage"}
+                )
+            except Exception:
+                self.write_log("Fetch CPU usage data failed!", "error")
+                traceback.print_exc()
+                return
+            if "deployment" in cpu_result.columns:
+                cpu_result = cpu_result.drop(columns="deployment")
+            
+            try:
+                mem_result = self.collect_mem_usage(
+                    deployments, test_data["start_time"]
+                ).rename(
+                    columns={"usage": "memUsage"}
+                )
+            except Exception:
+                self.write_log("Fetch memory usage data failed!", "error")
+                traceback.print_exc()
+                return
+            if "deployment" in mem_result.columns:
+                mem_result = mem_result.drop(columns="deployment")
+        else:
+            # Prometheus 없이 더미 데이터 생성
+            self.write_log("Prometheus host not configured, using dummy metrics", "warning")
+            cpu_result = pd.DataFrame({
+                "pod": deployments,
+                "usage": [0.0] * len(deployments)
+            }).rename(columns={"usage": "cpuUsage"})
+            mem_result = pd.DataFrame({
+                "pod": deployments,
+                "usage": [0.0] * len(deployments)
+            }).rename(columns={"usage": "memUsage"})
 
         try:
             latency_by_pod = (

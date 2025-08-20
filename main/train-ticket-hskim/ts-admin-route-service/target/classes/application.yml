@@ -5,3 +5,9 @@ spring:
   application:
     name: ts-admin-route-service
 
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831
+

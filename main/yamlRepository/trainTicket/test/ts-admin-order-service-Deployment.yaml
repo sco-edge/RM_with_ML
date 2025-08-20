@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: ksh6283/ts-admin-order-service:v4
+        image: ksh6283/ts-admin-order-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16112

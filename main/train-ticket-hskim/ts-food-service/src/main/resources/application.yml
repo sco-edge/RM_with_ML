@@ -11,3 +11,9 @@ spring:
 #      password: ${MONGODB_PASSWORD}
       database: ts
       port: 27017
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

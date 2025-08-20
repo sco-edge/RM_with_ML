@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: ksh6283/ts-order-other-service:v4
+        image: ksh6283/ts-order-other-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 12032

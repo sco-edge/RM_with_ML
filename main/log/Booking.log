@@ -819,3 +819,53 @@
 <error> <2025/08/19 19:27:23> Fetch CPU usage data failed!
 <info> <2025/08/19 19:28:05> Dummy Throughput Used: 5,Target Throughput: 5
 <info> <2025/08/19 19:28:36> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/19 19:38:13> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/19 19:38:43> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/19 19:40:37> Fetch CPU usage data failed!
+<error> <2025/08/19 19:41:10> Fetch CPU usage data failed!
+<info> <2025/08/20 17:27:50> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 17:28:21> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 17:30:15> Fetch CPU usage data failed!
+<error> <2025/08/20 17:30:48> Fetch CPU usage data failed!
+<info> <2025/08/20 17:36:26> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 17:36:56> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 17:37:12> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 17:37:42> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 17:38:51> Fetch CPU usage data failed!
+<error> <2025/08/20 17:39:20> Fetch CPU usage data failed!
+<error> <2025/08/20 17:39:36> Fetch CPU usage data failed!
+<error> <2025/08/20 17:40:09> Fetch CPU usage data failed!
+<info> <2025/08/20 17:52:59> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 17:53:29> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 17:55:26> Fetch CPU usage data failed!
+<info> <2025/08/20 21:02:04> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:02:54> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:03:35> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:04:05> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:07:03> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:07:35> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:27:18> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 21:27:28> Collect trace data failed!
+<info> <2025/08/20 21:27:49> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 21:27:59> Collect trace data failed!
+<info> <2025/08/20 21:32:15> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:32:46> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:48:00> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 21:48:10> Collect trace data failed!
+<info> <2025/08/20 21:48:31> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 21:48:41> Collect trace data failed!
+<info> <2025/08/20 21:56:45> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 21:57:16> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 22:06:21> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 22:06:53> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 22:08:51> Fetch CPU usage data failed!
+<info> <2025/08/20 22:16:39> Dummy Throughput Used: 5,Target Throughput: 5
+<info> <2025/08/20 22:17:09> Dummy Throughput Used: 5,Target Throughput: 5
+<error> <2025/08/20 22:19:13> Fetch CPU usage data failed!
+<error> <2025/08/20 22:19:50> Fetch CPU usage data failed!
+<info> <2025/08/20 22:24:24> Dummy Throughput Used: 5,Target Throughput: 5
+<warning> <2025/08/20 22:24:45> Prometheus host not configured, using dummy metrics
+<info> <2025/08/20 22:24:54> Dummy Throughput Used: 5,Target Throughput: 5
+<warning> <2025/08/20 22:25:21> Prometheus host not configured, using dummy metrics
+<info> <2025/08/20 22:34:10> Dummy Throughput Used: 5,Target Throughput: 5
+<warning> <2025/08/20 22:34:26> Prometheus host not configured, using dummy metrics

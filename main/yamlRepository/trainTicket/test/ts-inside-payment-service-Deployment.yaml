@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: ksh6283/ts-inside-payment-service:v4
+        image: ksh6283/ts-inside-payment-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18673

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: ksh6283/ts-travel2-service:v4
+        image: ksh6283/ts-travel2-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16346

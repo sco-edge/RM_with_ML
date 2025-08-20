@@ -25,3 +25,9 @@ spring:
 #          destination: ts-rebook-service-queue-output
 #          contentType: text/plain
 #          binder: rabbit
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

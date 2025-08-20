@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: ksh6283/ts-admin-route-service:v4  
+        image: ksh6283/ts-admin-route-service:v5  
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16113

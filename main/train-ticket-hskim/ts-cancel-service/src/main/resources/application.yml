@@ -4,3 +4,9 @@ server:
 spring:
   application:
     name: ts-cancel-service
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

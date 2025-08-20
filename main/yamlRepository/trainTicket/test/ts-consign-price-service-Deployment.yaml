@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: ksh6283/ts-consign-price-service:v4
+        image: ksh6283/ts-consign-price-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 16110

@@ -13,3 +13,9 @@ spring:
 # HTTP Server
 server:
   port: 16579  # HTTP (Tomcat) port
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

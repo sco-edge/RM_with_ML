@@ -11,3 +11,9 @@ spring:
 # HTTP Server
 server:
   port: 16110
+
+opentracing:
+  jaeger:
+    udp-sender:
+      host: jaeger
+      port: 6831

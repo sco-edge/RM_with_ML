@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: ksh6283/ts-rebook-service:v4
+        image: ksh6283/ts-rebook-service:v5
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18886
